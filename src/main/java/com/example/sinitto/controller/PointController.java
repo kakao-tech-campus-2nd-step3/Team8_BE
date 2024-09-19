@@ -3,7 +3,6 @@ package com.example.sinitto.controller;
 import com.example.sinitto.dto.PointLogResponse;
 import com.example.sinitto.dto.PointRequest;
 import com.example.sinitto.dto.PointResponse;
-import com.example.sinitto.dto.PointWithdrawRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -40,11 +39,10 @@ public class PointController {
 
     @Operation(summary = "포인트 출금 요청", description = "시니또가 포인트 출금을 요청합니다.")
     @PostMapping("/withdraw")
-    public ResponseEntity<String> requestPointWithdraw(@RequestBody PointWithdrawRequest request) {
+    public ResponseEntity<String> requestPointWithdraw(@RequestBody PointRequest request) {
         // 임시 응답
         return ResponseEntity.ok("포인트 출금 요청이 완료되었습니다.");
     }
-
 
     @Operation(summary = "포인트 로그 조회", description = "포인트 로그를 조회합니다.")
     @GetMapping("/logs")
@@ -53,4 +51,5 @@ public class PointController {
         PointLogResponse response;
         return ResponseEntity.ok(new ArrayList<>());
     }
+
 }
