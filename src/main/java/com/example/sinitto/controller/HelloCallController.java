@@ -1,6 +1,8 @@
 package com.example.sinitto.controller;
 
-import com.example.sinitto.dto.*;
+import com.example.sinitto.dto.HelloCallDetailResponse;
+import com.example.sinitto.dto.HelloCallReportRequest;
+import com.example.sinitto.dto.HelloCallResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -30,8 +32,8 @@ public class HelloCallController {
     }
 
     @Operation(summary = "서비스 수락하기", description = "시니또가 안부전화 신청을 수락합니다.")
-    @PutMapping("/accept")
-    public ResponseEntity<String> acceptHelloCall(@RequestBody HelloCallAcceptRequest request) {
+    @PutMapping("/accept/{callId}")
+    public ResponseEntity<String> acceptHelloCall(@PathVariable Long callId) {
         // 임시 응답
         return ResponseEntity.ok("안부전화 서비스가 수락되었습니다.");
     }
@@ -44,8 +46,8 @@ public class HelloCallController {
     }
 
     @Operation(summary = "서비스 수행 완료", description = "시니또가 안부전화 수행을 완료합니다.")
-    @PutMapping("/complete")
-    public ResponseEntity<String> completeHelloCall(@RequestBody HelloCallCompleteRequest request) {
+    @PutMapping("/complete/{callId}")
+    public ResponseEntity<String> completeHelloCall(@PathVariable Long callId) {
         // 임시 응답
         return ResponseEntity.ok("안부전화 서비스가 완료되었습니다.");
     }
@@ -65,8 +67,8 @@ public class HelloCallController {
     }
 
     @Operation(summary = "진행중인 안부 서비스 취소 요청", description = "시니또가 진행중인 안부전화 서비스를 취소합니다.")
-    @PutMapping("/cancel")
-    public ResponseEntity<String> cancelHelloCall(@RequestBody HelloCallCancelRequest request) {
+    @PutMapping("/cancel/{callId}")
+    public ResponseEntity<String> cancelHelloCall(@PathVariable Long callId) {
         // 임시 응답
         return ResponseEntity.ok("안부전화 서비스가 취소되었습니다.");
     }
