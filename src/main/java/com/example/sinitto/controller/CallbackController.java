@@ -1,8 +1,5 @@
 package com.example.sinitto.controller;
 
-import com.example.sinitto.dto.CallbackAcceptRequest;
-import com.example.sinitto.dto.CallbackCancelRequest;
-import com.example.sinitto.dto.CallbackCompleteRequest;
 import com.example.sinitto.dto.CallbackResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,21 +30,21 @@ public class CallbackController {
     }
 
     @Operation(summary = "콜백 전화 완료", description = "시니또와 시니어의 연락이 끝났을 때 시니어의 요청사항을 수행 여부를 선택하여 처리합니다.")
-    @PutMapping("/complete")
-    public ResponseEntity<String> completeCallback(@RequestBody CallbackCompleteRequest request) {
+    @PutMapping("/complete/{callbackId}")
+    public ResponseEntity<String> completeCallback(@PathVariable Long callbackId) {
         // 임시 응답
         return ResponseEntity.ok("콜백 전화 끝냄");
     }
 
     @Operation(summary = "콜백 서비스 수락 신청", description = "시니또가 콜백 서비스 수락을 신청합니다.")
-    @PutMapping("/accept")
-    public ResponseEntity<String> acceptCallbackService(@RequestBody CallbackAcceptRequest request) {
+    @PutMapping("/accept/{callbackId}")
+    public ResponseEntity<String> acceptCallbackService(@PathVariable Long callbackId) {
         return ResponseEntity.ok("콜백 서비스가 수락");
     }
 
     @Operation(summary = "진행중인 콜백 서비스 취소", description = "시니또가 진행중인 콜백 서비스를 취소합니다.")
-    @PutMapping("/cancel")
-    public ResponseEntity<String> cancelCallbackService(@RequestBody CallbackCancelRequest request) {
+    @PutMapping("/cancel/{callbackId}")
+    public ResponseEntity<String> cancelCallbackService(@PathVariable Long callbackId) {
         // 임시 응답
         return ResponseEntity.ok("콜백 서비스가 취소");
     }
