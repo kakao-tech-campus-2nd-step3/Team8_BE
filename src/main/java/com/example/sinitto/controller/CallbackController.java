@@ -26,7 +26,7 @@ public class CallbackController {
     @GetMapping("/{callbackId}")
     public ResponseEntity<CallbackResponse> getCallbackGuidelines(@PathVariable Long callbackId) {
         // 임시 응답
-        return ResponseEntity.ok(new CallbackResponse());
+        return ResponseEntity.ok(new CallbackResponse(null, null, null));
     }
 
     @Operation(summary = "콜백 전화 완료", description = "시니또와 시니어의 연락이 끝났을 때 시니어의 요청사항을 수행 여부를 선택하여 처리합니다.")
@@ -39,6 +39,7 @@ public class CallbackController {
     @Operation(summary = "콜백 서비스 수락 신청", description = "시니또가 콜백 서비스 수락을 신청합니다.")
     @PutMapping("/accept/{callbackId}")
     public ResponseEntity<String> acceptCallbackService(@PathVariable Long callbackId) {
+        // 임시 응답
         return ResponseEntity.ok("콜백 서비스가 수락");
     }
 
