@@ -47,7 +47,7 @@ public class GuardGuidelineController {
     @GetMapping("/{guidelineId}")
     public ResponseEntity<GuardGuidelineResponse> getGuideline(@PathVariable Long guidelineId) {
         // 임시 응답
-        return ResponseEntity.ok(new GuardGuidelineResponse());
+        return ResponseEntity.ok(new GuardGuidelineResponse(null, null));
     }
 
 }

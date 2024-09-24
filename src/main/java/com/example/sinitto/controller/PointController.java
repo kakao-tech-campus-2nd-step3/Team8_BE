@@ -33,8 +33,8 @@ public class PointController {
     @Operation(summary = "포인트 조회", description = "시니또, 보호자가 본인의 포인트를 조회합니다.")
     @GetMapping()
     public ResponseEntity<PointResponse> getPoint() {
-        // @MemberId 같은걸로 멤버 특정해서 포인트 가지고옴
-        return ResponseEntity.ok(new PointResponse());
+        // 임시 응답
+        return ResponseEntity.ok(new PointResponse(1000));
     }
 
     @Operation(summary = "포인트 출금 요청", description = "시니또가 포인트 출금을 요청합니다.")
@@ -48,7 +48,6 @@ public class PointController {
     @GetMapping("/logs")
     public ResponseEntity<List<PointLogResponse>> getPointLogs() {
         // 임시 응답
-        PointLogResponse response;
         return ResponseEntity.ok(new ArrayList<>());
     }
 

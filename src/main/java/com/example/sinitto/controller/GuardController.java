@@ -28,7 +28,7 @@ public class GuardController {
     @GetMapping("/senior/{seniorId}")
     public ResponseEntity<SeniorResponse> getSenior(@PathVariable Long seniorId) {
         // 임시 응답
-        return ResponseEntity.ok(new SeniorResponse());
+        return ResponseEntity.ok(new SeniorResponse(null, null, null));
     }
 
     @Operation(summary = "시니어 정보 수정", description = "시니어의 정보를 수정합니다.")
@@ -56,7 +56,7 @@ public class GuardController {
     @GetMapping
     public ResponseEntity<GuardResponse> getGuardInfo() {
         // 임시 응답
-        return ResponseEntity.ok(new GuardResponse());
+        return ResponseEntity.ok(new GuardResponse(null, null, null));
     }
 
     @Operation(summary = "보호자 본인 정보 수정", description = "보호자의 본인 정보를 수정합니다.")
