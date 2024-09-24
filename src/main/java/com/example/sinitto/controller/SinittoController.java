@@ -19,7 +19,7 @@ public class SinittoController {
     @GetMapping
     public ResponseEntity<SinittoResponse> getSinittoInfo() {
         // 임시 응답
-        return ResponseEntity.ok(new SinittoResponse());
+        return ResponseEntity.ok(new SinittoResponse(null, null, null, null, null));
     }
 
     @Operation(summary = "시니또 본인 정보 수정", description = "시니또 본인의 정보를 수정요청한다.")
@@ -30,8 +30,6 @@ public class SinittoController {
     }
 
     //Pass
-    //Pass
-    //Pass
     @Operation(summary = "시니또 삭제", description = "관리자용")
     @DeleteMapping
     public ResponseEntity<String> deleteSinitto() {
@@ -39,8 +37,6 @@ public class SinittoController {
         return ResponseEntity.ok("시니또가 삭제되었습니다.");
     }
 
-    //Pass
-    //Pass
     //Pass
     @Operation(summary = "모든 시니또 조회", description = "관리자용")
     @GetMapping("/all")
