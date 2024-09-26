@@ -2,6 +2,8 @@ package com.example.sinitto.member.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Sinitto {
@@ -16,6 +18,7 @@ public class Sinitto {
     @OneToOne
     @JoinColumn(name = "member_id")
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
 }
