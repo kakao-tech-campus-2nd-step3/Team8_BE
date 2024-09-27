@@ -19,10 +19,16 @@ public class KakaoTokenSerivce {
         this.kakaoTokenRepository = kakaoTokenRepository;
     }
 
+    @Transactional
     public void saveKakaoToken(String email, KakaoTokenResponse kakaoTokenResponse) {
 
-        KakaoToken kakaoToken = new KakaoToken(email, kakaoTokenResponse.accessToken(),
-                kakaoTokenResponse.refreshToken(), kakaoTokenResponse.expiresIn(), kakaoTokenResponse.refreshTokenExpiresIn());
+        KakaoToken kakaoToken = kakaoTokenRepository.findByMemberEmail(email)
+                .orElseGet(() -> new KakaoToken(email, kakaoTokenResponse.accessToken(),
+                        kakaoTokenResponse.refreshToken(), kakaoTokenResponse.expiresIn(),
+                        kakaoTokenResponse.refreshTokenExpiresIn()));
+
+        kakaoToken.updateKakaoToken(kakaoTokenResponse.accessToken(), kakaoTokenResponse.refreshToken(),
+                kakaoTokenResponse.expiresIn(), kakaoTokenResponse.refreshTokenExpiresIn());
 
         kakaoTokenRepository.save(kakaoToken);
     }
