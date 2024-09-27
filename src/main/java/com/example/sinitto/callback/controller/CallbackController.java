@@ -1,25 +1,34 @@
 package com.example.sinitto.callback.controller;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
+import com.example.sinitto.callback.service.CallbackService;
+import com.example.sinitto.common.annotation.MemberId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @RestController
 @RequestMapping("/api/callbacks")
-@Tag(name = "[미구현]콜백 서비스", description = "콜백 관련 API")
+@Tag(name = "콜백 서비스", description = "콜백 관련 API")
 public class CallbackController {
+
+    private final CallbackService callbackService;
+
+    public CallbackController(CallbackService callbackService) {
+        this.callbackService = callbackService;
+    }
 
     @Operation(summary = "콜백 전화 리스트 보기(페이지)", description = "시니어가 요청한 콜백전화를 페이징으로 보여줍니다.")
     @GetMapping
-    public ResponseEntity<Page<CallbackResponse>> getCallbackList() {
-        // 임시 응답
-        return ResponseEntity.ok(new PageImpl<>(new ArrayList<>()));
+    public ResponseEntity<Page<CallbackResponse>> getCallbackList(@MemberId Long memberId,
+                                                                  @PageableDefault(sort = "postTime", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return ResponseEntity.ok(callbackService.getCallbacks(memberId, pageable));
     }
 
     @Operation(summary = "콜백 전화 상세보기(not 페이징)", description = "")

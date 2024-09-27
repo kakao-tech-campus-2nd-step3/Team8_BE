@@ -27,4 +27,24 @@ public class Callback {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Senior senior;
 
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getPostTime() {
+        return postTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getSeniorName() {
+        return senior.getName();
+    }
+
+    public Long getSeniorId() {
+        return senior.getId();
+    }
+
 }

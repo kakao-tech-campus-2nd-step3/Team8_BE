@@ -21,4 +21,7 @@ public class Member {
     @NotNull
     private boolean isSinitto;
 
+    public boolean isSinitto() {
+        return isSinitto;
+    }
 }

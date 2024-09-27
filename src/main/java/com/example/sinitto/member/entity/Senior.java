@@ -21,4 +21,11 @@ public class Senior {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+    public String getName() {
+        return name;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
