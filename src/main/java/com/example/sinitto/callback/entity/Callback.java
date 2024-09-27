@@ -20,12 +20,22 @@ public class Callback {
     @CreatedDate
     private LocalDateTime postTime;
     @NotNull
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private CallbackStatus status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "senior_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Senior senior;
+
+    public Callback(CallbackStatus status, Senior senior) {
+        this.status = status;
+        this.senior = senior;
+    }
+
+    public Callback() {
+
+    }
 
     public Long getId() {
         return id;
@@ -36,7 +46,7 @@ public class Callback {
     }
 
     public String getStatus() {
-        return status;
+        return status.name();
     }
 
     public String getSeniorName() {
