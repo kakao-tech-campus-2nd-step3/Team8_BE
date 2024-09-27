@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
     runtimeOnly 'com.h2database:h2'
+    implementation group: 'com.twilio.sdk', name: 'twilio', version: '10.5.0'
 }
 
 tasks.named('test') {
