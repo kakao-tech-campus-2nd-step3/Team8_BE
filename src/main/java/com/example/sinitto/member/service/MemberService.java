@@ -18,8 +18,8 @@ public class MemberService {
 
     public Long getMemberIdByToken(String token) {
         String email = tokenService.extractEmail(token);
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+        Member member = memberRepository.findByEmail(email).orElseThrow(
+                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
         return member.getId();
     }
