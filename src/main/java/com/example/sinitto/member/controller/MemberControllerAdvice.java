@@ -1,8 +1,6 @@
 package com.example.sinitto.member.controller;
 
-import com.example.sinitto.member.exception.JWTExpirationException;
-import com.example.sinitto.member.exception.MemberNotFoundException;
-import com.example.sinitto.member.exception.UnauthorizedException;
+import com.example.sinitto.member.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +37,24 @@ public class MemberControllerAdvice {
         problemDetail.setType(URI.create("/errors/member-not-found"));
         problemDetail.setTitle("Member Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    }
+
+    @ExceptionHandler(TokenNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleTokenNotFoundException(TokenNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+                ex.getMessage());
+        problemDetail.setType(URI.create("/errors/token-not-found"));
+        problemDetail.setTitle("Token Not Found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    }
+
+    @ExceptionHandler(KakaoRefreshTokenExpirationException.class)
+    public ResponseEntity<ProblemDetail> handleKakaoRefreshTokenExpirationException(KakaoRefreshTokenExpirationException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED,
+                ex.getMessage());
+        problemDetail.setType(URI.create("/errors/unauthorized-access-by-kakao-refresh-token-expiration"));
+        problemDetail.setTitle("Unauthorized Access By Kakao Refresh Token Expiration");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problemDetail);
     }
 
 }
