@@ -1,8 +1,8 @@
-package com.example.sinitto.member.service;
+package com.example.sinitto.auth.service;
 
+import com.example.sinitto.auth.dto.KakaoTokenResponse;
+import com.example.sinitto.auth.dto.KakaoUserResponse;
 import com.example.sinitto.common.properties.KakaoProperties;
-import com.example.sinitto.member.dto.KakaoTokenResponse;
-import com.example.sinitto.member.dto.KakaoUserResponse;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;

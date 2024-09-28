@@ -34,4 +34,8 @@ public class Member {
     public Long getId() {
         return id;
     }
+
+    public boolean isSinitto() {
+        return isSinitto;
+    }
 }

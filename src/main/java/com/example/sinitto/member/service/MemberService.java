@@ -1,15 +1,19 @@
 package com.example.sinitto.member.service;
 
+import com.example.sinitto.auth.dto.KakaoTokenResponse;
+import com.example.sinitto.auth.dto.KakaoUserResponse;
+import com.example.sinitto.auth.dto.LoginResponse;
+import com.example.sinitto.auth.dto.RegisterResponse;
+import com.example.sinitto.auth.exception.NotUniqueException;
+import com.example.sinitto.auth.service.KakaoApiService;
+import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.common.resolver.MemberIdProvider;
-import com.example.sinitto.member.dto.KakaoTokenResponse;
-import com.example.sinitto.member.dto.KakaoUserResponse;
-import com.example.sinitto.member.dto.LoginResponse;
-import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.exception.MemberNotFoundException;
-import com.example.sinitto.member.exception.NotUniqueException;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class MemberService implements MemberIdProvider {
@@ -39,13 +43,17 @@ public class MemberService implements MemberIdProvider {
 
         String email = kakaoUserResponse.kakaoAccount().email();
 
-        if (memberRepository.findByEmail(email).isEmpty()) {
-            return new LoginResponse(null, null, "/signup", email);
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+        if (optionalMember.isEmpty()) {
+            return new LoginResponse(null, null, "/signup", email, false);
         }
 
+        Member member = optionalMember.get();
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
-        return new LoginResponse(accessToken, refreshToken, null, null);
+
+        return new LoginResponse(accessToken, refreshToken, null, null, member.isSinitto());
     }
 
     public RegisterResponse registerNewMember(String name, String phoneNumber, String email, boolean isSinitto) {
@@ -60,6 +68,6 @@ public class MemberService implements MemberIdProvider {
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
 
-        return new RegisterResponse(accessToken, refreshToken);
+        return new RegisterResponse(accessToken, refreshToken, isSinitto);
     }
 }

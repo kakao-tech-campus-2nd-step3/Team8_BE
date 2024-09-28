@@ -1,7 +1,7 @@
-package com.example.sinitto.member.service;
+package com.example.sinitto.auth.service;
 
-import com.example.sinitto.member.exception.JWTExpirationException;
-import com.example.sinitto.member.exception.UnauthorizedException;
+import com.example.sinitto.auth.exception.JWTExpirationException;
+import com.example.sinitto.auth.exception.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;

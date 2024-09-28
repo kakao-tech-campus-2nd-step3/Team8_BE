@@ -1,4 +1,4 @@
-package com.example.sinitto.member.entity;
+package com.example.sinitto.auth.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

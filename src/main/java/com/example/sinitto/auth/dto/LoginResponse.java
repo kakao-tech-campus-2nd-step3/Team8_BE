@@ -1,9 +1,10 @@
-package com.example.sinitto.member.dto;
+package com.example.sinitto.auth.dto;
 
 public record LoginResponse(
         String accessToken,
         String refreshToken,
         String redirectUrl,
-        String email
+        String email,
+        boolean isSinitto
 ) {
 }

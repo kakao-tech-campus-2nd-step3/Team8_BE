@@ -1,4 +1,4 @@
-package com.example.sinitto.member.exception;
+package com.example.sinitto.auth.exception;
 
 public class JWTExpirationException extends RuntimeException {
     public JWTExpirationException(String message) {

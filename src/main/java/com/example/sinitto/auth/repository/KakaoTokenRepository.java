@@ -1,6 +1,6 @@
-package com.example.sinitto.member.repository;
+package com.example.sinitto.auth.repository;
 
-import com.example.sinitto.member.entity.KakaoToken;
+import com.example.sinitto.auth.entity.KakaoToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

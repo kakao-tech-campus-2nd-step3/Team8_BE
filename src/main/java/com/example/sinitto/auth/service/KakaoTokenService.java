@@ -1,10 +1,10 @@
-package com.example.sinitto.member.service;
+package com.example.sinitto.auth.service;
 
-import com.example.sinitto.member.dto.KakaoTokenResponse;
-import com.example.sinitto.member.entity.KakaoToken;
-import com.example.sinitto.member.exception.KakaoRefreshTokenExpirationException;
-import com.example.sinitto.member.exception.TokenNotFoundException;
-import com.example.sinitto.member.repository.KakaoTokenRepository;
+import com.example.sinitto.auth.dto.KakaoTokenResponse;
+import com.example.sinitto.auth.entity.KakaoToken;
+import com.example.sinitto.auth.exception.KakaoRefreshTokenExpirationException;
+import com.example.sinitto.auth.exception.TokenNotFoundException;
+import com.example.sinitto.auth.repository.KakaoTokenRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
