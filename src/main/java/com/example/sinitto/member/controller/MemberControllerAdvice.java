@@ -57,4 +57,13 @@ public class MemberControllerAdvice {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problemDetail);
     }
 
+    @ExceptionHandler(NotUniqueException.class)
+    public ResponseEntity<ProblemDetail> handleNotUniqueException(NotUniqueException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.MULTI_STATUS,
+                ex.getMessage());
+        problemDetail.setType(URI.create("/errors/not-unique-state"));
+        problemDetail.setTitle("Not Unique State");
+        return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(problemDetail);
+    }
+
 }

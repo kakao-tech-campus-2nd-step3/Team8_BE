@@ -2,7 +2,6 @@ package com.example.sinitto.common.resolver;
 
 import com.example.sinitto.common.annotation.MemberId;
 import com.example.sinitto.member.exception.UnauthorizedException;
-import com.example.sinitto.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -14,10 +13,10 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @Component
 public class MemberIdArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final MemberService memberService;
+    private final MemberIdProvider memberIdProvider;
 
-    public MemberIdArgumentResolver(MemberService memberService) {
-        this.memberService = memberService;
+    public MemberIdArgumentResolver(MemberIdProvider memberIdProvider) {
+        this.memberIdProvider = memberIdProvider;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class MemberIdArgumentResolver implements HandlerMethodArgumentResolver {
         }
 
         String token = authorizationHeader.substring(7);
-        return memberService.getMemberIdByToken(token);
+        return memberIdProvider.getMemberIdByToken(token);
     }
 
 }
