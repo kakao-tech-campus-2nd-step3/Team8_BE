@@ -9,12 +9,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KakaoTokenSerivce {
+public class KakaoTokenService {
 
     private final KakaoApiService kakaoApiService;
     private final KakaoTokenRepository kakaoTokenRepository;
 
-    public KakaoTokenSerivce(KakaoApiService kakaoApiService, KakaoTokenRepository kakaoTokenRepository) {
+    public KakaoTokenService(KakaoApiService kakaoApiService, KakaoTokenRepository kakaoTokenRepository) {
         this.kakaoApiService = kakaoApiService;
         this.kakaoTokenRepository = kakaoTokenRepository;
     }
