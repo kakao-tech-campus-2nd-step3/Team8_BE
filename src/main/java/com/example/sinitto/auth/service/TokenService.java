@@ -1,5 +1,6 @@
 package com.example.sinitto.auth.service;
 
+import com.example.sinitto.auth.dto.TokenResponse;
 import com.example.sinitto.auth.exception.JWTExpirationException;
 import com.example.sinitto.auth.exception.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
@@ -61,7 +62,7 @@ public class TokenService {
         }
     }
 
-    public String refreshAccessToken(String refreshToken) {
+    public TokenResponse refreshAccessToken(String refreshToken) {
         try {
             var claims = Jwts.parserBuilder()
                     .setSigningKey(secretKey)
@@ -73,7 +74,10 @@ public class TokenService {
                 throw new JWTExpirationException("리프레쉬 토큰이 만료되었습니다.");
             }
 
-            return generateAccessToken(claims.getSubject());
+            String newAccessToken = generateAccessToken(claims.getSubject());
+            String newRefreshToken = generateRefreshToken(claims.getSubject());
+
+            return new TokenResponse(newAccessToken, newRefreshToken);
         } catch (Exception e) {
             throw new UnauthorizedException("유효하지 않은 리프레쉬 토큰입니다.");
         }

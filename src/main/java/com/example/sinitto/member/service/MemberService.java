@@ -6,6 +6,7 @@ import com.example.sinitto.auth.dto.LoginResponse;
 import com.example.sinitto.auth.dto.RegisterResponse;
 import com.example.sinitto.auth.exception.NotUniqueException;
 import com.example.sinitto.auth.service.KakaoApiService;
+import com.example.sinitto.auth.service.KakaoTokenService;
 import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.common.resolver.MemberIdProvider;
 import com.example.sinitto.member.entity.Member;
@@ -21,11 +22,13 @@ public class MemberService implements MemberIdProvider {
     private final MemberRepository memberRepository;
     private final TokenService tokenService;
     private final KakaoApiService kakaoApiService;
+    private final KakaoTokenService kakaoTokenService;
 
-    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService) {
+    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.kakaoApiService = kakaoApiService;
+        this.kakaoTokenService = kakaoTokenService;
     }
 
     @Override
@@ -42,6 +45,8 @@ public class MemberService implements MemberIdProvider {
         KakaoUserResponse kakaoUserResponse = kakaoApiService.getUserInfo(kakaoTokenResponse.accessToken());
 
         String email = kakaoUserResponse.kakaoAccount().email();
+
+        kakaoTokenService.saveKakaoToken(email, kakaoTokenResponse);
 
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
