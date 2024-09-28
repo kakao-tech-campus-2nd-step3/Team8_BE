@@ -31,13 +31,6 @@ public class CallbackController {
         return ResponseEntity.ok(callbackService.getCallbacks(memberId, pageable));
     }
 
-    @Operation(summary = "콜백 전화 상세보기(not 페이징)", description = "")
-    @GetMapping("/{callbackId}")
-    public ResponseEntity<CallbackResponse> getCallbackGuidelines(@PathVariable Long callbackId) {
-        // 임시 응답
-        return ResponseEntity.ok(new CallbackResponse(null, null, null));
-    }
-
     @Operation(summary = "콜백 전화 완료", description = "시니또와 시니어의 연락이 끝났을 때 시니어의 요청사항을 수행 여부를 선택하여 처리합니다.")
     @PutMapping("/complete/{callbackId}")
     public ResponseEntity<String> completeCallback(@PathVariable Long callbackId) {
