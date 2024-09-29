@@ -29,9 +29,10 @@ public class Callback {
     private Senior senior;
     private Long assignedMemberId = 0L;
 
-    public Callback(CallbackStatus status, Senior senior) {
+    public Callback(CallbackStatus status, Senior senior, Long assignedMemberId) {
         this.status = status;
         this.senior = senior;
+        this.assignedMemberId = assignedMemberId;
     }
 
     public Callback() {
