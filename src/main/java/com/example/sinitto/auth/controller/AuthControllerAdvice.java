@@ -1,6 +1,9 @@
 package com.example.sinitto.auth.controller;
 
-import com.example.sinitto.auth.exception.*;
+import com.example.sinitto.auth.exception.JWTExpirationException;
+import com.example.sinitto.auth.exception.KakaoRefreshTokenExpirationException;
+import com.example.sinitto.auth.exception.TokenNotFoundException;
+import com.example.sinitto.auth.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.URI;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.example.sinitto.auth")
 public class AuthControllerAdvice {
 
     @ExceptionHandler(UnauthorizedException.class)
@@ -46,14 +49,5 @@ public class AuthControllerAdvice {
         problemDetail.setType(URI.create("/errors/unauthorized-access-by-kakao-refresh-token-expiration"));
         problemDetail.setTitle("Unauthorized Access By Kakao Refresh Token Expiration");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problemDetail);
-    }
-
-    @ExceptionHandler(NotUniqueException.class)
-    public ResponseEntity<ProblemDetail> handleNotUniqueException(NotUniqueException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.MULTI_STATUS,
-                ex.getMessage());
-        problemDetail.setType(URI.create("/errors/not-unique-state"));
-        problemDetail.setTitle("Not Unique State");
-        return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(problemDetail);
     }
 }

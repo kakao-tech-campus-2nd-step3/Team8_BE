@@ -46,4 +46,25 @@ public class MemberRepositoryTest {
         assertThat(memberRepository.findByEmail(NotSavedEmail)).isEmpty();
     }
 
+    @Test
+    @DisplayName("이메일 존재 여부 테스트")
+    void existsByEmailTest() {
+        Member member = new Member("test3", "01055556666", "test3@test.com", true);
+        memberRepository.save(member);
+
+        boolean exists = memberRepository.existsByEmail("test3@test.com");
+
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    @DisplayName("저장되지 않은 이메일 존재 여부 테스트")
+    void notExistsByEmailTest() {
+        String NotSavedEmail = "notExistEmail@test.com";
+
+        boolean exists = memberRepository.existsByEmail(NotSavedEmail);
+
+        assertThat(exists).isFalse();
+    }
+
 }

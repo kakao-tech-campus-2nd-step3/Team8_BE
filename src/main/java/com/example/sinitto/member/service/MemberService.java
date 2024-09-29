@@ -4,13 +4,13 @@ import com.example.sinitto.auth.dto.KakaoTokenResponse;
 import com.example.sinitto.auth.dto.KakaoUserResponse;
 import com.example.sinitto.auth.dto.LoginResponse;
 import com.example.sinitto.auth.dto.RegisterResponse;
-import com.example.sinitto.auth.exception.NotUniqueException;
 import com.example.sinitto.auth.service.KakaoApiService;
 import com.example.sinitto.auth.service.KakaoTokenService;
 import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.common.resolver.MemberIdProvider;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.exception.MemberNotFoundException;
+import com.example.sinitto.member.exception.NotUniqueException;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +63,7 @@ public class MemberService implements MemberIdProvider {
 
     public RegisterResponse registerNewMember(String name, String phoneNumber, String email, boolean isSinitto) {
 
-        if (memberRepository.findByEmail(email).isPresent()) {
+        if (memberRepository.existsByEmail(email)) {
             throw new NotUniqueException("이미 존재하는 이메일입니다.");
         }
 
