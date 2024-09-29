@@ -26,7 +26,7 @@ public class KakaoToken {
     private int refresh_token_expires_in;
     @NotNull
     @CreatedDate
-    private LocalDateTime issuedAt;
+    protected LocalDateTime issuedAt;
 
     public KakaoToken(String memberEmail, String accessToken, String refreshToken,
                       int expires_in, int refresh_token_expires_in) {
@@ -37,7 +37,7 @@ public class KakaoToken {
         this.refresh_token_expires_in = refresh_token_expires_in;
     }
 
-    public KakaoToken() {
+    protected KakaoToken() {
     }
 
     public boolean isAccessTokenExpired() {
@@ -54,6 +54,14 @@ public class KakaoToken {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getMemberEmail() {
+        return memberEmail;
     }
 
     public void updateKakaoToken(String accessToken, String refreshToken,

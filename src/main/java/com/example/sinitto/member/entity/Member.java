@@ -28,14 +28,26 @@ public class Member {
         this.isSinitto = isSinitto;
     }
 
-    public Member() {
+    protected Member() {
     }
 
     public Long getId() {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public boolean isSinitto() {
         return isSinitto;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
