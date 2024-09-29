@@ -21,6 +21,16 @@ public class Senior {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+    public Senior(String name, String phoneNumber, Member member) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.member = member;
+    }
+
+    protected Senior() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -28,4 +38,6 @@ public class Senior {
     public Long getId() {
         return id;
     }
+
+
 }

@@ -21,6 +21,18 @@ public class Member {
     @NotNull
     private boolean isSinitto;
 
+    public Member(String name, String phoneNumber, String email, boolean isSinitto) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.isSinitto = isSinitto;
+    }
+
+    protected Member() {
+
+    }
+
+
     public boolean isSinitto() {
         return isSinitto;
     }
