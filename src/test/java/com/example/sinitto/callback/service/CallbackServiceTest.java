@@ -2,6 +2,8 @@ package com.example.sinitto.callback.service;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
+import com.example.sinitto.callback.entity.CallbackStatus;
+import com.example.sinitto.callback.exception.NotAssignedException;
 import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.member.entity.Member;
@@ -22,8 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @MockitoSettings
 class CallbackServiceTest {
@@ -36,7 +37,7 @@ class CallbackServiceTest {
     CallbackService callbackService;
 
     @Test
-    void getCallbacks_Success() {
+    void getCallbacks() {
         //given
         Long memberId = 1L;
         Pageable pageable = PageRequest.of(0, 10);
@@ -45,7 +46,7 @@ class CallbackServiceTest {
         Callback callback = mock(Callback.class);
         when(callback.getId()).thenReturn(1L);
         when(callback.getPostTime()).thenReturn(LocalDateTime.now());
-        when(callback.getStatus()).thenReturn("대기중");
+        when(callback.getStatus()).thenReturn(CallbackStatus.WAITING.name());
         when(callback.getSeniorName()).thenReturn("James");
         when(callback.getSeniorId()).thenReturn(1L);
         Page<Callback> callbackPage = new PageImpl<>(List.of(callback));
@@ -86,5 +87,131 @@ class CallbackServiceTest {
 
         //when then
         assertThrows(NotSinittoException.class, () -> callbackService.getCallbacks(memberId, pageable));
+    }
+
+    @Test
+    void accept() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+
+        Member member = mock(Member.class);
+        Callback callback = mock(Callback.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(true);
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(1L);
+
+        //when
+        callbackService.accept(memberId, callbackId);
+
+        //then
+        verify(callback).changeStatusToInProgress();
+    }
+
+    @Test
+    void complete() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+
+        Member member = mock(Member.class);
+        Callback callback = mock(Callback.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(true);
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(1L);
+
+        //when
+        callbackService.complete(memberId, callbackId);
+
+        //then
+        verify(callback).changeStatusToComplete();
+    }
+
+    @Test
+    void cancel() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+
+        Member member = mock(Member.class);
+        Callback callback = mock(Callback.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(true);
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(1L);
+
+        //when
+        callbackService.cancel(memberId, callbackId);
+
+        //then
+        verify(callback).cancelAssignment();
+        verify(callback).changeStatusToInProgress();
+    }
+
+    @Test
+    void cancel_NotMember() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
+
+        //when then
+        assertThrows(EntityNotFoundException.class, () -> callbackService.cancel(memberId, callbackId));
+    }
+
+    @Test
+    void cancel_NotSinitto() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+
+        Member member = mock(Member.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(false);
+
+        //when then
+        assertThrows(NotSinittoException.class, () -> callbackService.cancel(memberId, callbackId));
+
+    }
+
+    @Test
+    void cancel_NotExistCallback() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+
+        Member member = mock(Member.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(true);
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.empty());
+
+        //when then
+        assertThrows(EntityNotFoundException.class, () -> callbackService.cancel(memberId, callbackId));
+    }
+
+    @Test
+    void cancel_NotAssignee() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+
+        Member member = mock(Member.class);
+        Callback callback = mock(Callback.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(true);
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(2L);
+
+        //when then
+        assertThrows(NotAssignedException.class, () -> callbackService.cancel(memberId, callbackId));
     }
 }
