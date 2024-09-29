@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class KakaoToken {
 
+    @NotNull
+    @CreatedDate
+    protected LocalDateTime issuedAt;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -24,9 +27,6 @@ public class KakaoToken {
     private int expires_in;
     @NotNull
     private int refresh_token_expires_in;
-    @NotNull
-    @CreatedDate
-    protected LocalDateTime issuedAt;
 
     public KakaoToken(String memberEmail, String accessToken, String refreshToken,
                       int expires_in, int refresh_token_expires_in) {
