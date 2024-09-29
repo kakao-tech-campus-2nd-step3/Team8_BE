@@ -1,6 +1,6 @@
 package com.example.sinitto.callback.controller;
 
-import com.example.sinitto.callback.exception.NotSinittoException;
+import com.example.sinitto.callback.exception.ForbiddenException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -16,9 +16,10 @@ public class CallbackControllerAdvice {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler(NotSinittoException.class)
-    public ProblemDetail handleNotSinittoException(NotSinittoException e) {
+    @ExceptionHandler(ForbiddenException.class)
+    public ProblemDetail handleForbiddenException(ForbiddenException e) {
 
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
     }
+
 }

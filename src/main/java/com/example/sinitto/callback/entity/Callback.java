@@ -27,6 +27,7 @@ public class Callback {
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Senior senior;
+    private Long assignedMemberId = 0L;
 
     public Callback(CallbackStatus status, Senior senior) {
         this.status = status;
@@ -35,6 +36,18 @@ public class Callback {
 
     public Callback() {
 
+    }
+
+    public void changeStatusToInProgress() {
+        this.status = CallbackStatus.IN_PROGRESS;
+    }
+
+    public void changeStatusToComplete() {
+        this.status = CallbackStatus.COMPLETE;
+    }
+
+    public void cancelAssignment() {
+        this.assignedMemberId = 0L;
     }
 
     public Long getId() {
@@ -57,4 +70,7 @@ public class Callback {
         return senior.getId();
     }
 
+    public Long getAssignedMemberId() {
+        return assignedMemberId;
+    }
 }
