@@ -1,5 +1,8 @@
 package com.example.sinitto.callback.entity;
 
+import com.example.sinitto.callback.exception.AlreadyCompleteException;
+import com.example.sinitto.callback.exception.AlreadyInProgressException;
+import com.example.sinitto.callback.exception.AlreadyWaitingException;
 import com.example.sinitto.member.entity.Senior;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +24,7 @@ public class Callback {
     private LocalDateTime postTime;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private CallbackStatus status;
+    private Callback.Status status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "senior_id")
     @NotNull
@@ -29,26 +32,68 @@ public class Callback {
     private Senior senior;
     private Long assignedMemberId = 0L;
 
-    public Callback(CallbackStatus status, Senior senior, Long assignedMemberId) {
+    public Callback(Status status, Senior senior) {
         this.status = status;
         this.senior = senior;
-        this.assignedMemberId = assignedMemberId;
     }
 
-    public Callback() {
+    protected Callback() {
 
     }
 
     public void changeStatusToInProgress() {
-        this.status = CallbackStatus.IN_PROGRESS;
+
+        if (this.status == Status.COMPLETE) {
+            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
+        }
+        if (this.status == Status.IN_PROGRESS) {
+            throw new AlreadyInProgressException("이미 진행 상태의 콜백요청 입니다");
+        }
+        this.status = Status.IN_PROGRESS;
+    }
+
+    public void assignMember(Long memberId) {
+
+        if (this.status == Status.COMPLETE) {
+            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
+        }
+        if (this.status == Status.IN_PROGRESS) {
+            throw new AlreadyInProgressException("이미 진행 상태의 콜백요청 입니다");
+        }
+        this.assignedMemberId = memberId;
     }
 
     public void changeStatusToComplete() {
-        this.status = CallbackStatus.COMPLETE;
+
+        if (this.status == Status.COMPLETE) {
+            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
+        }
+        if (this.status == Status.WAITING) {
+            throw new AlreadyWaitingException("아직 대기 상태의 콜백 입니다");
+        }
+        this.status = Status.COMPLETE;
     }
 
     public void cancelAssignment() {
+
+        if (this.status == Status.COMPLETE) {
+            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
+        }
+        if (this.status == Status.WAITING) {
+            throw new AlreadyWaitingException("아직 대기 상태의 콜백 입니다");
+        }
         this.assignedMemberId = 0L;
+    }
+
+    public void changeStatusToWaiting() {
+
+        if (this.status == Status.COMPLETE) {
+            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
+        }
+        if (this.status == Status.WAITING) {
+            throw new AlreadyWaitingException("이미 대기 상태의 콜백 입니다");
+        }
+        this.status = Status.WAITING;
     }
 
     public Long getId() {
@@ -73,5 +118,11 @@ public class Callback {
 
     public Long getAssignedMemberId() {
         return assignedMemberId;
+    }
+
+    public enum Status {
+        WAITING,
+        IN_PROGRESS,
+        COMPLETE
     }
 }

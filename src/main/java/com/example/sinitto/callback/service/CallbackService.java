@@ -36,9 +36,10 @@ public class CallbackService {
     public void accept(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
-        Callback callback = getCallbackOrThrow(callbackId);
-        checkAssignment(memberId, callback.getAssignedMemberId());
 
+        Callback callback = getCallbackOrThrow(callbackId);
+
+        callback.assignMember(memberId);
         callback.changeStatusToInProgress();
     }
 
@@ -46,7 +47,9 @@ public class CallbackService {
     public void complete(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
+
         Callback callback = getCallbackOrThrow(callbackId);
+
         checkAssignment(memberId, callback.getAssignedMemberId());
 
         callback.changeStatusToComplete();
@@ -56,11 +59,13 @@ public class CallbackService {
     public void cancel(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
+
         Callback callback = getCallbackOrThrow(callbackId);
+
         checkAssignment(memberId, callback.getAssignedMemberId());
 
         callback.cancelAssignment();
-        callback.changeStatusToInProgress();
+        callback.changeStatusToWaiting();
     }
 
     private void checkAuthorization(Long memberId) {
@@ -74,11 +79,13 @@ public class CallbackService {
     }
 
     private Callback getCallbackOrThrow(Long callbackId) {
+
         return callbackRepository.findById(callbackId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 콜백입니다"));
     }
 
     private void checkAssignment(Long memberId, Long assignedMemberId) {
+
         if (!assignedMemberId.equals(memberId)) {
             throw new NotAssignedException("이 콜백에 할당된 시니또가 아닙니다");
         }

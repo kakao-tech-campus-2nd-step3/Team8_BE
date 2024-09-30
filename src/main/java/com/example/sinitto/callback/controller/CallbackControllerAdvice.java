@@ -1,5 +1,6 @@
 package com.example.sinitto.callback.controller;
 
+import com.example.sinitto.callback.exception.ConflictException;
 import com.example.sinitto.callback.exception.ForbiddenException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,12 @@ public class CallbackControllerAdvice {
     public ProblemDetail handleForbiddenException(ForbiddenException e) {
 
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ProblemDetail handleConflictException(ConflictException e) {
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
     }
 
 }
