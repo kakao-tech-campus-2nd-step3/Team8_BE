@@ -1,9 +1,9 @@
 package com.example.sinitto.member.dto;
 
-public record SinittoSignupRequest(
+public record SignupRequest(
         String name,
         String phoneNumber,
         String email,
-        String accountNumber,
-        String bankName) {
+        boolean isSinitto
+) {
 }
