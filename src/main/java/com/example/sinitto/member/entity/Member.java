@@ -36,7 +36,7 @@ public class Member {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
-
+  
     public Long getId() {
         return id;
     }
@@ -57,3 +57,4 @@ public class Member {
         return email;
     }
 }
+
