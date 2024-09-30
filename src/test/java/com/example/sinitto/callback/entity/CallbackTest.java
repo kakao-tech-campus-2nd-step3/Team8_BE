@@ -9,6 +9,7 @@ import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.member.repository.SeniorRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -39,6 +40,7 @@ class CallbackTest {
     }
 
     @Test
+    @DisplayName("Waiting -> In Progress - 성공")
     void changeStatusToInProgress() {
         //when
         testCallback.changeStatusToInProgress();
@@ -48,8 +50,8 @@ class CallbackTest {
     }
 
     @Test
+    @DisplayName("Complete -> In Progress - 예외 발생")
     void changeStatusToInProgress_fail1() {
-        //"진행"으로 바꿀 수 있는 상태는 "대기" 상태 뿐이다.
         //given
         testCallback.changeStatusToInProgress();
         testCallback.changeStatusToComplete();
@@ -59,8 +61,8 @@ class CallbackTest {
     }
 
     @Test
+    @DisplayName("In Progress -> In Progress - 예외 발생")
     void changeStatusToInProgress_fail2() {
-        //"진행"으로 바꿀 수 있는 상태는 "대기" 상태 뿐이다.
         //given
         testCallback.changeStatusToInProgress();
 
@@ -69,8 +71,8 @@ class CallbackTest {
     }
 
     @Test
+    @DisplayName("In Progress -> Complete - 성공")
     void changeStatusToComplete() {
-        //"완료"으로 바꿀 수 있는 상태는 "진행" 상태 뿐이다.
         //given
         testCallback.changeStatusToInProgress();
 
@@ -82,16 +84,15 @@ class CallbackTest {
     }
 
     @Test
+    @DisplayName("Waiting -> Complete - 예외 발생")
     void changeStatusToComplete_fail1() {
-        //"완료"으로 바꿀 수 있는 상태는 "진행" 상태 뿐이다.
-        //given
-        //testCallback.changeStatusToWaiting(); 이미 대기
         //when then
-        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToComplete());    }
+        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToComplete());
+    }
 
     @Test
+    @DisplayName("Complete -> Complete - 예외 발생")
     void changeStatusToComplete_fail2() {
-        //"완료"으로 바꿀 수 있는 상태는 "진행" 상태 뿐이다.
         //given
         testCallback.changeStatusToInProgress();
         testCallback.changeStatusToComplete();
@@ -100,9 +101,39 @@ class CallbackTest {
         assertThrows(AlreadyCompleteException.class, () -> testCallback.changeStatusToComplete());
     }
 
+    @Test
+    @DisplayName("In Progress -> Waiting - 성공")
+    void changeStatusToWaiting() {
+        //given
+        testCallback.changeStatusToInProgress();
 
+        //when
+        testCallback.changeStatusToWaiting();
+
+        //then
+        assertEquals(testCallback.getStatus(), Callback.Status.WAITING.name());
+    }
 
     @Test
+    @DisplayName("Waiting -> Waiting - 예외 발생")
+    void changeStatusToWaiting_fain1() {
+        //when then
+        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToWaiting());
+    }
+
+    @Test
+    @DisplayName("Complete -> Waiting - 예외 발생")
+    void changeStatusToWaiting_fail2() {
+        //given
+        testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToComplete();
+
+        //when then
+        assertThrows(AlreadyCompleteException.class, () -> testCallback.changeStatusToWaiting());
+    }
+
+    @Test
+    @DisplayName("Waiting 상태에서 멤버Id 할당 - 성공")
     void checkAssignedMemberId() {
         //given
         testCallback.assignMember(3L);
@@ -115,25 +146,56 @@ class CallbackTest {
     }
 
     @Test
-    void cancelAssignment() {
+    @DisplayName("In Progress 상태에서 멤버Id 할당 - 예외 발생")
+    void checkAssignedMemberId_fail1() {
         //given
-        testCallback.assignMember(23L);
         testCallback.changeStatusToInProgress();
 
-        //when
-        testCallback.cancelAssignment();
-        Long assignedMemberId = testCallback.getAssignedMemberId();
-
-        //then
-        assertEquals(assignedMemberId, 0L);
+        //when then
+        assertThrows(AlreadyInProgressException.class, () -> testCallback.assignMember(3L));
     }
 
     @Test
-    void assignMember() {
+    @DisplayName("Complete 상태에서 멤버Id 할당 - 예외 발생")
+    void checkAssignedMemberId_fail2() {
+        //given
+        testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToComplete();
+
+        //when then
+        assertThrows(AlreadyCompleteException.class, () -> testCallback.assignMember(3L));
+    }
+
+    @Test
+    @DisplayName("InProgress 상태에서 할당 취소 - 성공")
+    void cancelAssignment() {
+        //given
+        testCallback.assignMember(1L);
+        testCallback.changeStatusToInProgress();
+        assertEquals(1L, testCallback.getAssignedMemberId());
+
         //when
-        testCallback.assignMember(101L);
+        testCallback.cancelAssignment();
 
         //then
-        assertEquals(101L, testCallback.getAssignedMemberId());
+        assertEquals(0L, testCallback.getAssignedMemberId());
+    }
+
+    @Test
+    @DisplayName("Complete 상태에서 할당 취소 - 예외 발생")
+    void cancelAssignment_fail1() {
+        //given
+        testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToComplete();
+
+        //when then
+        assertThrows(AlreadyCompleteException.class, () -> testCallback.cancelAssignment());
+    }
+
+    @Test
+    @DisplayName("Waiting 상태에서 할당 취소 - 예외 발생")
+    void cancelAssignment_fail2() {
+        //when then
+        assertThrows(AlreadyWaitingException.class, () -> testCallback.cancelAssignment());
     }
 }

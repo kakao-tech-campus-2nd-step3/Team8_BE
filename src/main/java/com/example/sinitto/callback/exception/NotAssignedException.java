@@ -2,7 +2,7 @@ package com.example.sinitto.callback.exception;
 
 public class NotAssignedException extends ForbiddenException {
 
-    public NotAssignedException(String s) {
-        super(s);
+    public NotAssignedException(String message) {
+        super(message);
     }
 }

@@ -49,7 +49,7 @@ public class CallbackController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "진행중인 콜백 서비스 취소", description = "시니또가 진행중인 콜백 서비스를 취소합니다.")
+    @Operation(summary = "진행중인 콜백 서비스 취소", description = "시니또가 진행중인 콜백 서비스를 취소합니다. 콜백은 다시 대기 상태로 돌아갑니다.")
     @PutMapping("/cancel/{callbackId}")
     public ResponseEntity<Void> cancelCallbackService(@MemberId Long memberId,
                                                       @PathVariable Long callbackId) {

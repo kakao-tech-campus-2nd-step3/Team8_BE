@@ -41,51 +41,52 @@ public class Callback {
 
     }
 
-    public void changeStatusToInProgress() {
-
-        if (this.status == Status.COMPLETE) {
-            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
-        }
-        if (this.status == Status.IN_PROGRESS) {
-            throw new AlreadyInProgressException("이미 진행 상태의 콜백요청 입니다");
-        }
-        this.status = Status.IN_PROGRESS;
-    }
-
-    public void assignMember(Long memberId) {
-
-        if (this.status == Status.COMPLETE) {
-            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
-        }
-        if (this.status == Status.IN_PROGRESS) {
-            throw new AlreadyInProgressException("이미 진행 상태의 콜백요청 입니다");
-        }
-        this.assignedMemberId = memberId;
-    }
-
-    public void changeStatusToComplete() {
-
-        if (this.status == Status.COMPLETE) {
-            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
-        }
-        if (this.status == Status.WAITING) {
-            throw new AlreadyWaitingException("아직 대기 상태의 콜백 입니다");
-        }
-        this.status = Status.COMPLETE;
-    }
-
     public void cancelAssignment() {
 
-        if (this.status == Status.COMPLETE) {
-            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
+        if (this.status != Status.IN_PROGRESS) {
+            throwStatusException();
         }
-        if (this.status == Status.WAITING) {
-            throw new AlreadyWaitingException("아직 대기 상태의 콜백 입니다");
-        }
+
         this.assignedMemberId = 0L;
     }
 
     public void changeStatusToWaiting() {
+
+        if (this.status != Status.IN_PROGRESS) {
+            throwStatusException();
+        }
+
+        this.status = Status.WAITING;
+    }
+
+    public void assignMember(Long memberId) {
+
+        if (this.status != Status.WAITING) {
+            throwStatusException();
+        }
+
+        this.assignedMemberId = memberId;
+    }
+
+    public void changeStatusToInProgress() {
+
+        if (this.status != Status.WAITING) {
+            throwStatusException();
+        }
+
+        this.status = Status.IN_PROGRESS;
+    }
+
+    public void changeStatusToComplete() {
+
+        if (this.status != Status.IN_PROGRESS) {
+            throwStatusException();
+        }
+
+        this.status = Status.COMPLETE;
+    }
+
+    private void throwStatusException() {
 
         if (this.status == Status.COMPLETE) {
             throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
@@ -93,7 +94,9 @@ public class Callback {
         if (this.status == Status.WAITING) {
             throw new AlreadyWaitingException("이미 대기 상태의 콜백 입니다");
         }
-        this.status = Status.WAITING;
+        if (this.status == Status.IN_PROGRESS) {
+            throw new AlreadyInProgressException("이미 진행 상태의 콜백요청 입니다");
+        }
     }
 
     public Long getId() {
@@ -125,4 +128,5 @@ public class Callback {
         IN_PROGRESS,
         COMPLETE
     }
+
 }
