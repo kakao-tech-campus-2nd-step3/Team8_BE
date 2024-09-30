@@ -5,23 +5,32 @@ import com.example.sinitto.callback.entity.Callback;
 import com.example.sinitto.callback.exception.NotAssignedException;
 import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
+import com.example.sinitto.callback.util.TwilioHelper;
 import com.example.sinitto.member.entity.Member;
+import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.member.repository.SeniorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class CallbackService {
 
+    private static final String SUCCESS_MESSAGE = "감사합니다. 잠시만 기다려주세요.";
+    private static final String FAIL_MESSAGE = "등록된 사용자가 아닙니다. 서비스 이용이 불가합니다.";
     private final CallbackRepository callbackRepository;
     private final MemberRepository memberRepository;
+    private final SeniorRepository seniorRepository;
 
-    public CallbackService(CallbackRepository callbackRepository, MemberRepository memberRepository) {
+    public CallbackService(CallbackRepository callbackRepository, MemberRepository memberRepository, SeniorRepository seniorRepository) {
         this.callbackRepository = callbackRepository;
         this.memberRepository = memberRepository;
+        this.seniorRepository = seniorRepository;
     }
 
     public Page<CallbackResponse> getCallbacks(Long memberId, Pageable pageable) {
@@ -66,6 +75,22 @@ public class CallbackService {
 
         callback.cancelAssignment();
         callback.changeStatusToWaiting();
+    }
+
+    public String addCallback(String fromNumber) {
+
+        String phoneNumber = TwilioHelper.trimPhoneNumber(fromNumber);
+
+        Optional<Senior> seniorOptional = seniorRepository.findByPhoneNumber(phoneNumber);
+
+        if (seniorOptional.isEmpty()) {
+            return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE);
+        }
+
+        Senior senior = seniorOptional.get();
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior));
+
+        return TwilioHelper.convertMessageToTwiML(SUCCESS_MESSAGE);
     }
 
     private void checkAuthorization(Long memberId) {

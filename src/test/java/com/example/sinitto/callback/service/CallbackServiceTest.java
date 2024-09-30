@@ -2,12 +2,14 @@ package com.example.sinitto.callback.service;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
-import com.example.sinitto.callback.entity.CallbackStatus;
 import com.example.sinitto.callback.exception.NotAssignedException;
 import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
+import com.example.sinitto.callback.util.TwilioHelper;
 import com.example.sinitto.member.entity.Member;
+import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.member.repository.SeniorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,8 +24,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @MockitoSettings
@@ -33,6 +34,8 @@ class CallbackServiceTest {
     CallbackRepository callbackRepository;
     @Mock
     MemberRepository memberRepository;
+    @Mock
+    SeniorRepository seniorRepository;
     @InjectMocks
     CallbackService callbackService;
 
@@ -46,7 +49,7 @@ class CallbackServiceTest {
         Callback callback = mock(Callback.class);
         when(callback.getId()).thenReturn(1L);
         when(callback.getPostTime()).thenReturn(LocalDateTime.now());
-        when(callback.getStatus()).thenReturn(CallbackStatus.WAITING.name());
+        when(callback.getStatus()).thenReturn(Callback.Status.WAITING.name());
         when(callback.getSeniorName()).thenReturn("James");
         when(callback.getSeniorId()).thenReturn(1L);
         Page<Callback> callbackPage = new PageImpl<>(List.of(callback));
@@ -101,13 +104,13 @@ class CallbackServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(member.isSinitto()).thenReturn(true);
         when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
-        when(callback.getAssignedMemberId()).thenReturn(1L);
 
         //when
         callbackService.accept(memberId, callbackId);
 
         //then
         verify(callback).changeStatusToInProgress();
+        verify(callback).assignMember(memberId);
     }
 
     @Test
@@ -150,7 +153,7 @@ class CallbackServiceTest {
 
         //then
         verify(callback).cancelAssignment();
-        verify(callback).changeStatusToInProgress();
+        verify(callback).changeStatusToWaiting();
     }
 
     @Test
@@ -213,5 +216,38 @@ class CallbackServiceTest {
 
         //when then
         assertThrows(NotAssignedException.class, () -> callbackService.cancel(memberId, callbackId));
+    }
+
+    @Test
+    void addCallback() {
+        //given
+        String fromPhoneNumber = "+821012341234";
+        String trimmedPhoneNumber = TwilioHelper.trimPhoneNumber(fromPhoneNumber);
+        Senior senior = mock(Senior.class);
+
+        when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.of(senior));
+
+        //when
+        String result = callbackService.addCallback(fromPhoneNumber);
+
+        //then
+        verify(callbackRepository, times(1)).save(any());
+        assertNotNull(result);
+    }
+
+    @Test
+    void addCallback_fail() {
+        //given
+        String fromPhoneNumber = "+821012341234";
+        String trimmedPhoneNumber = TwilioHelper.trimPhoneNumber(fromPhoneNumber);
+
+        when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.empty());
+
+        //when
+        String result = callbackService.addCallback(fromPhoneNumber);
+
+        //then
+        verify(callbackRepository, times(0)).save(any());
+        assertNotNull(result);
     }
 }
