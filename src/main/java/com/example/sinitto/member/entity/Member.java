@@ -21,4 +21,33 @@ public class Member {
     @NotNull
     private boolean isSinitto;
 
+    public Member(String name, String phoneNumber, String email, boolean isSinitto) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.isSinitto = isSinitto;
+    }
+
+    protected Member() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public boolean isSinitto() {
+        return isSinitto;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
