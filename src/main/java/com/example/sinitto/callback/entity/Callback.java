@@ -44,7 +44,7 @@ public class Callback {
     public void cancelAssignment() {
 
         if (this.status != Status.IN_PROGRESS) {
-            throwStatusException();
+            throwStatusException("취소 요청은 진행 상태에서만 가능합니다.");
         }
 
         this.assignedMemberId = 0L;
@@ -53,7 +53,7 @@ public class Callback {
     public void changeStatusToWaiting() {
 
         if (this.status != Status.IN_PROGRESS) {
-            throwStatusException();
+            throwStatusException("대기 상태로 변경은 진행 상태에서만 가능합니다.");
         }
 
         this.status = Status.WAITING;
@@ -62,7 +62,7 @@ public class Callback {
     public void assignMember(Long memberId) {
 
         if (this.status != Status.WAITING) {
-            throwStatusException();
+            throwStatusException("멤버 할당은 대기 상태에서만 가능합니다.");
         }
 
         this.assignedMemberId = memberId;
@@ -71,7 +71,7 @@ public class Callback {
     public void changeStatusToInProgress() {
 
         if (this.status != Status.WAITING) {
-            throwStatusException();
+            throwStatusException("진행 상태로 변경은 대기 상태에서만 가능합니다.");
         }
 
         this.status = Status.IN_PROGRESS;
@@ -80,22 +80,22 @@ public class Callback {
     public void changeStatusToComplete() {
 
         if (this.status != Status.IN_PROGRESS) {
-            throwStatusException();
+            throwStatusException("완료 상태로 변경은 진행 상태에서만 가능합니다.");
         }
 
         this.status = Status.COMPLETE;
     }
 
-    private void throwStatusException() {
+    private void throwStatusException(String message) {
 
         if (this.status == Status.COMPLETE) {
-            throw new AlreadyCompleteException("이미 완료 상태의 콜백 입니다");
+            throw new AlreadyCompleteException("완료 상태의 콜백 입니다. " + message);
         }
         if (this.status == Status.WAITING) {
-            throw new AlreadyWaitingException("이미 대기 상태의 콜백 입니다");
+            throw new AlreadyWaitingException("대기 상태의 콜백 입니다. " + message);
         }
         if (this.status == Status.IN_PROGRESS) {
-            throw new AlreadyInProgressException("이미 진행 상태의 콜백요청 입니다");
+            throw new AlreadyInProgressException("진행 상태의 콜백요청 입니다. " + message);
         }
     }
 
