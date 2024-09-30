@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.URI;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.example.sinitto.guard")
 public class GuardControllerAdvice {
     @ExceptionHandler(SeniorNotFoundException.class)
     public ProblemDetail handleSeniorNotFoundException(SeniorNotFoundException e){
