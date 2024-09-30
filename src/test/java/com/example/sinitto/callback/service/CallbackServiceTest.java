@@ -174,7 +174,7 @@ class CallbackServiceTest {
         when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.of(senior));
 
         //when
-        String result = callbackService.addCallback(fromPhoneNumber);
+        String result = callbackService.add(fromPhoneNumber);
 
         //then
         verify(callbackRepository, times(1)).save(any());
@@ -191,7 +191,7 @@ class CallbackServiceTest {
         when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.empty());
 
         //when
-        String result = callbackService.addCallback(fromPhoneNumber);
+        String result = callbackService.add(fromPhoneNumber);
 
         //then
         verify(callbackRepository, times(0)).save(any());

@@ -77,7 +77,7 @@ public class CallbackService {
         callback.changeStatusToWaiting();
     }
 
-    public String addCallback(String fromNumber) {
+    public String add(String fromNumber) {
 
         String phoneNumber = TwilioHelper.trimPhoneNumber(fromNumber);
 
