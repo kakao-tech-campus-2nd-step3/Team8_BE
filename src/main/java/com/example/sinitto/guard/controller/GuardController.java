@@ -32,7 +32,6 @@ public class GuardController {
     @Operation(summary = "연결된 특정 시니어 정보 조회", description = "보호자가 등록한 특정 시니어의 정보를 요청합니다.")
     @GetMapping("/senior/{seniorId}")
     public ResponseEntity<SeniorResponse> getSenior(@MemberId Long memberId, @PathVariable Long seniorId) {
-        // 임시 응답
         return ResponseEntity.ok(guardService.readOneSenior(memberId, seniorId));
     }
 
