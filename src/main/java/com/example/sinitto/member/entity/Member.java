@@ -31,6 +31,12 @@ public class Member {
     protected Member() {
     }
 
+    public void updateMember(String name, String email, String phoneNumber){
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+  
     public Long getId() {
         return id;
     }
@@ -51,3 +57,4 @@ public class Member {
         return email;
     }
 }
+
