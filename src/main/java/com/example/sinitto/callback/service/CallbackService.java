@@ -33,6 +33,7 @@ public class CallbackService {
         this.seniorRepository = seniorRepository;
     }
 
+    @Transactional(readOnly = true)
     public Page<CallbackResponse> getCallbacks(Long memberId, Pageable pageable) {
 
         checkAuthorization(memberId);
