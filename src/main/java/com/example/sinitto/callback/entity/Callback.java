@@ -30,7 +30,7 @@ public class Callback {
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Senior senior;
-    private Long assignedMemberId = 0L;
+    private Long assignedMemberId = null;
 
     public Callback(Status status, Senior senior) {
         this.status = status;
@@ -47,7 +47,7 @@ public class Callback {
             throwStatusException("취소 요청은 진행 상태에서만 가능합니다.");
         }
 
-        this.assignedMemberId = 0L;
+        this.assignedMemberId = null;
     }
 
     public void changeStatusToWaiting() {
@@ -95,7 +95,7 @@ public class Callback {
             throw new AlreadyWaitingException("대기 상태의 콜백 입니다. " + message);
         }
         if (this.status == Status.IN_PROGRESS) {
-            throw new AlreadyInProgressException("진행 상태의 콜백요청 입니다. " + message);
+            throw new AlreadyInProgressException("진행 상태의 콜백 입니다. " + message);
         }
     }
 

@@ -14,8 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class CallbackTest {
@@ -178,7 +177,7 @@ class CallbackTest {
         testCallback.cancelAssignment();
 
         //then
-        assertEquals(0L, testCallback.getAssignedMemberId());
+        assertNull(testCallback.getAssignedMemberId());
     }
 
     @Test
