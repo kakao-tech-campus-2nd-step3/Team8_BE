@@ -51,7 +51,7 @@ public class SinittoService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 ()->new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
-        member.updateMember(member.getName(), member.getEmail(), member.getPhoneNumber());
+        member.updateMember(sinittoRequest.name(), sinittoRequest.email(), sinittoRequest.phoneNumber());
     }
 
     @Transactional
