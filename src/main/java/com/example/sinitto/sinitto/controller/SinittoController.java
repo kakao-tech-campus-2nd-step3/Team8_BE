@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sinittos")
-@Tag(name = "[미구현]마이페이지 - 시니또용", description = "시니또 관련 마이페이지 API")
+@Tag(name = "마이페이지 - 시니또용", description = "시니또 관련 마이페이지 API")
 public class SinittoController {
 
     private final SinittoService sinittoService;
