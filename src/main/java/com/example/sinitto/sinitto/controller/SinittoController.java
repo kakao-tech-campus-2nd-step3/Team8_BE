@@ -31,22 +31,22 @@ public class SinittoController {
 
     @Operation(summary = "계좌정보 등록", description = "시니또가 계좌정보 등록합니다.")
     @PostMapping("/bank")
-    public ResponseEntity<String> createSenior(@MemberId Long memberId, @RequestBody SinittoRequest sinittoRequest) {
+    public ResponseEntity<String> createSeniorBankInfo(@MemberId Long memberId, @RequestBody SinittoRequest sinittoRequest) {
         sinittoService.createSinittoBankInfo(memberId, sinittoRequest);
         return ResponseEntity.ok("계좌등록되었습니다.");
     }
 
     @Operation(summary = "시니또 본인 정보 수정", description = "시니또 본인의 정보를 수정요청한다.")
     @PutMapping
-    public ResponseEntity<String> updateSinitto(@MemberId Long memberId, @RequestBody SinittoRequest Sinittorequest) {
-        sinittoService.updateSinitto(memberId, Sinittorequest);
+    public ResponseEntity<String> updateSinitto(@MemberId Long memberId, @RequestBody SinittoRequest sinittorequest) {
+        sinittoService.updateSinitto(memberId, sinittorequest);
         return ResponseEntity.ok("시니또 정보가 수정되었습니다.");
     }
 
     @Operation(summary = "시니또 계좌 정보 수정", description = "시니또 본인의 정보를 수정요청한다.")
     @PutMapping("/bank")
-    public ResponseEntity<String> updateSinittoBankInfo(@MemberId Long memberId, @RequestBody SinittoRequest Sinittorequest) {
-        sinittoService.updateSinittoBankInfo(memberId, Sinittorequest);
+    public ResponseEntity<String> updateSinittoBankInfo(@MemberId Long memberId, @RequestBody SinittoRequest sinittorequest) {
+        sinittoService.updateSinittoBankInfo(memberId, sinittorequest);
         return ResponseEntity.ok("시니또 정보가 수정되었습니다.");
     }
 
