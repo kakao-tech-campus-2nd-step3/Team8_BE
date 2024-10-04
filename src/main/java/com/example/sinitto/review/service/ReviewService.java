@@ -17,20 +17,20 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
 
-    public ReviewService(ReviewRepository reviewRepository, MemberRepository memberRepository){
+    public ReviewService(ReviewRepository reviewRepository, MemberRepository memberRepository) {
         this.reviewRepository = reviewRepository;
         this.memberRepository = memberRepository;
     }
 
     @Transactional
-    public List<ReviewResponse> readAllReviews(){
+    public List<ReviewResponse> readAllReviews() {
         List<Review> reviewList = reviewRepository.findAll();
 
         return reviewList.stream().map(Review::mapToResponse).toList();
     }
 
     @Transactional
-    public void createReview(Long memberId, ReviewRequest reviewRequest){
+    public void createReview(Long memberId, ReviewRequest reviewRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );

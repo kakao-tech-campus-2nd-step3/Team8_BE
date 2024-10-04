@@ -33,15 +33,16 @@ public class Review {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public Review(int starCount, String content, Member member){
+    public Review(int starCount, String content, Member member) {
         this.starCount = starCount;
         this.content = content;
         this.member = member;
     }
 
-    public Review(){}
+    public Review() {
+    }
 
-    public ReviewResponse mapToResponse(){
+    public ReviewResponse mapToResponse() {
         return new ReviewResponse(this.member.getName(), this.starCount, this.postDate, this.content);
     }
 
@@ -61,7 +62,7 @@ public class Review {
         return content;
     }
 
-    public Member getMember(){
+    public Member getMember() {
         return member;
     }
 }

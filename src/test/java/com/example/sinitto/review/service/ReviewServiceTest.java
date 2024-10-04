@@ -30,7 +30,7 @@ public class ReviewServiceTest {
 
     @Test
     @DisplayName("readAllReviews 메소드 테스트")
-    public void readAllReviewsTest(){
+    public void readAllReviewsTest() {
         //given
         Member member = new Member("testName", "01000000000", "test@test.com", true);
         List<Review> reviewList = new ArrayList<>();
@@ -47,7 +47,7 @@ public class ReviewServiceTest {
 
     @Test
     @DisplayName("createReview 메소드 테스트")
-    public void createReviewTest(){
+    public void createReviewTest() {
         //given
         Member member = new Member("testName", "01000000000", "test@test.com", true);
         Long memberId = 1L;

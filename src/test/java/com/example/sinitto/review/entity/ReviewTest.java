@@ -13,7 +13,7 @@ public class ReviewTest {
     private Review review;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         member = new Member(
                 "test",
                 "01012345678",
@@ -24,7 +24,7 @@ public class ReviewTest {
 
     @Test
     @DisplayName("Review 엔티티 생성자 테스트")
-    void counstructorTest(){
+    void counstructorTest() {
         assertThat(review.getId()).isNull();
         assertThat(review.getStarCount()).isEqualTo(5);
         assertThat(review.getPostDate()).isNull();
@@ -34,7 +34,7 @@ public class ReviewTest {
 
     @Test
     @DisplayName("mapToResponse 메소드 테스트")
-    void mapToResponseTest(){
+    void mapToResponseTest() {
         ReviewResponse response = review.mapToResponse();
         assertThat(response.name()).isEqualTo(member.getName());
         assertThat(response.starCount()).isEqualTo(review.getStarCount());

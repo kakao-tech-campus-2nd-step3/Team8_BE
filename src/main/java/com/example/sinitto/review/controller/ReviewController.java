@@ -18,7 +18,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    public ReviewController(ReviewService reviewService){
+    public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
