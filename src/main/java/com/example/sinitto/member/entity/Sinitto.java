@@ -21,4 +21,33 @@ public class Sinitto {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+    public Sinitto() {
+    }
+
+    public Sinitto(String bankName, String accountNumber, Member member) {
+        this.bankName = bankName;
+        this.accountNumber = accountNumber;
+        this.member = member;
+    }
+
+    public void updateSinitto(String bankName, String accountNumber) {
+        this.bankName = bankName;
+        this.accountNumber = accountNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public Member getMember() {
+        return member;
+    }
 }
