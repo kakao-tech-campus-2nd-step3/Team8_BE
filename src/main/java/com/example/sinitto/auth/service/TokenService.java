@@ -5,13 +5,16 @@ import com.example.sinitto.auth.exception.JWTExpirationException;
 import com.example.sinitto.auth.exception.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TokenService {
@@ -20,10 +23,12 @@ public class TokenService {
     private static final long REFRESH_SEVEN_DAYS = 1000 * 60 * 60 * 24 * 7;
 
     private final Key secretKey;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    public TokenService(@Value("${jwt.secret}") String secretKey) {
+    public TokenService(@Value("${jwt.secret}") String secretKey, RedisTemplate<String, String> redisTemplate) {
         byte[] decodedKey = Base64.getDecoder().decode(secretKey);
         this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
+        this.redisTemplate = redisTemplate;
     }
 
     public String generateAccessToken(String email) {
@@ -36,13 +41,17 @@ public class TokenService {
     }
 
     public String generateRefreshToken(String email) {
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_SEVEN_DAYS))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+
+        redisTemplate.opsForValue().set(email, refreshToken, REFRESH_SEVEN_DAYS, TimeUnit.MILLISECONDS);
+        return refreshToken;
     }
+
 
     public String extractEmail(String token) {
         try {
@@ -71,16 +80,22 @@ public class TokenService {
                     .getBody();
 
             if (claims.getExpiration().before(new Date())) {
-                throw new JWTExpirationException("리프레쉬 토큰이 만료되었습니다.");
+                throw new JWTExpirationException("리프레쉬 토큰이 만료되었습니다. 재로그인이 필요합니다.");
             }
+
+            String storedRefreshToken = redisTemplate.opsForValue().get(claims.getSubject());
+            if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
+                throw new UnauthorizedException("만료되거나 찾을 수 없는 리프레쉬 토큰입니다. 재로그인이 필요합니다.");
+            }
+
+            redisTemplate.delete(claims.getSubject());
 
             String newAccessToken = generateAccessToken(claims.getSubject());
             String newRefreshToken = generateRefreshToken(claims.getSubject());
 
             return new TokenResponse(newAccessToken, newRefreshToken);
         } catch (Exception e) {
-            throw new UnauthorizedException("유효하지 않은 리프레쉬 토큰입니다.");
+            throw new UnauthorizedException("유효하지 않은 리프레쉬 토큰입니다. 재로그인이 필요합니다.");
         }
     }
-
 }
