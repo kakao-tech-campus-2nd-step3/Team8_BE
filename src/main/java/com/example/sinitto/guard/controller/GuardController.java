@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,9 +19,10 @@ import java.util.List;
 public class GuardController {
     private final GuardService guardService;
 
-    public GuardController(GuardService guardService){
+    public GuardController(GuardService guardService) {
         this.guardService = guardService;
     }
+
     @Operation(summary = "연결된 모든 시니어 정보 조회", description = "보호자가 등록한 모든 시니어의 정보를 요청합니다.")
     @GetMapping("/senior")
     public ResponseEntity<List<SeniorResponse>> getAllSeniors(@MemberId Long memberId) {

@@ -22,18 +22,18 @@ public class Senior {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public Senior(String name, String phoneNumber, Member member){
+    public Senior(String name, String phoneNumber, Member member) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.member = member;
     }
 
-    public void updateSenior(String name, String phoneNumber){
+    public void updateSenior(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
 
-    public SeniorResponse mapToResponse(){
+    public SeniorResponse mapToResponse() {
         return new SeniorResponse(this.id, this.name, this.phoneNumber);
     }
 
