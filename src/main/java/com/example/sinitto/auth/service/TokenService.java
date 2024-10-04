@@ -84,7 +84,7 @@ public class TokenService {
 
             String storedRefreshToken = redisTemplate.opsForValue().get(claims.getSubject());
             if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
-                throw new UnauthorizedException("만료되거나 찾을 수 없는 리프레쉬 토큰입니다. 재로그인이 필요합니다.");
+                throw new UnauthorizedException("만료되거나 이미 한번 사용된 리프레쉬 토큰입니다. 재로그인이 필요합니다.");
             }
 
             redisTemplate.delete(claims.getSubject());
