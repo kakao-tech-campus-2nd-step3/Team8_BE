@@ -53,43 +53,31 @@ public class TokenService {
 
 
     public String extractEmail(String token) {
-        try {
-            var claims = Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            if (claims.getExpiration().before(new Date())) {
-                throw new JWTExpirationException("엑세스 토큰이 만료되었습니다.");
-            }
-
-            return claims.getSubject();
-        } catch (Exception e) {
-            throw new UnauthorizedException("유효하지 않은 엑세스 토큰입니다.");
-        }
-    }
-
-    public TokenResponse refreshAccessToken(String refreshToken) {
         var claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(refreshToken)
+                .parseClaimsJws(token)
                 .getBody();
 
         if (claims.getExpiration().before(new Date())) {
-            throw new JWTExpirationException("리프레쉬 토큰이 만료되었습니다. 재로그인이 필요합니다.");
+            throw new JWTExpirationException("토큰이 만료되었습니다. 재로그인이 필요합니다.");
         }
 
-        String storedRefreshToken = redisTemplate.opsForValue().get(claims.getSubject());
+        return claims.getSubject();
+    }
+
+    public TokenResponse refreshAccessToken(String refreshToken) {
+        String email = extractEmail(refreshToken);
+
+        String storedRefreshToken = redisTemplate.opsForValue().get(email);
         if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
             throw new UnauthorizedException("만료되거나 이미 한번 사용된 리프레쉬 토큰입니다. 재로그인이 필요합니다.");
         }
 
-        redisTemplate.delete(claims.getSubject());
+        redisTemplate.delete(email);
 
-        String newAccessToken = generateAccessToken(claims.getSubject());
-        String newRefreshToken = generateRefreshToken(claims.getSubject());
+        String newAccessToken = generateAccessToken(email);
+        String newRefreshToken = generateRefreshToken(email);
 
         return new TokenResponse(newAccessToken, newRefreshToken);
     }
