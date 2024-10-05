@@ -8,9 +8,9 @@ import com.example.sinitto.guard.exception.SeniorNotFoundException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
+import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
-import com.example.sinitto.member.exception.MemberNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,13 +20,13 @@ public class GuardService {
     private final MemberRepository memberRepository;
     private final SeniorRepository seniorRepository;
 
-    public GuardService(MemberRepository memberRepository, SeniorRepository seniorRepository){
+    public GuardService(MemberRepository memberRepository, SeniorRepository seniorRepository) {
         this.memberRepository = memberRepository;
         this.seniorRepository = seniorRepository;
     }
 
     @Transactional
-    public GuardResponse readGuard(Long memberId){
+    public GuardResponse readGuard(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
@@ -35,7 +35,7 @@ public class GuardService {
     }
 
     @Transactional
-    public void updateGuard(Long memberId, GuardRequest guardRequest){
+    public void updateGuard(Long memberId, GuardRequest guardRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
@@ -44,7 +44,7 @@ public class GuardService {
     }
 
     @Transactional
-    public void deleteGuard(Long memberId){
+    public void deleteGuard(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
@@ -53,7 +53,7 @@ public class GuardService {
     }
 
     @Transactional
-    public void createSenior(Long memberId, SeniorRequest seniorRequest){
+    public void createSenior(Long memberId, SeniorRequest seniorRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
@@ -64,14 +64,14 @@ public class GuardService {
     }
 
     @Transactional
-    public List<SeniorResponse> readSeniors(Long memberId){
+    public List<SeniorResponse> readSeniors(Long memberId) {
         List<Senior> senior = seniorRepository.findByMemberId(memberId);
 
         return senior.stream().map(Senior::mapToResponse).toList();
     }
 
     @Transactional
-    public SeniorResponse readOneSenior(Long memberId, Long seniorId){
+    public SeniorResponse readOneSenior(Long memberId, Long seniorId) {
         Senior senior = seniorRepository.findByIdAndMemberId(seniorId, memberId).orElseThrow(
                 () -> new SeniorNotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
@@ -80,7 +80,7 @@ public class GuardService {
     }
 
     @Transactional
-    public void updateSenior(Long memberId, Long seniorId, SeniorRequest seniorRequest){
+    public void updateSenior(Long memberId, Long seniorId, SeniorRequest seniorRequest) {
         Senior senior = seniorRepository.findByIdAndMemberId(seniorId, memberId).orElseThrow(
                 () -> new SeniorNotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
@@ -89,7 +89,7 @@ public class GuardService {
     }
 
     @Transactional
-    public void deleteSenior(Long memberId, Long seniorId){
+    public void deleteSenior(Long memberId, Long seniorId) {
         Senior senior = seniorRepository.findByIdAndMemberId(seniorId, memberId).orElseThrow(
                 () -> new SeniorNotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
@@ -98,7 +98,7 @@ public class GuardService {
     }
 
     @Transactional
-    public List<GuardResponse> readAllGuards(){
+    public List<GuardResponse> readAllGuards() {
         List<Member> members = memberRepository.findByIsSinitto(false);
 
         return members.stream()

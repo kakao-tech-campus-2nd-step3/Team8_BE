@@ -51,14 +51,14 @@ public class MemberService implements MemberIdProvider {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
         if (optionalMember.isEmpty()) {
-            return new LoginResponse(null, null, "/signup", email, false);
+            return new LoginResponse(null, null, "/signup", email, false, false);
         }
 
         Member member = optionalMember.get();
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
 
-        return new LoginResponse(accessToken, refreshToken, null, null, member.isSinitto());
+        return new LoginResponse(accessToken, refreshToken, null, null, member.isSinitto(), true);
     }
 
     public RegisterResponse registerNewMember(String name, String phoneNumber, String email, boolean isSinitto) {

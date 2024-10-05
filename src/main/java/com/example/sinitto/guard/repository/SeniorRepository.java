@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface SeniorRepository extends JpaRepository<Senior, Long> {
     List<Senior> findByMemberId(Long memberId);
+
     Optional<Senior> findByIdAndMemberId(Long Id, Long memberId);
+
     Optional<Senior> findByPhoneNumber(String phoneNumber);
 }
