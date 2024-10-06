@@ -10,7 +10,7 @@ public record HelloCallDetailUpdateRequest(
         List<TimeSlot> timeSlots,
         int price,
         int serviceTime,
-        String content
+        String requirement
 ) {
     public record TimeSlot(
             String day,

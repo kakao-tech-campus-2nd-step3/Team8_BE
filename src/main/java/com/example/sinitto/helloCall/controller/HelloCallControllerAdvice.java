@@ -1,9 +1,6 @@
 package com.example.sinitto.helloCall.controller;
 
-import com.example.sinitto.helloCall.exception.HelloCallAlreadyExistsException;
-import com.example.sinitto.helloCall.exception.HelloCallNotFoundException;
-import com.example.sinitto.helloCall.exception.InvalidStatusException;
-import com.example.sinitto.helloCall.exception.TimeRuleException;
+import com.example.sinitto.helloCall.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +45,15 @@ public class HelloCallControllerAdvice {
                 ex.getMessage());
         problemDetail.setType(URI.create("/errors/invalid-status-exception"));
         problemDetail.setTitle("Invalid Status Exception");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    @ExceptionHandler(CompletionConditionNotFulfilledException.class)
+    public ResponseEntity<ProblemDetail> handleCompletionConditionNotFulfilledException(CompletionConditionNotFulfilledException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                ex.getMessage());
+        problemDetail.setType(URI.create("/errors/completion-condition-not-fulfilled"));
+        problemDetail.setTitle("Completion Condition Not Fulfilled");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 }

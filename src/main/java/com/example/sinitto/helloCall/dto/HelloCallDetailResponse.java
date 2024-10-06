@@ -9,7 +9,7 @@ public record HelloCallDetailResponse(
         LocalDate startDate,
         LocalDate endDate,
         List<TimeSlot> timeSlots,
-        String content,
+        String requirement,
         String seniorName,
         String seniorPhoneNumber,
         int price

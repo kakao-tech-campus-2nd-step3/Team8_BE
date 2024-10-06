@@ -1,9 +1,11 @@
 package com.example.sinitto.helloCall.entity;
 
+import com.example.sinitto.auth.exception.UnauthorizedException;
 import com.example.sinitto.helloCall.exception.InvalidStatusException;
 import com.example.sinitto.helloCall.exception.TimeRuleException;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
+import com.example.sinitto.member.entity.Sinitto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -28,7 +30,8 @@ public class HelloCall {
     @NotNull
     private int serviceTime;
     @NotNull
-    private String content;
+    private String requirement;
+    private String report;
     @NotNull
     @Enumerated(EnumType.STRING)
     private HelloCall.Status status;
@@ -40,14 +43,19 @@ public class HelloCall {
     private Senior senior;
     @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
     private List<TimeSlot> timeSlots = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "sinitto_id")
+    private Sinitto sinitto;
+    @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
+    private List<HelloCallTimeLog> helloCallTimeLogs = new ArrayList<>();
 
-    public HelloCall(LocalDate startDate, LocalDate endDate, int price, int serviceTime, String content, Senior senior) {
+    public HelloCall(LocalDate startDate, LocalDate endDate, int price, int serviceTime, String requirement, Senior senior) {
         if (startDate.isAfter(endDate)) {
             throw new TimeRuleException("시작날짜가 종료날짜 이후일 수 없습니다.");
         }
         this.startDate = startDate;
         this.endDate = endDate;
-        this.content = content;
+        this.requirement = requirement;
         this.status = Status.WAITING;
         this.price = price;
         this.serviceTime = serviceTime;
@@ -82,12 +90,36 @@ public class HelloCall {
         return endDate;
     }
 
-    public String getContent() {
-        return content;
+    public String getRequirement() {
+        return requirement;
     }
 
     public int getPrice() {
         return price;
+    }
+
+    public Sinitto getSinitto() {
+        return sinitto;
+    }
+
+    public String getReport() {
+        return report;
+    }
+
+    public String getSinittoName() {
+        return this.sinitto.getMember().getName();
+    }
+
+    public List<HelloCallTimeLog> getHelloCallTimeLogs() {
+        return helloCallTimeLogs;
+    }
+
+    public void setSinitto(Sinitto sinitto) {
+        this.sinitto = sinitto;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
     }
 
     public boolean checkUnAuthorization(Member member) {
@@ -100,7 +132,42 @@ public class HelloCall {
         }
     }
 
-    public void updateHelloCall(LocalDate startDate, LocalDate endDate, int price, int serviceTime, String content) {
+    public void checkSiniitoIsSame(Sinitto sinitto) {
+        if(!this.sinitto.equals(sinitto)) {
+            throw new UnauthorizedException("안부전화 서비스를 완료할 권한이 없습니다");
+        }
+    }
+
+    public boolean checkIsNotAfterEndDate() {
+        return !(LocalDate.now().isAfter(this.endDate) || LocalDate.now().equals(this.endDate));
+    }
+
+    public boolean checkReportIsNotNull() {
+        return this.report != null;
+    }
+
+    public void changeStatusToInProgress() {
+        if (this.status.equals(Status.IN_PROGRESS) || this.status.equals(Status.COMPLETE)) {
+            throw new InvalidStatusException("안부전화 서비스가 수행 대기중일 때만 진행중 상태로 변경할 수 있습니다. 현재 상태 : " + this.status);
+        }
+        this.status = Status.IN_PROGRESS;
+    }
+
+    public void changeStatusToWaiting() {
+        if (this.status.equals(Status.WAITING) || this.status.equals(Status.COMPLETE)) {
+            throw new InvalidStatusException("안부전화 서비스가 수행중일 때만 진행중 상태로 변경할 수 있습니다. 현재 상태 : " + this.status);
+        }
+        this.status = Status.WAITING;
+    }
+
+    public void changeStatusToComplete() {
+        if (this.status.equals(Status.WAITING) || this.status.equals(Status.COMPLETE)) {
+            throw new InvalidStatusException("안부전화 서비스가 수행중일 때만 완료 상태로 변경할 수 있습니다. 현재 상태 : " + this.status);
+        }
+        this.status = Status.COMPLETE;
+    }
+
+    public void updateHelloCall(LocalDate startDate, LocalDate endDate, int price, int serviceTime, String requirement) {
         if (!this.status.equals(Status.WAITING)) {
             throw new InvalidStatusException("안부전화 서비스가 수행 대기중일 때만 수정이 가능합니다.");
         }
@@ -111,7 +178,7 @@ public class HelloCall {
         this.endDate = endDate;
         this.price = price;
         this.serviceTime = serviceTime;
-        this.content = content;
+        this.requirement = requirement;
     }
 
     public enum Status {
