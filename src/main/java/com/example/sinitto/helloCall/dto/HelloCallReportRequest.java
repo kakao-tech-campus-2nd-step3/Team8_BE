@@ -1,12 +1,12 @@
 package com.example.sinitto.helloCall.dto;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 public record HelloCallReportRequest(
-        Date startDate,
-        Date endDate,
+        LocalDate startDate,
+        LocalDate endDate,
         List<TimeSlot> timeSlots,
         String content
 ) {

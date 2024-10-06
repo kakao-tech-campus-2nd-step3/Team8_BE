@@ -4,14 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public record HelloCallRequest(
-        Long seniorId,
+public record HelloCallPriceRequest(
         LocalDate startDate,
         LocalDate endDate,
         List<TimeSlot> timeSlots,
-        int price,
-        int serviceTime,
-        String content
+        int serviceTime
 ) {
     public record TimeSlot(
             String day,

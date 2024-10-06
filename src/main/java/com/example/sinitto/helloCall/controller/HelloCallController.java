@@ -28,7 +28,7 @@ public class HelloCallController {
     @GetMapping("/{callId}")
     public ResponseEntity<HelloCallDetailResponse> getHelloCallDetail(@PathVariable Long callId) {
         // 임시 응답
-        return ResponseEntity.ok(new HelloCallDetailResponse(null, null, null, null));
+        return ResponseEntity.ok(new HelloCallDetailResponse(null, null, null, null, null, null));
     }
 
     @Operation(summary = "서비스 수락하기", description = "시니또가 안부전화 신청을 수락합니다.")
@@ -56,14 +56,14 @@ public class HelloCallController {
     @GetMapping("/reports")
     public ResponseEntity<HelloCallDetailResponse> getHelloCallReports() {
         // 임시 응답
-        return ResponseEntity.ok(new HelloCallDetailResponse(null, null, null, null));
+        return ResponseEntity.ok(new HelloCallDetailResponse(null, null, null, null, null, null));
     }
 
     @Operation(summary = "소통 보고서 상세조회", description = "보호자가 보고서 상세정보를 조회합니다.")
     @GetMapping("/reports/{reportId}")
     public ResponseEntity<HelloCallDetailResponse> getHelloCallReportDetail(@PathVariable Long reportId) {
         // 임시 응답
-        return ResponseEntity.ok(new HelloCallDetailResponse(null, null, null, null));
+        return ResponseEntity.ok(new HelloCallDetailResponse(null, null, null, null, null, null));
     }
 
     @Operation(summary = "진행중인 안부 서비스 취소 요청", description = "시니또가 진행중인 안부전화 서비스를 취소합니다.")

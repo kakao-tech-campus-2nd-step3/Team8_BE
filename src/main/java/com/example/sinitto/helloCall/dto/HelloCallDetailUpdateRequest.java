@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public record HelloCallRequest(
-        Long seniorId,
+public record HelloCallDetailUpdateRequest(
         LocalDate startDate,
         LocalDate endDate,
         List<TimeSlot> timeSlots,

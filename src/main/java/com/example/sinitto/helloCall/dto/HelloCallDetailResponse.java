@@ -1,20 +1,17 @@
 package com.example.sinitto.helloCall.dto;
 
-import java.time.LocalTime;
-import java.util.Date;
+import com.example.sinitto.helloCall.entity.TimeSlot;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public record HelloCallDetailResponse(
-        Date startDate,
-        Date endDate,
+        LocalDate startDate,
+        LocalDate endDate,
         List<TimeSlot> timeSlots,
-        String content
+        String content,
+        String seniorName,
+        String seniorPhoneNumber,
+        int price
 ) {
-
-    public record TimeSlot(
-            String day,
-            LocalTime startTime,
-            LocalTime endTime,
-            int serviceTime) {
-    }
 }
