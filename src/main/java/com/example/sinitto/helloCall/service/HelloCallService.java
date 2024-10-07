@@ -241,7 +241,7 @@ public class HelloCallService {
 
 
     @Transactional(readOnly = true)
-    public List<HelloCallReportResponse> readAllHelloCallReport() {
+    public List<HelloCallReportResponse> readAllHelloCallReportByAdmin() {
         List<HelloCall> helloCalls = helloCallRepository.findAll();
 
         List<HelloCallReportResponse> helloCallReportResponses = new ArrayList<>();
@@ -310,8 +310,8 @@ public class HelloCallService {
     }
 
     @Transactional
-    public void SendReportBySinitto(Long memberId, Long helloCallId, HelloCallReportRequest helloCallReportRequest) {
-        HelloCall helloCall = helloCallRepository.findById(helloCallId)
+    public void SendReportBySinitto(Long memberId, HelloCallReportRequest helloCallReportRequest) {
+        HelloCall helloCall = helloCallRepository.findById(helloCallReportRequest.helloCallId())
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
