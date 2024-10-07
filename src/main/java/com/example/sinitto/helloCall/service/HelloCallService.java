@@ -10,7 +10,6 @@ import com.example.sinitto.helloCall.entity.TimeSlot;
 import com.example.sinitto.helloCall.exception.CompletionConditionNotFulfilledException;
 import com.example.sinitto.helloCall.exception.HelloCallAlreadyExistsException;
 import com.example.sinitto.helloCall.exception.HelloCallNotFoundException;
-import com.example.sinitto.helloCall.exception.TimeRuleException;
 import com.example.sinitto.helloCall.repository.HelloCallRepository;
 import com.example.sinitto.helloCall.repository.HelloCallTimeLogRepository;
 import com.example.sinitto.helloCall.repository.TimeSlotRepository;
@@ -217,6 +216,24 @@ public class HelloCallService {
                 helloCall.getEndDate(), helloCall.getSinittoName(), helloCall.getReport());
     }
 
+    @Transactional
+    public void makeCompleteHelloCallByGuard(Long memberId, Long helloCallId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+
+        HelloCall helloCall = helloCallRepository.findById(helloCallId)
+                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+
+        helloCall.checkGuardIsCorrect(member);
+
+        helloCall.changeStatusToComplete();
+
+        Sinitto earnedSinitto = helloCall.getSinitto();
+
+        //earnedSinitto에게 포인트 지급 로직 필요합니다.
+    }
+
+
     @Transactional(readOnly = true)
     public List<HelloCallReportResponse> readAllHelloCallReport() {
         List<HelloCall> helloCalls = helloCallRepository.findAll();
@@ -287,7 +304,7 @@ public class HelloCallService {
     }
 
     @Transactional
-    public void completeAndSendReportBySinitto(Long memberId, Long helloCallId, HelloCallReportRequest helloCallReportRequest) {
+    public void SendReportBySinitto(Long memberId, Long helloCallId, HelloCallReportRequest helloCallReportRequest) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
@@ -300,7 +317,25 @@ public class HelloCallService {
         }
 
         helloCall.setReport(helloCallReportRequest.report());
-        helloCall.changeStatusToComplete();
+        helloCall.changeStatusToPendingComplete();
+    }
+
+    @Transactional(readOnly = true)
+    public List<HelloCallResponse> readOwnHelloCallBySinitto(Long memberId) {
+        Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
+
+        List<HelloCall> helloCalls = helloCallRepository.findAllBySinitto(sinitto);
+
+        List<HelloCallResponse> helloCallResponses = new ArrayList<>();
+
+        for (HelloCall helloCall : helloCalls) {
+            HelloCallResponse response = new HelloCallResponse(helloCall.getId(), helloCall.getSenior().getName(),
+                    helloCall.getTimeSlots().stream().map(TimeSlot::getDay).toList(), helloCall.getStatus());
+            helloCallResponses.add(response);
+        }
+
+        return helloCallResponses;
     }
 
 

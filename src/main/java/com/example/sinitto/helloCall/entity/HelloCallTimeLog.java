@@ -28,20 +28,20 @@ public class HelloCallTimeLog {
     protected HelloCallTimeLog() {
     }
 
-    public void setStartDateAndTime(LocalDateTime startDateAndTime) {
-        this.startDateAndTime = startDateAndTime;
-    }
-
-    public void setEndDateAndTime(LocalDateTime endDateAndTime) {
-        this.endDateAndTime = endDateAndTime;
-    }
-
     public LocalDateTime getStartDateAndTime() {
         return startDateAndTime;
     }
 
+    public void setStartDateAndTime(LocalDateTime startDateAndTime) {
+        this.startDateAndTime = startDateAndTime;
+    }
+
     public LocalDateTime getEndDateAndTime() {
         return endDateAndTime;
+    }
+
+    public void setEndDateAndTime(LocalDateTime endDateAndTime) {
+        this.endDateAndTime = endDateAndTime;
     }
 
     public String getSinittoName() {
