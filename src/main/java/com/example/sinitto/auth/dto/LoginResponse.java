@@ -5,6 +5,7 @@ public record LoginResponse(
         String refreshToken,
         String redirectUrl,
         String email,
-        boolean isSinitto
+        boolean isSinitto,
+        boolean isMember
 ) {
 }

@@ -8,9 +8,9 @@ import com.example.sinitto.guard.exception.SeniorNotFoundException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
+import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
-import com.example.sinitto.member.exception.MemberNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

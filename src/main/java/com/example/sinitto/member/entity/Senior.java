@@ -31,7 +31,6 @@ public class Senior {
     protected Senior() {
     }
 
-
     public void updateSenior(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;

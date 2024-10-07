@@ -9,9 +9,8 @@ import com.example.sinitto.sinitto.dto.SinittoRequest;
 import com.example.sinitto.sinitto.dto.SinittoResponse;
 import com.example.sinitto.sinitto.exception.SinittoNotFoundException;
 import com.example.sinitto.sinitto.repository.SinittoRepository;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
