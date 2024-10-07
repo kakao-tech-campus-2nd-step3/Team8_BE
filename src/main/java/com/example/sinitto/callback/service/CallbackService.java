@@ -107,6 +107,16 @@ public class CallbackService {
         return TwilioHelper.convertMessageToTwiML(SUCCESS_MESSAGE);
     }
 
+    public CallbackResponse getAcceptedCallback(Long memberId) {
+
+        checkAuthorization(memberId);
+
+        Callback callback = callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)
+                .orElseThrow(() -> new NotExistCallbackException("요청한 시니또에 할당된 콜백이 없습니다"));
+
+        return new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId());
+    }
+
     private void checkAuthorization(Long memberId) {
 
         Member member = memberRepository.findById(memberId)

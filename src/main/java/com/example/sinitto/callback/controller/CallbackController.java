@@ -72,4 +72,11 @@ public class CallbackController {
 
         return ResponseEntity.ok(callbackService.add(fromNumber));
     }
+
+    @Operation(summary = "시니또에게 현재 할당된 콜백 조회", description = "현재 시니또 본인에게 할당된 콜백을 조회합니다.")
+    @GetMapping("/sinitto/accepted")
+    public ResponseEntity<CallbackResponse> getAcceptedCallback(@MemberId Long memberId) {
+
+        return ResponseEntity.ok(callbackService.getAcceptedCallback(memberId));
+    }
 }

@@ -3,6 +3,8 @@ package com.example.sinitto.callback.service;
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
 import com.example.sinitto.callback.exception.GuardMismatchException;
+import com.example.sinitto.callback.exception.NotExistCallbackException;
+import com.example.sinitto.callback.exception.NotMemberException;
 import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.callback.util.TwilioHelper;
@@ -10,7 +12,6 @@ import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -78,7 +79,7 @@ class CallbackServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         //when then
-        assertThrows(EntityNotFoundException.class, () -> callbackService.getCallbacks(memberId, pageable));
+        assertThrows(NotMemberException.class, () -> callbackService.getCallbacks(memberId, pageable));
     }
 
     @Test
@@ -240,5 +241,40 @@ class CallbackServiceTest {
 
         //when then
         assertThrows(GuardMismatchException.class, () -> callbackService.complete(memberId, callbackId));
+    }
+
+    @Test
+    @DisplayName("콜백이 할당된 시니또 조회에 성공")
+    void getAcceptedCallback() {
+        //given
+        Long memberId = 1L;
+        Callback callback = mock(Callback.class);
+        Member member = mock(Member.class);
+
+        //when
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(true);
+        when(callback.getId()).thenReturn(10L);
+
+        when(callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)).thenReturn(Optional.of(callback));
+        CallbackResponse result = callbackService.getAcceptedCallback(memberId);
+
+        //then
+        assertEquals(10L, result.callbackId());
+    }
+
+    @Test
+    @DisplayName("콜백이 할당된 시니또 조회에 실패")
+    void getAcceptedCallback_fail() {
+        //given
+        Long memberId = 1L;
+        Member member = mock(Member.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.isSinitto()).thenReturn(true);
+        when(callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)).thenReturn(Optional.empty());
+
+        //when then
+        assertThrows(NotExistCallbackException.class, () -> callbackService.getAcceptedCallback(memberId));
     }
 }
