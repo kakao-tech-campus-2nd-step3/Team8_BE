@@ -20,6 +20,9 @@ import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.sinitto.exception.SinittoNotFoundException;
 import com.example.sinitto.sinitto.repository.SinittoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,21 +93,24 @@ public class HelloCallService {
     }
 
     @Transactional
-    public List<HelloCallResponse> readAllWaitingHelloCallsBySinitto() {
-
-        List<HelloCallResponse> helloCallResponses = new ArrayList<>();
+    public Page<HelloCallResponse> readAllWaitingHelloCallsBySinitto(Pageable pageable) {
 
         List<HelloCall> helloCalls = helloCallRepository.findAll();
 
-        for (HelloCall helloCall : helloCalls) {
-            if (helloCall.getStatus().equals(HelloCall.Status.WAITING)) {
-                HelloCallResponse response = new HelloCallResponse(helloCall.getId(), helloCall.getSenior().getName(),
-                        helloCall.getTimeSlots().stream().map(TimeSlot::getDay).toList(), helloCall.getStatus());
+        List<HelloCallResponse> helloCallResponses = helloCalls.stream()
+                .filter(helloCall -> helloCall.getStatus().equals(HelloCall.Status.WAITING))
+                .map(helloCall -> new HelloCallResponse(
+                        helloCall.getId(), helloCall.getSenior().getName(),
+                        helloCall.getTimeSlots().stream().map(TimeSlot::getDay).toList(), helloCall.getStatus()
+                )).toList();
 
-                helloCallResponses.add(response);
-            }
-        }
-        return helloCallResponses;
+        int totalElements = helloCallResponses.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), totalElements);
+
+        List<HelloCallResponse> pagedResponse = helloCallResponses.subList(start, end);
+
+        return new PageImpl<>(pagedResponse, pageable, totalElements);
     }
 
     @Transactional(readOnly = true)

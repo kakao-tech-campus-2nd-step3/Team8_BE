@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/hellocalls")
-@Tag(name = "[미구현]안부전화", description = "안부 전화 서비스 관련 API")
+@Tag(name = "안부전화", description = "안부 전화 서비스 관련 API")
 public class HelloCallController {
 
     @Operation(summary = "안부 전화 서비스 전체 리스트 보기", description = "보호자가 요청한 안부전화 신청정보를 리스트로 조회합니다. 페이징 처리 됩니다.")
