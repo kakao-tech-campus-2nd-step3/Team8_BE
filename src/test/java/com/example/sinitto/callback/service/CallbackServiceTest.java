@@ -2,6 +2,7 @@ package com.example.sinitto.callback.service;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
+import com.example.sinitto.callback.exception.GuardMismatchException;
 import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.callback.util.TwilioHelper;
@@ -118,7 +119,7 @@ class CallbackServiceTest {
     }
 
     @Test
-    @DisplayName("콜백 완료 - 성공")
+    @DisplayName("콜백 완료 대기 - 성공")
     void complete() {
         //given
         Long memberId = 1L;
@@ -134,10 +135,10 @@ class CallbackServiceTest {
         when(callback.getAssignedMemberId()).thenReturn(assignedMemberId);
 
         //when
-        callbackService.complete(memberId, callbackId);
+        callbackService.pendingComplete(memberId, callbackId);
 
         //then
-        verify(callback).changeStatusToComplete();
+        verify(callback).changeStatusToPendingComplete();
     }
 
     @Test
@@ -196,5 +197,48 @@ class CallbackServiceTest {
         //then
         verify(callbackRepository, times(0)).save(any());
         assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("보호자가 콜백 대기 상태를 완료 생태로 변경 - 성공")
+    void completeByGuard() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+        Member member = mock(Member.class);
+        Callback callback = mock(Callback.class);
+        Senior senior = mock(Senior.class);
+
+        when(member.getId()).thenReturn(1L);
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getSenior()).thenReturn(senior);
+        when(senior.getMember()).thenReturn(member);
+        when(senior.getMember().getId()).thenReturn(1L);
+
+        //when
+        callbackService.complete(memberId, callbackId);
+
+        //then
+        verify(callback).changeStatusToComplete();
+    }
+
+    @Test
+    @DisplayName("보호자가 콜백 대기 상태를 완료 생태로 변경 - 일치하는 보호자 ID가 아니어서 실패")
+    void completeByGuard_fail() {
+        //given
+        Long memberId = 10L;
+        Long callbackId = 1L;
+        Member member = mock(Member.class);
+        Callback callback = mock(Callback.class);
+        Senior senior = mock(Senior.class);
+
+        when(member.getId()).thenReturn(1L);
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getSenior()).thenReturn(senior);
+        when(senior.getMember()).thenReturn(member);
+        when(senior.getMember().getId()).thenReturn(1L);
+
+        //when then
+        assertThrows(GuardMismatchException.class, () -> callbackService.complete(memberId, callbackId));
     }
 }

@@ -2,6 +2,7 @@ package com.example.sinitto.callback.service;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
+import com.example.sinitto.callback.exception.GuardMismatchException;
 import com.example.sinitto.callback.exception.NotAssignedException;
 import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
@@ -54,13 +55,28 @@ public class CallbackService {
     }
 
     @Transactional
-    public void complete(Long memberId, Long callbackId) {
+    public void pendingComplete(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
 
         Callback callback = getCallbackOrThrow(callbackId);
 
         checkAssignment(memberId, callback.getAssignedMemberId());
+
+        callback.changeStatusToPendingComplete();
+    }
+
+    @Transactional
+    public void complete(Long memberId, Long callbackId) {
+
+        Callback callback = getCallbackOrThrow(callbackId);
+
+        Senior senior = callback.getSenior();
+        Long guardId = senior.getMember().getId();
+
+        if (!guardId.equals(memberId)) {
+            throw new GuardMismatchException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
+        }
 
         callback.changeStatusToComplete();
     }
