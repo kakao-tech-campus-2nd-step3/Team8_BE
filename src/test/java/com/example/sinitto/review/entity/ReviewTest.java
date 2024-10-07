@@ -19,14 +19,16 @@ public class ReviewTest {
                 "01012345678",
                 "test@test.com",
                 true);
-        review = new Review(5, "testContent", member);
+        review = new Review(5, 4, 3, "testContent", member);
     }
 
     @Test
     @DisplayName("Review 엔티티 생성자 테스트")
     void counstructorTest() {
         assertThat(review.getId()).isNull();
-        assertThat(review.getStarCount()).isEqualTo(5);
+        assertThat(review.getStarCountForRequest()).isEqualTo(5);
+        assertThat(review.getStarCountForService()).isEqualTo(4);
+        assertThat(review.getStarCountForSatisfaction()).isEqualTo(3);
         assertThat(review.getPostDate()).isNull();
         assertThat(review.getContent()).isEqualTo("testContent");
         assertThat(review.getMember()).isEqualTo(member);
@@ -37,7 +39,7 @@ public class ReviewTest {
     void mapToResponseTest() {
         ReviewResponse response = review.mapToResponse();
         assertThat(response.name()).isEqualTo(member.getName());
-        assertThat(response.starCount()).isEqualTo(review.getStarCount());
+        assertThat(response.averageStarCount()).isEqualTo(4.0);
         assertThat(response.postDate()).isNull();
         assertThat(response.content()).isEqualTo(review.getContent());
     }

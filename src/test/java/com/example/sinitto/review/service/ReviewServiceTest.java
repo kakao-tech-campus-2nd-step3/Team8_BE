@@ -34,7 +34,7 @@ public class ReviewServiceTest {
         //given
         Member member = new Member("testName", "01000000000", "test@test.com", true);
         List<Review> reviewList = new ArrayList<>();
-        reviewList.add(new Review(5, "testContent", member));
+        reviewList.add(new Review(5, 4, 3, "testContent", member));
         when(reviewRepository.findAll()).thenReturn(reviewList);
         //when
         List<ReviewResponse> reviewResponseList = reviewService.readAllReviews();
@@ -42,7 +42,7 @@ public class ReviewServiceTest {
         assertEquals(1, reviewResponseList.size());
         assertEquals("testName", reviewResponseList.getFirst().name());
         assertEquals("testContent", reviewResponseList.getFirst().content());
-        assertEquals(5, reviewResponseList.getFirst().starCount());
+        assertEquals(4.0, reviewResponseList.getFirst().averageStarCount(), 0.01);
     }
 
     @Test
@@ -51,9 +51,14 @@ public class ReviewServiceTest {
         //given
         Member member = new Member("testName", "01000000000", "test@test.com", true);
         Long memberId = 1L;
-        int starCount = 5;
+        int starCountForRequest = 5;
+        int starCountForService = 4;
+        int starCountForSatisfaction = 3;
         String content = "testContent";
-        ReviewRequest reviewRequest = new ReviewRequest(starCount, content);
+        ReviewRequest reviewRequest = new ReviewRequest(starCountForRequest,
+                starCountForService,
+                starCountForSatisfaction,
+                content);
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
 
         //when
