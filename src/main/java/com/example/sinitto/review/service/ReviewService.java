@@ -34,7 +34,11 @@ public class ReviewService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
-        Review review = new Review(reviewRequest.starCount(), reviewRequest.content(), member);
+        Review review = new Review(reviewRequest.starCountForRequest(),
+                reviewRequest.starCountForService(),
+                reviewRequest.starCountForSatisfaction(),
+                reviewRequest.content(),
+                member);
 
         reviewRepository.save(review);
     }
