@@ -2,16 +2,13 @@ package com.example.sinitto.callback.service;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
-import com.example.sinitto.callback.exception.GuardMismatchException;
-import com.example.sinitto.callback.exception.NotAssignedException;
-import com.example.sinitto.callback.exception.NotSinittoException;
+import com.example.sinitto.callback.exception.*;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.callback.util.TwilioHelper;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -113,7 +110,7 @@ public class CallbackService {
     private void checkAuthorization(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("멤버가 아닙니다"));
+                .orElseThrow(() -> new NotMemberException("멤버가 아닙니다"));
 
         if (!member.isSinitto()) {
             throw new NotSinittoException("시니또가 아닙니다");
@@ -123,7 +120,7 @@ public class CallbackService {
     private Callback getCallbackOrThrow(Long callbackId) {
 
         return callbackRepository.findById(callbackId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 콜백입니다"));
+                .orElseThrow(() -> new NotExistCallbackException("존재하지 않는 콜백입니다"));
     }
 
     private void checkAssignment(Long memberId, Long assignedMemberId) {
