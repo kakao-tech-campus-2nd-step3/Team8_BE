@@ -9,7 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -19,12 +19,17 @@ public class Review {
     private Long id;
 
     @NotNull
-    int starCount;
-
-    @CreatedDate
-    Date postDate;
+    int starCountForRequest;
 
     @NotNull
+    int starCountForService;
+
+    @NotNull
+    int starCountForSatisfaction;
+
+    @CreatedDate
+    LocalDate postDate;
+
     String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,8 +38,10 @@ public class Review {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public Review(int starCount, String content, Member member) {
-        this.starCount = starCount;
+    public Review(int starCountForRequest, int starCountForService, int starCountForSatisfaction, String content, Member member) {
+        this.starCountForRequest = starCountForRequest;
+        this.starCountForService = starCountForService;
+        this.starCountForSatisfaction = starCountForSatisfaction;
         this.content = content;
         this.member = member;
     }
@@ -43,18 +50,29 @@ public class Review {
     }
 
     public ReviewResponse mapToResponse() {
-        return new ReviewResponse(this.member.getName(), this.starCount, this.postDate, this.content);
+        double averageStarCount = (double) Math.round((double) ((starCountForRequest +
+                starCountForSatisfaction +
+                starCountForRequest) / 3) * 100) / 100;
+        return new ReviewResponse(this.member.getName(), averageStarCount, this.postDate, this.content);
     }
 
     public Long getId() {
         return id;
     }
 
-    public int getStarCount() {
-        return starCount;
+    public int getStarCountForRequest() {
+        return starCountForRequest;
     }
 
-    public Date getPostDate() {
+    public int getStarCountForService() {
+        return starCountForService;
+    }
+
+    public int getStarCountForSatisfaction() {
+        return starCountForSatisfaction;
+    }
+
+    public LocalDate getPostDate() {
         return postDate;
     }
 

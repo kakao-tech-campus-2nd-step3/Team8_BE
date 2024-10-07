@@ -1,10 +1,10 @@
 package com.example.sinitto.review.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public record ReviewResponse(
         String name,
-        int starCount,
-        Date postDate,
+        double averageStarCount,
+        LocalDate postDate,
         String content) {
 }
