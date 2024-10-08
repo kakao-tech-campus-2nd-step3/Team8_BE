@@ -28,15 +28,15 @@ public class HelloCallPriceService {
         LocalDate endDate = helloCallPriceRequest.endDate();
 
         for (HelloCallPriceRequest.TimeSlot timeSlot : helloCallPriceRequest.timeSlots()) {
-            DayOfWeek targetDayOfWeek = convertDayStringToDayOfWeek(timeSlot.day());
+            DayOfWeek targetDayOfWeek = convertDayStringToDayOfWeek(timeSlot.dayName());
             totalServiceCount += countOccurrencesOfDay(startDate, endDate, targetDayOfWeek);
         }
 
         return totalServiceCount;
     }
 
-    private DayOfWeek convertDayStringToDayOfWeek(String day) {
-        return switch (day) {
+    private DayOfWeek convertDayStringToDayOfWeek(String dayName) {
+        return switch (dayName) {
             case "월" -> DayOfWeek.MONDAY;
             case "화" -> DayOfWeek.TUESDAY;
             case "수" -> DayOfWeek.WEDNESDAY;
@@ -44,7 +44,7 @@ public class HelloCallPriceService {
             case "금" -> DayOfWeek.FRIDAY;
             case "토" -> DayOfWeek.SATURDAY;
             case "일" -> DayOfWeek.SUNDAY;
-            default -> throw new IllegalArgumentException("잘못된 day 입니다 : " + day);
+            default -> throw new IllegalArgumentException("잘못된 day 입니다 : " + dayName);
         };
     }
 

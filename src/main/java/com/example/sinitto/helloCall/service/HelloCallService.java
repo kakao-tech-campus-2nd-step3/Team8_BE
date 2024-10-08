@@ -66,7 +66,7 @@ public class HelloCallService {
         HelloCall savedHelloCall = helloCallRepository.save(helloCall);
 
         for (HelloCallRequest.TimeSlot timeSlotRequest : helloCallRequest.timeSlots()) {
-            TimeSlot timeSlot = new TimeSlot(timeSlotRequest.day(), timeSlotRequest.startTime(),
+            TimeSlot timeSlot = new TimeSlot(timeSlotRequest.dayName(), timeSlotRequest.startTime(),
                     timeSlotRequest.endTime(), savedHelloCall);
             timeSlotRepository.save(timeSlot);
         }
@@ -84,7 +84,7 @@ public class HelloCallService {
                         () -> new HelloCallNotFoundException("신청된 시니어의 안부전화 정보를 찾을 수 없습니다."));
 
                 HelloCallResponse response = new HelloCallResponse(helloCall.getId(), helloCall.getSenior().getName(),
-                        helloCall.getTimeSlots().stream().map(TimeSlot::getDay).toList(), helloCall.getStatus());
+                        helloCall.getTimeSlots().stream().map(TimeSlot::getDayName).toList(), helloCall.getStatus());
 
                 helloCallResponsesForGuard.add(response);
             }
@@ -101,7 +101,7 @@ public class HelloCallService {
                 .filter(helloCall -> helloCall.getStatus().equals(HelloCall.Status.WAITING))
                 .map(helloCall -> new HelloCallResponse(
                         helloCall.getId(), helloCall.getSenior().getName(),
-                        helloCall.getTimeSlots().stream().map(TimeSlot::getDay).toList(), helloCall.getStatus()
+                        helloCall.getTimeSlots().stream().map(TimeSlot::getDayName).toList(), helloCall.getStatus()
                 )).toList();
 
         int totalElements = helloCallResponses.size();
@@ -143,21 +143,21 @@ public class HelloCallService {
 
     private void updateTimeSlots(HelloCall helloCall, List<HelloCallDetailUpdateRequest.TimeSlot> updatedTimeSlots) {
         List<String> updatedDays = updatedTimeSlots.stream()
-                .map(HelloCallDetailUpdateRequest.TimeSlot::day)
+                .map(HelloCallDetailUpdateRequest.TimeSlot::dayName)
                 .toList();
 
         List<TimeSlot> existingTimeSlots = new ArrayList<>(helloCall.getTimeSlots());
 
         for (TimeSlot existingSlot : existingTimeSlots) {
-            if (!updatedDays.contains(existingSlot.getDay())) {
+            if (!updatedDays.contains(existingSlot.getDayName())) {
                 timeSlotRepository.delete(existingSlot);
                 helloCall.getTimeSlots().remove(existingSlot);
             }
         }
 
         for (HelloCallDetailUpdateRequest.TimeSlot updatedSlot : updatedTimeSlots) {
-            TimeSlot timeSlot = timeSlotRepository.findByHelloCallAndDay(helloCall, updatedSlot.day())
-                    .orElse(new TimeSlot(updatedSlot.day(), updatedSlot.startTime(), updatedSlot.endTime(), helloCall));
+            TimeSlot timeSlot = timeSlotRepository.findByHelloCallAndDayName(helloCall, updatedSlot.dayName())
+                    .orElse(new TimeSlot(updatedSlot.dayName(), updatedSlot.startTime(), updatedSlot.endTime(), helloCall));
 
             timeSlot.updateTimeSlot(updatedSlot.startTime(), updatedSlot.endTime());
             timeSlotRepository.save(timeSlot);
@@ -337,7 +337,7 @@ public class HelloCallService {
 
         for (HelloCall helloCall : helloCalls) {
             HelloCallResponse response = new HelloCallResponse(helloCall.getId(), helloCall.getSenior().getName(),
-                    helloCall.getTimeSlots().stream().map(TimeSlot::getDay).toList(), helloCall.getStatus());
+                    helloCall.getTimeSlots().stream().map(TimeSlot::getDayName).toList(), helloCall.getStatus());
             helloCallResponses.add(response);
         }
 

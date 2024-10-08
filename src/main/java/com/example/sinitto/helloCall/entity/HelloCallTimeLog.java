@@ -16,12 +16,19 @@ public class HelloCallTimeLog {
     @ManyToOne
     @JoinColumn(name = "helloCall_id")
     private HelloCall helloCall;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "sinitto_id")
     private Sinitto sinitto;
 
     public HelloCallTimeLog(HelloCall helloCall, Sinitto sinitto) {
         this.helloCall = helloCall;
+        this.sinitto = sinitto;
+    }
+
+    public HelloCallTimeLog(HelloCall helloCall, Sinitto sinitto, LocalDateTime startDateAndTime, LocalDateTime endDateAndTime) {
+        this.helloCall = helloCall;
+        this.startDateAndTime = startDateAndTime;
+        this.endDateAndTime = endDateAndTime;
         this.sinitto = sinitto;
     }
 
@@ -46,5 +53,13 @@ public class HelloCallTimeLog {
 
     public String getSinittoName() {
         return this.sinitto.getMember().getName();
+    }
+
+    public HelloCall getHelloCall() {
+        return helloCall;
+    }
+
+    public Sinitto getSinitto() {
+        return sinitto;
     }
 }

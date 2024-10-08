@@ -14,7 +14,7 @@ public record HelloCallRequest(
         String requirement
 ) {
     public record TimeSlot(
-            String day,
+            String dayName,
             LocalTime startTime,
             LocalTime endTime) {
     }

@@ -43,7 +43,7 @@ public class HelloCall {
     private Senior senior;
     @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
     private List<TimeSlot> timeSlots = new ArrayList<>();
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "sinitto_id")
     private Sinitto sinitto;
     @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
@@ -96,6 +96,10 @@ public class HelloCall {
 
     public int getPrice() {
         return price;
+    }
+
+    public int getServiceTime() {
+        return serviceTime;
     }
 
     public Sinitto getSinitto() {

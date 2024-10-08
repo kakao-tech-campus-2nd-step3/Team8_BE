@@ -11,7 +11,7 @@ public record HelloCallPriceRequest(
         int serviceTime
 ) {
     public record TimeSlot(
-            String day,
+            String dayName,
             LocalTime startTime,
             LocalTime endTime) {
     }

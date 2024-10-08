@@ -13,7 +13,7 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private String day;
+    private String dayName;
     @NotNull
     private LocalTime startTime;
     @NotNull
@@ -22,11 +22,11 @@ public class TimeSlot {
     @JoinColumn(name = "hellocall_id")
     private HelloCall helloCall;
 
-    public TimeSlot(String day, LocalTime startTime, LocalTime endTime, HelloCall helloCall) {
+    public TimeSlot(String dayName, LocalTime startTime, LocalTime endTime, HelloCall helloCall) {
         if (startTime.isAfter(endTime)) {
             throw new TimeRuleException("시작시간이 종료시간 이후일 수 없습니다.");
         }
-        this.day = day;
+        this.dayName = dayName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.helloCall = helloCall;
@@ -36,8 +36,20 @@ public class TimeSlot {
 
     }
 
-    public String getDay() {
-        return day;
+    public String getDayName() {
+        return dayName;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public HelloCall getHelloCall() {
+        return helloCall;
     }
 
     public void updateTimeSlot(LocalTime startTime, LocalTime endTime) {
