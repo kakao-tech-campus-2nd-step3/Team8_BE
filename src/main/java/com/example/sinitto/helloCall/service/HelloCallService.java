@@ -211,12 +211,13 @@ public class HelloCallService {
 
     @Transactional(readOnly = true)
     public HelloCallReportResponse readHelloCallReportByGuard(Long memberId, Long helloCallId) {
-        if (!sinittoRepository.existsByMemberId(memberId)) {
-            throw new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다.");
-        }
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+
+        helloCall.checkGuardIsCorrect(member);
 
         if (!helloCall.checkReportIsNotNull()) {
             throw new CompletionConditionNotFulfilledException("아직 안부전화 서비스가 완료되지 않았습니다.");
