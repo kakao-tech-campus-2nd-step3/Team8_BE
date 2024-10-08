@@ -14,18 +14,24 @@ import java.time.LocalDate;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Review {
-    @NotNull
-    int starCountForRequest;
-    @NotNull
-    int starCountForService;
-    @NotNull
-    int starCountForSatisfaction;
-    @CreatedDate
-    LocalDate postDate;
-    String content;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    int starCountForRequest;
+
+    @NotNull
+    int starCountForService;
+
+    @NotNull
+    int starCountForSatisfaction;
+
+    @CreatedDate
+    LocalDate postDate;
+
+    String content;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @NotNull

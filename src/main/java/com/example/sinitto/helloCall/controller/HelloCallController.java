@@ -31,7 +31,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 안부 전화 서비스 전체 리스트 보기", description = "안부전화 신청정보를 페이지로 조회합니다.")
     @GetMapping("/sinittos/list")
-    public ResponseEntity<Page<HelloCallResponse>> getHelloCallListBySinitto(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<HelloCallResponse>> getHelloCallListBySinitto(@PageableDefault(size = 10, sort = "helloCallId", direction = Sort.Direction.ASC) Pageable pageable) {
 
         Page<HelloCallResponse> helloCallResponses = helloCallService.readAllWaitingHelloCallsBySinitto(pageable);
 
