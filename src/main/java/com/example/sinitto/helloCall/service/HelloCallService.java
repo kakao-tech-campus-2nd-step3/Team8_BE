@@ -78,20 +78,15 @@ public class HelloCallService {
     public List<HelloCallResponse> readAllHelloCallsByGuard(Long memberId) {
         List<Senior> seniors = seniorRepository.findByMemberId(memberId);
 
-        List<HelloCallResponse> helloCallResponsesForGuard = new ArrayList<>();
+        List<HelloCall> helloCalls = helloCallRepository.findAllBySeniorIn(seniors);
 
-        for (Senior senior : seniors) {
-            if (helloCallRepository.existsBySenior(senior)) {
-                HelloCall helloCall = helloCallRepository.findBySenior(senior).orElseThrow(
-                        () -> new HelloCallNotFoundException("신청된 시니어의 안부전화 정보를 찾을 수 없습니다."));
-
-                HelloCallResponse response = new HelloCallResponse(helloCall.getId(), helloCall.getSenior().getName(),
-                        helloCall.getTimeSlots().stream().map(TimeSlot::getDayName).toList(), helloCall.getStatus());
-
-                helloCallResponsesForGuard.add(response);
-            }
-        }
-        return helloCallResponsesForGuard;
+        return helloCalls.stream()
+                .map(helloCall -> new HelloCallResponse(
+                        helloCall.getId(),
+                        helloCall.getSenior().getName(),
+                        helloCall.getTimeSlots().stream().map(TimeSlot::getDayName).toList(),
+                        helloCall.getStatus()))
+                .toList();
     }
 
     @Transactional

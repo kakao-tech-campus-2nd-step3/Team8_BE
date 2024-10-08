@@ -150,4 +150,29 @@ class HelloCallRepositoryTest {
         assertThat(updatedHelloCall).isPresent();
         assertThat(updatedHelloCall.get().getSinitto()).isEqualTo(sinitto2);
     }
+
+    @Test
+    @DisplayName("Senior 리스트 기반으로 HelloCall 찾기 테스트")
+    void findAllBySeniorInTest() {
+        Senior senior1 = new Senior("Senior1", "01055555555", seniorMember);
+        Senior senior2 = new Senior("Senior2", "01066666666", seniorMember);
+        seniorRepository.save(senior1);
+        seniorRepository.save(senior2);
+
+        HelloCall helloCall1 = new HelloCall(LocalDate.of(2024, 1, 1),
+                LocalDate.of(2024, 1, 2), 10000, 60,
+                "요구사항1", senior1);
+        HelloCall helloCall2 = new HelloCall(LocalDate.of(2024, 1, 3),
+                LocalDate.of(2024, 1, 4), 15000, 90,
+                "요구사항2", senior2);
+
+        helloCallRepository.save(helloCall1);
+        helloCallRepository.save(helloCall2);
+
+        List<HelloCall> helloCalls = helloCallRepository.findAllBySeniorIn(List.of(senior1, senior2));
+
+        assertThat(helloCalls).hasSize(2);
+        assertThat(helloCalls.get(0).getSenior()).isEqualTo(senior1);
+        assertThat(helloCalls.get(1).getSenior()).isEqualTo(senior2);
+    }
 }
