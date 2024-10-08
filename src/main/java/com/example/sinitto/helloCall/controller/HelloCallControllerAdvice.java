@@ -56,4 +56,13 @@ public class HelloCallControllerAdvice {
         problemDetail.setTitle("Completion Condition Not Fulfilled");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
+
+    @ExceptionHandler(TimeLogSequenceException.class)
+    public ResponseEntity<ProblemDetail> handleTimeLogSequenceException(TimeLogSequenceException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                ex.getMessage());
+        problemDetail.setType(URI.create("/errors/time-log-sequence-exception"));
+        problemDetail.setTitle("Time Log Sequence Exception");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
 }

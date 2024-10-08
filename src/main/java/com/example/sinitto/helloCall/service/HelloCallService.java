@@ -10,6 +10,7 @@ import com.example.sinitto.helloCall.entity.TimeSlot;
 import com.example.sinitto.helloCall.exception.CompletionConditionNotFulfilledException;
 import com.example.sinitto.helloCall.exception.HelloCallAlreadyExistsException;
 import com.example.sinitto.helloCall.exception.HelloCallNotFoundException;
+import com.example.sinitto.helloCall.exception.TimeLogSequenceException;
 import com.example.sinitto.helloCall.repository.HelloCallRepository;
 import com.example.sinitto.helloCall.repository.HelloCallTimeLogRepository;
 import com.example.sinitto.helloCall.repository.TimeSlotRepository;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HelloCallService {
@@ -281,6 +283,13 @@ public class HelloCallService {
         Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
 
+        Optional<HelloCallTimeLog> recentLog = helloCallTimeLogRepository
+                .findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(sinitto, helloCall);
+
+        if (recentLog.isPresent() && recentLog.get().getEndDateAndTime() == null) {
+            throw new TimeLogSequenceException("이미 시작된 안부전화가 있습니다. 종료를 먼저 완료해주세요.");
+        }
+
         HelloCallTimeLog helloCallTimeLog = new HelloCallTimeLog(helloCall, sinitto);
         helloCallTimeLog.setStartDateAndTime(LocalDateTime.now());
 
@@ -290,11 +299,19 @@ public class HelloCallService {
 
     @Transactional
     public HelloCallTimeResponse writeHelloCallEndTimeBySinitto(Long memberId, Long helloCallId) {
+        HelloCall helloCall = helloCallRepository.findById(helloCallId)
+                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+
         Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
 
-        HelloCallTimeLog helloCallTimeLog = helloCallTimeLogRepository.findBySinittoAndAndHelloCallId(sinitto, helloCallId)
+        HelloCallTimeLog helloCallTimeLog = helloCallTimeLogRepository
+                .findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(sinitto, helloCall)
                 .orElseThrow(() -> new HelloCallNotFoundException("안부전화 로그를 찾을 수 없습니다."));
+
+        if (helloCallTimeLog.getEndDateAndTime() != null) {
+            throw new TimeLogSequenceException("이미 종료된 안부전화입니다.");
+        }
 
         helloCallTimeLog.setEndDateAndTime(LocalDateTime.now());
 

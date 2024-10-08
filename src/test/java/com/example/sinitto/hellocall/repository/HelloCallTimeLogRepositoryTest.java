@@ -97,4 +97,23 @@ class HelloCallTimeLogRepositoryTest {
         assertThat(timeLogs.get(0).getStartDateAndTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0));
         assertThat(timeLogs.get(1).getStartDateAndTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 12, 0));
     }
+
+    @Test
+    @DisplayName("Sinitto와 HelloCall 기반으로 가장 최근의 HelloCallTimeLog 찾기 테스트")
+    void findTopBySinittoAndHelloCallOrderByStartDateAndTimeDescTest() {
+        HelloCallTimeLog timeLog1 = new HelloCallTimeLog(helloCall, sinitto, LocalDateTime.of(2024, 1, 1, 10, 0), LocalDateTime.of(2024, 1, 1, 11, 0));
+        HelloCallTimeLog timeLog2 = new HelloCallTimeLog(helloCall, sinitto, LocalDateTime.of(2024, 1, 1, 12, 0), LocalDateTime.of(2024, 1, 1, 13, 0));
+
+        helloCallTimeLogRepository.save(timeLog1);
+        helloCallTimeLogRepository.save(timeLog2);
+
+        Optional<HelloCallTimeLog> recentTimeLog = helloCallTimeLogRepository
+                .findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(sinitto, helloCall);
+
+        assertThat(recentTimeLog).isPresent();
+        assertThat(recentTimeLog.get().getHelloCall()).isEqualTo(helloCall);
+        assertThat(recentTimeLog.get().getSinitto()).isEqualTo(sinitto);
+        assertThat(recentTimeLog.get().getStartDateAndTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 12, 0));
+        assertThat(recentTimeLog.get().getEndDateAndTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 13, 0));
+    }
 }
