@@ -6,6 +6,7 @@ import com.example.sinitto.helloCall.service.HelloCallPriceService;
 import com.example.sinitto.helloCall.service.HelloCallService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -57,8 +58,8 @@ public class HelloCallController {
     }
 
     @Operation(summary = "[보호자용] 안부 전화 서비스 비용 조회", description = "안부 전화 서비스의 이용 비용을 조회합니다.")
-    @GetMapping("/guards/cost")
-    public ResponseEntity<HelloCallPriceResponse> calculateHelloCallPrice(HelloCallPriceRequest helloCallPriceRequest) {
+    @PostMapping("/guards/cost")
+    public ResponseEntity<HelloCallPriceResponse> calculateHelloCallPrice(@RequestBody HelloCallPriceRequest helloCallPriceRequest) {
 
         HelloCallPriceResponse helloCallPriceResponse = helloCallPriceService.calculateHelloCallPrice(helloCallPriceRequest);
 
@@ -67,7 +68,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 안부 전화 서비스 신청하기", description = "보호자가 안부 전화 서비스를 신청합니다.")
     @PostMapping("/guards")
-    public ResponseEntity<StringMessageResponse> createHelloCallByGuard(@MemberId Long memberId, HelloCallRequest helloCallRequest) {
+    public ResponseEntity<StringMessageResponse> createHelloCallByGuard(@MemberId Long memberId, @RequestBody HelloCallRequest helloCallRequest) {
 
         helloCallService.createHelloCallByGuard(memberId, helloCallRequest);
 
@@ -76,7 +77,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 안부 전화 서비스 수정하기", description = "보호자가 안부 전화 서비스 내용을 수정합니다.")
     @PutMapping("/guards/{callId}")
-    public ResponseEntity<StringMessageResponse> updateHelloCallByGuard(@MemberId Long memberId, @PathVariable Long callId, HelloCallDetailUpdateRequest helloCallDetailUpdateRequest) {
+    public ResponseEntity<StringMessageResponse> updateHelloCallByGuard(@MemberId Long memberId, @PathVariable Long callId, @RequestBody HelloCallDetailUpdateRequest helloCallDetailUpdateRequest) {
 
         helloCallService.updateHelloCallByGuard(memberId, callId, helloCallDetailUpdateRequest);
 
@@ -119,7 +120,7 @@ public class HelloCallController {
         return ResponseEntity.ok(new StringMessageResponse("안부전화 시작 시간이 기록되었습니다."));
     }
 
-    @Operation(summary = "[시니또용] 안부전화 서비스 시작시간 기록", description = "시니또가 안부전화 시작시간을 기록합니다.")
+    @Operation(summary = "[시니또용] 안부전화 서비스 종료시간 기록", description = "시니또가 안부전화 종료시간을 기록합니다.")
     @PostMapping("/sinittos/end/{callId}")
     public ResponseEntity<StringMessageResponse> writeHelloCallEndTimeBySinitto(@MemberId Long memberId, @PathVariable Long callId) {
 

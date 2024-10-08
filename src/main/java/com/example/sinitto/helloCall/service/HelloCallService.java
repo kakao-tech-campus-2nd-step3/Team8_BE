@@ -118,8 +118,12 @@ public class HelloCallService {
         HelloCall helloCall = helloCallRepository.findById(HelloCallId)
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
+        List<HelloCallDetailResponse.TimeSlot> timeSlots = helloCall.getTimeSlots().stream()
+                .map(timeSlot -> new HelloCallDetailResponse.TimeSlot(
+                        timeSlot.getDayName(), timeSlot.getStartTime(), timeSlot.getEndTime())).toList();
+
         return new HelloCallDetailResponse(helloCall.getStartDate(), helloCall.getEndDate(),
-                helloCall.getTimeSlots(), helloCall.getRequirement(), helloCall.getSenior().getName(),
+                timeSlots, helloCall.getRequirement(), helloCall.getSenior().getName(),
                 helloCall.getSenior().getPhoneNumber(), helloCall.getPrice());
     }
 

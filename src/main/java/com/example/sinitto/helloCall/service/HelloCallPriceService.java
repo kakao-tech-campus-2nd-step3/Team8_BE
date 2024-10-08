@@ -44,7 +44,7 @@ public class HelloCallPriceService {
             case "금" -> DayOfWeek.FRIDAY;
             case "토" -> DayOfWeek.SATURDAY;
             case "일" -> DayOfWeek.SUNDAY;
-            default -> throw new IllegalArgumentException("잘못된 day 입니다 : " + dayName);
+            default -> throw new IllegalArgumentException("잘못된 dayName 입니다 : " + dayName);
         };
     }
 
