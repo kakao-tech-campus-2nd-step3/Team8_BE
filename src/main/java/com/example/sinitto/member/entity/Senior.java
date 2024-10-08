@@ -29,7 +29,6 @@ public class Senior {
     }
 
     protected Senior() {
-
     }
 
     public void updateSenior(String name, String phoneNumber) {
