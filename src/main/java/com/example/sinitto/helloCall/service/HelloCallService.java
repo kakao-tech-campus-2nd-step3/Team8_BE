@@ -143,25 +143,13 @@ public class HelloCallService {
     }
 
     private void updateTimeSlots(HelloCall helloCall, List<HelloCallDetailUpdateRequest.TimeSlot> updatedTimeSlots) {
-        List<String> updatedDays = updatedTimeSlots.stream()
-                .map(HelloCallDetailUpdateRequest.TimeSlot::dayName)
-                .toList();
-
-        List<TimeSlot> existingTimeSlots = new ArrayList<>(helloCall.getTimeSlots());
-
-        for (TimeSlot existingSlot : existingTimeSlots) {
-            if (!updatedDays.contains(existingSlot.getDayName())) {
-                timeSlotRepository.delete(existingSlot);
-                helloCall.getTimeSlots().remove(existingSlot);
-            }
-        }
+        timeSlotRepository.deleteAllByHelloCall(helloCall);
+        helloCall.getTimeSlots().clear();
 
         for (HelloCallDetailUpdateRequest.TimeSlot updatedSlot : updatedTimeSlots) {
-            TimeSlot timeSlot = timeSlotRepository.findByHelloCallAndDayName(helloCall, updatedSlot.dayName())
-                    .orElse(new TimeSlot(updatedSlot.dayName(), updatedSlot.startTime(), updatedSlot.endTime(), helloCall));
-
-            timeSlot.updateTimeSlot(updatedSlot.startTime(), updatedSlot.endTime());
-            timeSlotRepository.save(timeSlot);
+            TimeSlot newTimeSlot = new TimeSlot(updatedSlot.dayName(), updatedSlot.startTime(), updatedSlot.endTime(), helloCall);
+            timeSlotRepository.save(newTimeSlot);
+            helloCall.getTimeSlots().add(newTimeSlot);
         }
     }
 

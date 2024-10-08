@@ -71,4 +71,19 @@ class TimeSlotRepositoryTest {
 
         assertThat(foundTimeSlot).isNotPresent();
     }
+
+    @Test
+    @DisplayName("HelloCall 기반으로 모든 TimeSlot 삭제 테스트")
+    void deleteAllByHelloCallTest() {
+        TimeSlot timeSlot1 = new TimeSlot("월", LocalTime.of(9, 0), LocalTime.of(10, 0), helloCall);
+        TimeSlot timeSlot2 = new TimeSlot("화", LocalTime.of(10, 0), LocalTime.of(11, 0), helloCall);
+        timeSlotRepository.save(timeSlot1);
+        timeSlotRepository.save(timeSlot2);
+
+        assertThat(timeSlotRepository.findAllByHelloCall(helloCall)).hasSize(2);
+
+        timeSlotRepository.deleteAllByHelloCall(helloCall);
+
+        assertThat(timeSlotRepository.findAllByHelloCall(helloCall)).isEmpty();
+    }
 }
