@@ -1,8 +1,10 @@
 package com.example.sinitto.guardGuideline.dto;
 
+import com.example.sinitto.guardGuideline.entity.GuardGuideline.Type;
+
 public record GuardGuidelineRequest(
         Long seniorId,
-        String type,
+        Type type,
         String title,
         String content
 ) {}

@@ -1,6 +1,8 @@
 package com.example.sinitto.guardGuideline.entity;
 
+import com.example.sinitto.callback.entity.Callback;
 import com.example.sinitto.member.entity.Senior;
+import com.example.sinitto.review.dto.ReviewResponse;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -13,13 +15,52 @@ public class GuardGuideline {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private String content;
+    @Enumerated(EnumType.STRING)
+    private Type type;
     @NotNull
-    private String type;
+    private String title;
+    @NotNull
+    private String content;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "senior_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Senior senior;
 
+    public GuardGuideline() {
+    }
+
+    public GuardGuideline(Type type, String title, String content, Senior senior) {
+        this.type = type;
+        this.title = title;
+        this.content = content;
+        this.senior = senior;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Senior getSenior() {
+        return senior;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public enum Type {
+        TAXI,
+        DELEVERY,
+        PUBLIC_TRANSPORT,
+        TV
+    }
 }
