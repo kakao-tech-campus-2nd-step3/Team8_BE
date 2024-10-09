@@ -2,15 +2,13 @@ package com.example.sinitto.callback.service;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
-import com.example.sinitto.callback.exception.NotAssignedException;
-import com.example.sinitto.callback.exception.NotSinittoException;
+import com.example.sinitto.callback.exception.*;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.callback.util.TwilioHelper;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,13 +52,28 @@ public class CallbackService {
     }
 
     @Transactional
-    public void complete(Long memberId, Long callbackId) {
+    public void pendingComplete(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
 
         Callback callback = getCallbackOrThrow(callbackId);
 
         checkAssignment(memberId, callback.getAssignedMemberId());
+
+        callback.changeStatusToPendingComplete();
+    }
+
+    @Transactional
+    public void complete(Long memberId, Long callbackId) {
+
+        Callback callback = getCallbackOrThrow(callbackId);
+
+        Senior senior = callback.getSenior();
+        Long guardId = senior.getMember().getId();
+
+        if (!guardId.equals(memberId)) {
+            throw new GuardMismatchException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
+        }
 
         callback.changeStatusToComplete();
     }
@@ -94,10 +107,20 @@ public class CallbackService {
         return TwilioHelper.convertMessageToTwiML(SUCCESS_MESSAGE);
     }
 
+    public CallbackResponse getAcceptedCallback(Long memberId) {
+
+        checkAuthorization(memberId);
+
+        Callback callback = callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)
+                .orElseThrow(() -> new NotExistCallbackException("요청한 시니또에 할당된 콜백이 없습니다"));
+
+        return new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId());
+    }
+
     private void checkAuthorization(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("멤버가 아닙니다"));
+                .orElseThrow(() -> new NotMemberException("멤버가 아닙니다"));
 
         if (!member.isSinitto()) {
             throw new NotSinittoException("시니또가 아닙니다");
@@ -107,7 +130,7 @@ public class CallbackService {
     private Callback getCallbackOrThrow(Long callbackId) {
 
         return callbackRepository.findById(callbackId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 콜백입니다"));
+                .orElseThrow(() -> new NotExistCallbackException("존재하지 않는 콜백입니다"));
     }
 
     private void checkAssignment(Long memberId, Long assignedMemberId) {

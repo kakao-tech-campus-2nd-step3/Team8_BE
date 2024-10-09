@@ -2,7 +2,7 @@ package com.example.sinitto.callback.controller;
 
 import com.example.sinitto.callback.exception.ConflictException;
 import com.example.sinitto.callback.exception.ForbiddenException;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.sinitto.callback.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +13,6 @@ import java.net.URI;
 
 @RestControllerAdvice(basePackages = "com.example.sinitto.callback")
 public class CallbackControllerAdvice {
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ProblemDetail> handleEntityNotFoundException(EntityNotFoundException e) {
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setType(URI.create("/errors/bad-request"));
-        problemDetail.setTitle("Bad Request");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
-    }
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ProblemDetail> handleForbiddenException(ForbiddenException e) {
@@ -39,6 +30,15 @@ public class CallbackControllerAdvice {
         problemDetail.setType(URI.create("/errors/conflict"));
         problemDetail.setTitle("Conflict");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleNotFoundException(NotFoundException e) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+        problemDetail.setType(URI.create("/errors/not-found"));
+        problemDetail.setTitle("Not Found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
 }

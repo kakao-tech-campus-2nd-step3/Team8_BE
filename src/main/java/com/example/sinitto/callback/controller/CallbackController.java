@@ -31,7 +31,16 @@ public class CallbackController {
         return ResponseEntity.ok(callbackService.getCallbacks(memberId, pageable));
     }
 
-    @Operation(summary = "콜백 전화 완료", description = "시니또와 시니어의 연락이 끝났을 때 시니어의 요청사항을 수행 여부를 선택하여 처리합니다.")
+    @Operation(summary = "진행 상태인 콜백을 완료 대기 상태로 전환(시니또가)", description = "시니또가 수락한 콜백 수행을 완료했을때 이 api 호출하면 완료 대기 상태로 변합니다.")
+    @PutMapping("/pendingComplete/{callbackId}")
+    public ResponseEntity<Void> pendingCompleteCallback(@MemberId Long memberId,
+                                                        @PathVariable Long callbackId) {
+
+        callbackService.pendingComplete(memberId, callbackId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "완료 대기 상태인 콜백을 완료 상태로 전환(보호자가)", description = "보호자가 완료 대기 상태인 콜백을 완료 확정 시킵니다.")
     @PutMapping("/complete/{callbackId}")
     public ResponseEntity<Void> completeCallback(@MemberId Long memberId,
                                                  @PathVariable Long callbackId) {
@@ -62,5 +71,12 @@ public class CallbackController {
     public ResponseEntity<String> addCallCheck(@RequestParam("From") String fromNumber) {
 
         return ResponseEntity.ok(callbackService.add(fromNumber));
+    }
+
+    @Operation(summary = "시니또에게 현재 할당된 콜백 조회", description = "현재 시니또 본인에게 할당된 콜백을 조회합니다.")
+    @GetMapping("/sinitto/accepted")
+    public ResponseEntity<CallbackResponse> getAcceptedCallback(@MemberId Long memberId) {
+
+        return ResponseEntity.ok(callbackService.getAcceptedCallback(memberId));
     }
 }
