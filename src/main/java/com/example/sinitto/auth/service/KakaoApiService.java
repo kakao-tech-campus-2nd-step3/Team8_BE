@@ -2,6 +2,7 @@ package com.example.sinitto.auth.service;
 
 import com.example.sinitto.auth.dto.KakaoTokenResponse;
 import com.example.sinitto.auth.dto.KakaoUserResponse;
+import com.example.sinitto.auth.exception.KakaoEmailNotFoundException;
 import com.example.sinitto.common.properties.KakaoProperties;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,10 @@ public class KakaoApiService {
 
         ResponseEntity<KakaoUserResponse> response = restTemplate.exchange(
                 url, HttpMethod.POST, request, KakaoUserResponse.class);
+
+        if (response.getBody().kakaoAccount().email().isEmpty()) {
+            throw new KakaoEmailNotFoundException("카카오 계정으로부터 전달받은 이메일이 없습니다.");
+        }
 
         return response.getBody();
     }

@@ -1,9 +1,6 @@
 package com.example.sinitto.auth.controller;
 
-import com.example.sinitto.auth.exception.JWTExpirationException;
-import com.example.sinitto.auth.exception.KakaoRefreshTokenExpirationException;
-import com.example.sinitto.auth.exception.TokenNotFoundException;
-import com.example.sinitto.auth.exception.UnauthorizedException;
+import com.example.sinitto.auth.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +16,7 @@ public class AuthControllerAdvice {
     private static final String JWT_EXPIRATION_URI = "/errors/unauthorized-access-by-jwt-expiration";
     private static final String TOKEN_NOT_FOUND_URI = "/errors/token-not-found";
     private static final String KAKAO_REFRESH_TOKEN_EXPIRATION_URI = "/errors/unauthorized-access-by-kakao-refresh-token-expiration";
+    private static final String KAKAO_EMAIL_NOT_FOUND_URI = "/errors/kakao-email-not-found";
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ProblemDetail> handleUnauthorizedException(UnauthorizedException ex) {
@@ -54,5 +52,14 @@ public class AuthControllerAdvice {
         problemDetail.setType(URI.create(KAKAO_REFRESH_TOKEN_EXPIRATION_URI));
         problemDetail.setTitle("Unauthorized Access By Kakao Refresh Token Expiration");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problemDetail);
+    }
+
+    @ExceptionHandler(KakaoEmailNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleKakaoEmailNotFoundException(KakaoEmailNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+                ex.getMessage());
+        problemDetail.setType(URI.create(KAKAO_EMAIL_NOT_FOUND_URI));
+        problemDetail.setTitle("Kakao Email Not Found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 }
