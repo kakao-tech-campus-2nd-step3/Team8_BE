@@ -80,7 +80,7 @@ public class KakaoApiService {
         ResponseEntity<KakaoUserResponse> response = restTemplate.exchange(
                 url, HttpMethod.POST, request, KakaoUserResponse.class);
 
-        if (response.getBody().kakaoAccount().email().isEmpty()) {
+        if (response.getBody().kakaoAccount().email() == null) {
             throw new KakaoEmailNotFoundException("카카오 계정으로부터 전달받은 이메일이 없습니다.");
         }
 
