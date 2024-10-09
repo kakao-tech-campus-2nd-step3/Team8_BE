@@ -1,8 +1,6 @@
 package com.example.sinitto.guardGuideline.entity;
 
-import com.example.sinitto.callback.entity.Callback;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.review.dto.ReviewResponse;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -37,6 +35,12 @@ public class GuardGuideline {
         this.senior = senior;
     }
 
+    public void updateGuardGuideline(Type type, String title, String content) {
+        this.type = type;
+        this.title = title;
+        this.content = content;
+    }
+
     public Type getType() {
         return type;
     }
@@ -53,14 +57,9 @@ public class GuardGuideline {
         return senior;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public enum Type {
         TAXI,
-        DELEVERY,
-        PUBLIC_TRANSPORT,
-        TV
+        DELIVERY
     }
 }
