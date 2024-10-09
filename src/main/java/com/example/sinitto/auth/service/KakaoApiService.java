@@ -2,6 +2,7 @@ package com.example.sinitto.auth.service;
 
 import com.example.sinitto.auth.dto.KakaoTokenResponse;
 import com.example.sinitto.auth.dto.KakaoUserResponse;
+import com.example.sinitto.auth.exception.KakaoEmailNotFoundException;
 import com.example.sinitto.common.properties.KakaoProperties;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import java.net.URI;
 @Service
 public class KakaoApiService {
 
+    private static final String KAKAO_AUTH_BASE_URL = "https://kauth.kakao.com/oauth";
+    private static final String KAKAO_API_BASE_URL = "https://kapi.kakao.com/v2/user";
     private final RestTemplate restTemplate;
     private final KakaoProperties kakaoProperties;
 
@@ -23,14 +26,15 @@ public class KakaoApiService {
     }
 
     public String getAuthorizationUrl() {
-        return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="
+        return KAKAO_AUTH_BASE_URL + "/authorize?response_type=code&client_id="
                 + kakaoProperties.clientId() + "&redirect_uri=" + kakaoProperties.redirectUri();
     }
 
     public KakaoTokenResponse getAccessToken(String authorizationCode) {
-        String url = "https://kauth.kakao.com/oauth/token";
+        String url = KAKAO_AUTH_BASE_URL + "/token";
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakaoProperties.clientId());
@@ -47,8 +51,7 @@ public class KakaoApiService {
     }
 
     public KakaoTokenResponse refreshAccessToken(String refreshToken) {
-        String url = "https://kauth.kakao.com/oauth/token";
-
+        String url = KAKAO_AUTH_BASE_URL + "/token";
         String body = "grant_type=refresh_token&client_id=" + kakaoProperties.clientId()
                 + "&refresh_token=" + refreshToken;
 
@@ -64,7 +67,7 @@ public class KakaoApiService {
     }
 
     public KakaoUserResponse getUserInfo(String accessToken) {
-        String url = "https://kapi.kakao.com/v2/user/me";
+        String url = KAKAO_API_BASE_URL + "/me";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBearerAuth(accessToken);
@@ -77,7 +80,10 @@ public class KakaoApiService {
         ResponseEntity<KakaoUserResponse> response = restTemplate.exchange(
                 url, HttpMethod.POST, request, KakaoUserResponse.class);
 
+        if (response.getBody().kakaoAccount().email() == null) {
+            throw new KakaoEmailNotFoundException("카카오 계정으로부터 전달받은 이메일이 없습니다.");
+        }
+
         return response.getBody();
     }
-
 }

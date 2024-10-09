@@ -3,15 +3,16 @@ package com.example.sinitto.member.service;
 import com.example.sinitto.auth.dto.KakaoTokenResponse;
 import com.example.sinitto.auth.dto.KakaoUserResponse;
 import com.example.sinitto.auth.dto.LoginResponse;
-import com.example.sinitto.auth.dto.RegisterResponse;
 import com.example.sinitto.auth.service.KakaoApiService;
 import com.example.sinitto.auth.service.KakaoTokenService;
 import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.common.resolver.MemberIdProvider;
+import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.exception.NotUniqueException;
 import com.example.sinitto.member.repository.MemberRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
@@ -28,7 +29,11 @@ public class MemberService implements MemberIdProvider {
     private final KakaoTokenService kakaoTokenService;
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
+
+    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService
+            ,RedisTemplate<String, String> redisTemplate) {
     public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, PointLogRepository pointLogRepository) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
@@ -83,5 +88,16 @@ public class MemberService implements MemberIdProvider {
         String refreshToken = tokenService.generateRefreshToken(email);
 
         return new RegisterResponse(accessToken, refreshToken, isSinitto);
+    }
+
+    public void memberLogout(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버가 없습니다."));
+
+        String storedRefreshToken = redisTemplate.opsForValue().get(member.getEmail());
+
+        if (storedRefreshToken != null) {
+            redisTemplate.delete(member.getEmail());
+        }
     }
 }
