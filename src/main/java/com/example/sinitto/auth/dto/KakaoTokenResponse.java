@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 public record KakaoTokenResponse(
         String accessToken,
         String refreshToken,
-        Integer expiresIn,
-        Integer refreshTokenExpiresIn
+        int expiresIn,
+        int refreshTokenExpiresIn
 
 ) {
 
