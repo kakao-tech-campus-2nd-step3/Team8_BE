@@ -59,8 +59,8 @@ public class HelloCallService {
         Senior senior = seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)
                 .orElseThrow(() -> new SeniorNotFoundException("시니어를 찾을 수 없습니다."));
 
-        if (helloCallRepository.existsBySenior(senior)) {
-            throw new HelloCallAlreadyExistsException("이미 해당 시니어의 안부 전화 서비스가 존재합니다.");
+        if (helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))) {
+            throw new HelloCallAlreadyExistsException("이미 해당 시니어에게 할당되어 대기중 또는 진행중인 안부 전화 서비스가 존재합니다.");
         }
 
         HelloCall helloCall = new HelloCall(helloCallRequest.startDate(), helloCallRequest.endDate(),
@@ -111,8 +111,8 @@ public class HelloCallService {
     }
 
     @Transactional(readOnly = true)
-    public HelloCallDetailResponse readHelloCallDetail(Long HelloCallId) {
-        HelloCall helloCall = helloCallRepository.findById(HelloCallId)
+    public HelloCallDetailResponse readHelloCallDetail(Long helloCallId) {
+        HelloCall helloCall = helloCallRepository.findById(helloCallId)
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         List<HelloCallDetailResponse.TimeSlot> timeSlots = helloCall.getTimeSlots().stream()

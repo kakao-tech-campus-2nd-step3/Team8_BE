@@ -18,5 +18,5 @@ public interface HelloCallRepository extends JpaRepository<HelloCall, Long> {
 
     List<HelloCall> findAllBySeniorIn(List<Senior> seniors);
 
-    boolean existsBySenior(Senior senior);
+    boolean existsBySeniorAndStatusIn(Senior senior, List<HelloCall.Status> statuses);
 }

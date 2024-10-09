@@ -113,7 +113,7 @@ class HelloCallRepositoryTest {
                 "요구사항", senior);
         helloCallRepository.save(helloCall);
 
-        boolean exists = helloCallRepository.existsBySenior(senior);
+        boolean exists = helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING));
 
         assertThat(exists).isTrue();
     }
@@ -124,7 +124,7 @@ class HelloCallRepositoryTest {
         Senior notExistingSenior = new Senior("NonExistent", "01099999999", seniorMember);
         seniorRepository.save(notExistingSenior);
 
-        boolean exists = helloCallRepository.existsBySenior(notExistingSenior);
+        boolean exists = helloCallRepository.existsBySeniorAndStatusIn(notExistingSenior, List.of(HelloCall.Status.WAITING));
 
         assertThat(exists).isFalse();
     }
