@@ -17,7 +17,7 @@ public class GuardGuidelineController {
 
     @Operation(summary = "가이드라인 추가", description = "보호자가 시니어별 가이드라인을 추가합니다.")
     @PostMapping
-    public ResponseEntity<String> addGuideline(@RequestBody GuardGuidelineRequest request) {
+    public ResponseEntity<String> addGuideline(@RequestBody GuardGuidelineRequest guardGuidelineRequest) {
         // 임시 응답
         return ResponseEntity.ok("가이드라인이 추가되었습니다.");
     }
@@ -31,7 +31,7 @@ public class GuardGuidelineController {
 
     @Operation(summary = "가이드라인 수정", description = "보호자가 특정 가이드라인을 수정할 때 필요합니다.")
     @PutMapping("/{guidelineId}")
-    public ResponseEntity<String> updateGuideline(@PathVariable Long guidelineId, @RequestBody GuardGuidelineRequest request) {
+    public ResponseEntity<String> updateGuideline(@PathVariable Long guidelineId, @RequestBody GuardGuidelineRequest guardGuidelineRequest) {
         // 임시 응답
         return ResponseEntity.ok("가이드라인이 수정되었습니다.");
     }
