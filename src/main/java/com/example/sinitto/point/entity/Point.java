@@ -20,4 +20,12 @@ public class Point {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+    public Point(int price, Member member) {
+        this.price = price;
+        this.member = member;
+    }
+
+    protected Point() {
+
+    }
 }
