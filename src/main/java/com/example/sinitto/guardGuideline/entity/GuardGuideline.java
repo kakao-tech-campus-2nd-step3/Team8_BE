@@ -7,7 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-public class GuardGuideLine {
+public class GuardGuideline {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
