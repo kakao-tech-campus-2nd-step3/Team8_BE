@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class PointLog {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -103,6 +102,21 @@ public class PointLog {
         CHARGE_REQUEST,
         CHARGE_WAITING,
         CHARGE_COMPLETE
+    }
+
+    public enum Content {
+        COMPLETE_CALLBACK_AND_EARN("콜백 완료로 인한 포인트 적립"),
+        COMPLETE_HELLO_CALL_AND_EARN("안부 전화 완료로 인한 포인트 적립");
+
+        private final String message;
+
+        Content(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
 }

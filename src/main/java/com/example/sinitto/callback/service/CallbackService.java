@@ -9,6 +9,11 @@ import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.entity.PointLog;
+import com.example.sinitto.point.exception.PointNotFoundException;
+import com.example.sinitto.point.repository.PointLogRepository;
+import com.example.sinitto.point.repository.PointRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,16 +24,21 @@ import java.util.Optional;
 @Service
 public class CallbackService {
 
+    public static final int CALLBACK_PRICE = 1500;
     private static final String SUCCESS_MESSAGE = "감사합니다. 잠시만 기다려주세요.";
     private static final String FAIL_MESSAGE = "등록된 사용자가 아닙니다. 서비스 이용이 불가합니다.";
     private final CallbackRepository callbackRepository;
     private final MemberRepository memberRepository;
     private final SeniorRepository seniorRepository;
+    private final PointRepository pointRepository;
+    private final PointLogRepository pointLogRepository;
 
-    public CallbackService(CallbackRepository callbackRepository, MemberRepository memberRepository, SeniorRepository seniorRepository) {
+    public CallbackService(CallbackRepository callbackRepository, MemberRepository memberRepository, SeniorRepository seniorRepository, PointRepository pointRepository, PointLogRepository pointLogRepository) {
         this.callbackRepository = callbackRepository;
         this.memberRepository = memberRepository;
         this.seniorRepository = seniorRepository;
+        this.pointRepository = pointRepository;
+        this.pointLogRepository = pointLogRepository;
     }
 
     @Transactional(readOnly = true)
@@ -74,6 +84,11 @@ public class CallbackService {
         if (!guardId.equals(memberId)) {
             throw new GuardMismatchException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
         }
+
+        Point sinittoPoint = pointRepository.findByMemberId(callback.getAssignedMemberId())
+                .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
+        sinittoPoint.earn(CALLBACK_PRICE);
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), sinittoPoint.getMember(), CALLBACK_PRICE, PointLog.Status.EARN));
 
         callback.changeStatusToComplete();
     }

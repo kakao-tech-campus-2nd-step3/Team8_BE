@@ -19,6 +19,11 @@ import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.entity.Sinitto;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.entity.PointLog;
+import com.example.sinitto.point.exception.PointNotFoundException;
+import com.example.sinitto.point.repository.PointLogRepository;
+import com.example.sinitto.point.repository.PointRepository;
 import com.example.sinitto.sinitto.exception.SinittoNotFoundException;
 import com.example.sinitto.sinitto.repository.SinittoRepository;
 import org.springframework.data.domain.Page;
@@ -41,17 +46,21 @@ public class HelloCallService {
     private final MemberRepository memberRepository;
     private final SinittoRepository sinittoRepository;
     private final HelloCallTimeLogRepository helloCallTimeLogRepository;
+    private final PointRepository pointRepository;
+    private final PointLogRepository pointLogRepository;
 
 
     public HelloCallService(HelloCallRepository helloCallRepository, TimeSlotRepository timeSlotRepository,
                             SeniorRepository seniorRepository, MemberRepository memberRepository, SinittoRepository sinittoRepository,
-                            HelloCallTimeLogRepository helloCallTimeLogRepository) {
+                            HelloCallTimeLogRepository helloCallTimeLogRepository, PointRepository pointRepository, PointLogRepository pointLogRepository) {
         this.helloCallRepository = helloCallRepository;
         this.timeSlotRepository = timeSlotRepository;
         this.seniorRepository = seniorRepository;
         this.memberRepository = memberRepository;
         this.sinittoRepository = sinittoRepository;
         this.helloCallTimeLogRepository = helloCallTimeLogRepository;
+        this.pointRepository = pointRepository;
+        this.pointLogRepository = pointLogRepository;
     }
 
     @Transactional
@@ -224,9 +233,10 @@ public class HelloCallService {
 
         helloCall.changeStatusToComplete();
 
-        Sinitto earnedSinitto = helloCall.getSinitto();
-
-        //earnedSinitto에게 포인트 지급 로직 필요합니다.
+        Point sinittoPoint = pointRepository.findByMember(helloCall.getSinitto().getMember())
+                .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
+        sinittoPoint.earn(helloCall.getPrice());
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), sinittoPoint.getMember(), helloCall.getPrice(), PointLog.Status.EARN));
     }
 
 

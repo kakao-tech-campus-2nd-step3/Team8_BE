@@ -32,4 +32,13 @@ public class Point {
     public int getPrice() {
         return price;
     }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void earn(int earnedPrice) {
+        this.price += earnedPrice;
+    }
+
 }
