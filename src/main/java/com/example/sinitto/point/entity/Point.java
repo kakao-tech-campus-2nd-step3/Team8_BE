@@ -28,4 +28,8 @@ public class Point {
     protected Point() {
 
     }
+
+    public int getPrice() {
+        return price;
+    }
 }
