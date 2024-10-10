@@ -1,6 +1,7 @@
 package com.example.sinitto.point.entity;
 
 import com.example.sinitto.member.entity.Member;
+import com.example.sinitto.point.exception.InvalidPointStatusException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -14,9 +15,12 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class PointLog {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
+    private String content;
     @NotNull
     private int price;
     @CreatedDate
@@ -24,8 +28,6 @@ public class PointLog {
     @NotNull
     @Enumerated(EnumType.STRING)
     private PointLog.Status status;
-    @NotNull
-    String content;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @NotNull
@@ -42,6 +44,27 @@ public class PointLog {
 
     protected PointLog() {
 
+    }
+
+    public void changeStatusToChargeWaiting() {
+
+        checkStatusChange(Status.CHARGE_REQUEST);
+
+        this.status = Status.CHARGE_WAITING;
+    }
+
+    public void changeStatusToChargeComplete() {
+
+        checkStatusChange(Status.CHARGE_WAITING);
+
+        this.status = Status.CHARGE_COMPLETE;
+    }
+
+    private void checkStatusChange(Status wantStatus) {
+
+        if (this.status != wantStatus) {
+            throw new InvalidPointStatusException(String.format("현재 %s 상태입니다. 이 상태에서는 %s 로의 전환이 불가합니다.", this.status, wantStatus));
+        }
     }
 
     public Long getId() {

@@ -6,6 +6,7 @@ import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointLogResponse;
 import com.example.sinitto.point.dto.PointResponse;
 import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.exception.PointNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
@@ -49,5 +50,13 @@ public class PointService {
                         pointLog.getPrice(),
                         pointLog.getStatus()
                 ));
+    }
+
+    public void savePointChargeRequest(Long memberId, int price) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("멤버 없음"));
+
+        pointLogRepository.save(new PointLog("포인트 충전 요청", member, price, PointLog.Status.CHARGE_REQUEST));
     }
 }

@@ -5,7 +5,6 @@ import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointLogResponse;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.repository.PointLogRepository;
-import com.example.sinitto.point.repository.PointRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,8 +27,6 @@ class PointServiceTest {
 
     @Mock
     MemberRepository memberRepository;
-    @Mock
-    PointRepository pointRepository;
     @Mock
     PointLogRepository pointLogRepository;
     @InjectMocks
@@ -58,6 +55,6 @@ class PointServiceTest {
         //then
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
-        assertEquals(PointLog.Status.EARN, result.getContent().get(0).status());
+        assertEquals(PointLog.Status.EARN, result.getContent().getFirst().status());
     }
 }
