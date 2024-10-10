@@ -41,6 +41,10 @@ public class GuardGuideline {
         this.content = content;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Type getType() {
         return type;
     }
