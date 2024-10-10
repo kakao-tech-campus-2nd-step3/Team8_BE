@@ -22,11 +22,64 @@ public class PointLog {
     @CreatedDate
     private LocalDateTime postTime;
     @NotNull
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private PointLog.Status status;
+    @NotNull
+    String content;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
+
+
+    public PointLog(String content, Member member, int price, Status status) {
+        this.content = content;
+        this.member = member;
+        this.price = price;
+        this.status = status;
+    }
+
+    protected PointLog() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public LocalDateTime getPostTime() {
+        return postTime;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public enum Status {
+        EARN,
+        SPEND_RESERVE,
+        SPEND_COMPLETE,
+        SPEND_CANCEL,
+        REFUND,
+        WITHDRAW_REQUEST,
+        WITHDRAW_WAITING,
+        WITHDRAW_COMPLETE,
+        CHARGE_REQUEST,
+        CHARGE_WAITING,
+        CHARGE_COMPLETE
+    }
 
 }
