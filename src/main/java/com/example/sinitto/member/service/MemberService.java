@@ -12,10 +12,9 @@ import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.exception.NotUniqueException;
 import com.example.sinitto.member.repository.MemberRepository;
-import org.springframework.data.redis.core.RedisTemplate;
 import com.example.sinitto.point.entity.Point;
-import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,19 +27,15 @@ public class MemberService implements MemberIdProvider {
     private final KakaoApiService kakaoApiService;
     private final KakaoTokenService kakaoTokenService;
     private final PointRepository pointRepository;
-    private final PointLogRepository pointLogRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-
-    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService
-            ,RedisTemplate<String, String> redisTemplate) {
-    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, PointLogRepository pointLogRepository) {
+    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, RedisTemplate<String, String> redisTemplate) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.kakaoApiService = kakaoApiService;
         this.kakaoTokenService = kakaoTokenService;
         this.pointRepository = pointRepository;
-        this.pointLogRepository = pointLogRepository;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
