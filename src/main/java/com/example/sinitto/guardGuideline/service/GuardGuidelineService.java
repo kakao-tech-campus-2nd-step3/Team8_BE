@@ -32,12 +32,12 @@ public class GuardGuidelineService {
         Senior senior = seniorRepository.findById(guardguidelineRequest.seniorId()).orElseThrow(
                 () -> new SeniorNotFoundException("시니어를 찾을 수 없습니다.")
         );
+        
         guardGuidelineRepository.save(new GuardGuideline(guardguidelineRequest.type(), guardguidelineRequest.title(), guardguidelineRequest.content(), senior));
     }
 
     @Transactional(readOnly = true)
     public List<GuardGuidelineResponse> readAllGuardGuidelinesByCategory(Long seniorId, Type type){
-
         List<GuardGuideline> guardGuidelines = guardGuidelineRepository.findBySeniorIdAndType(seniorId, type);
 
         return guardGuidelines.stream()
@@ -50,12 +50,12 @@ public class GuardGuidelineService {
         GuardGuideline guardGuideline = guardGuidelineRepository.findById(guidelineId).orElseThrow(
                 ()-> new GuardGuidelineNotFoundException("해당 가이드라인이 존재하지 않습니다.")
         );
+
         guardGuideline.updateGuardGuideline(guardGuidelineRequest.type(), guardGuidelineRequest.title(), guardGuidelineRequest.content());
     }
 
     @Transactional(readOnly = true)
     public List<GuardGuidelineResponse> readAllGuardGuidelinesBySenior(Long seniorId){
-
         List<GuardGuideline> guardGuidelines = guardGuidelineRepository.findBySeniorId(seniorId);
 
         return guardGuidelines.stream()
@@ -68,6 +68,7 @@ public class GuardGuidelineService {
         GuardGuideline guardGuideline = guardGuidelineRepository.findById(guidelineId).orElseThrow(
                 ()-> new GuardGuidelineNotFoundException("해당 가이드라인이 존재하지 않습니다.")
         );
+
         return new GuardGuidelineResponse(guardGuideline.getType(), guardGuideline.getTitle(), guardGuideline.getContent());
     }
 
