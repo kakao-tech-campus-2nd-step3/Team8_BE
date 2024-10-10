@@ -6,14 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public record HelloCallDetailResponse(
+public record HelloCallPriceRequest(
         LocalDate startDate,
         LocalDate endDate,
         List<TimeSlot> timeSlots,
-        String requirement,
-        String seniorName,
-        String seniorPhoneNumber,
-        int price
+        int serviceTime
 ) {
     public record TimeSlot(
             String dayName,

@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface SinittoRepository extends JpaRepository<Sinitto, Long> {
     Optional<Sinitto> findByMemberId(Long memberId);
 
+    boolean existsByMemberId(Long memberId);
+
 }

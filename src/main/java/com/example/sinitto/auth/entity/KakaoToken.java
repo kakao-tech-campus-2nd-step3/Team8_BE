@@ -24,28 +24,28 @@ public class KakaoToken {
     @NotNull
     private String refreshToken;
     @NotNull
-    private int expires_in;
+    private int expiresIn;
     @NotNull
-    private int refresh_token_expires_in;
+    private int refreshTokenExpiresIn;
 
     public KakaoToken(String memberEmail, String accessToken, String refreshToken,
-                      int expires_in, int refresh_token_expires_in) {
+                      int expiresIn, int refreshTokenExpiresIn) {
         this.memberEmail = memberEmail;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.expires_in = expires_in;
-        this.refresh_token_expires_in = refresh_token_expires_in;
+        this.expiresIn = expiresIn;
+        this.refreshTokenExpiresIn = refreshTokenExpiresIn;
     }
 
     protected KakaoToken() {
     }
 
     public boolean isAccessTokenExpired() {
-        return LocalDateTime.now().isAfter(issuedAt.plusSeconds(expires_in));
+        return LocalDateTime.now().isAfter(issuedAt.plusSeconds(expiresIn));
     }
 
     public boolean isRefreshTokenExpired() {
-        return LocalDateTime.now().isAfter(issuedAt.plusSeconds(refresh_token_expires_in));
+        return LocalDateTime.now().isAfter(issuedAt.plusSeconds(refreshTokenExpiresIn));
     }
 
     public String getAccessToken() {
@@ -65,11 +65,11 @@ public class KakaoToken {
     }
 
     public void updateKakaoToken(String accessToken, String refreshToken,
-                                 int expires_in, int refresh_token_expires_in) {
+                                 int expiresIn, int refreshTokenExpiresIn) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.expires_in = expires_in;
-        this.refresh_token_expires_in = refresh_token_expires_in;
+        this.expiresIn = expiresIn;
+        this.refreshTokenExpiresIn = refreshTokenExpiresIn;
         this.issuedAt = LocalDateTime.now();
     }
 }
