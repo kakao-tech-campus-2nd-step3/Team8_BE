@@ -32,7 +32,7 @@ public class GuardGuidelineService {
         Senior senior = seniorRepository.findById(guardguidelineRequest.seniorId()).orElseThrow(
                 () -> new SeniorNotFoundException("시니어를 찾을 수 없습니다.")
         );
-        
+
         guardGuidelineRepository.save(new GuardGuideline(guardguidelineRequest.type(), guardguidelineRequest.title(), guardguidelineRequest.content(), senior));
     }
 
