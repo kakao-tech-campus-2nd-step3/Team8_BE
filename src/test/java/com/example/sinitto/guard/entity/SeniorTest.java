@@ -14,7 +14,7 @@ public class SeniorTest {
     private Senior senior;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         member = new Member(
                 "test",
                 "01012345678",
@@ -26,7 +26,7 @@ public class SeniorTest {
 
     @Test
     @DisplayName("Senior 엔티티 생성자 테스트")
-    void counstructorTest(){
+    void counstructorTest() {
         assertThat(senior.getId()).isNull();
         assertThat(senior.getName()).isEqualTo("testSenior");
         assertThat(senior.getPhoneNumber()).isEqualTo("01000000000");
@@ -35,7 +35,7 @@ public class SeniorTest {
 
     @Test
     @DisplayName("updateSenior 메소드 테스트")
-    void updateSeniorTest(){
+    void updateSeniorTest() {
         senior.updateSenior("updateSenior", "01011111111");
         assertThat(senior.getName()).isEqualTo("updateSenior");
         assertThat(senior.getPhoneNumber()).isEqualTo("01011111111");
@@ -43,7 +43,7 @@ public class SeniorTest {
 
     @Test
     @DisplayName("mapToResponse 메소드 테스트")
-    void mapToResponseTest(){
+    void mapToResponseTest() {
         SeniorResponse response = senior.mapToResponse();
         assertThat(response.seniorId()).isNull();
         assertThat(response.seniorName()).isEqualTo(senior.getName());

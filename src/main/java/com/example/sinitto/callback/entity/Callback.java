@@ -2,6 +2,7 @@ package com.example.sinitto.callback.entity;
 
 import com.example.sinitto.callback.exception.AlreadyCompleteException;
 import com.example.sinitto.callback.exception.AlreadyInProgressException;
+import com.example.sinitto.callback.exception.AlreadyPendingCompleteException;
 import com.example.sinitto.callback.exception.AlreadyWaitingException;
 import com.example.sinitto.member.entity.Senior;
 import jakarta.persistence.*;
@@ -77,10 +78,19 @@ public class Callback {
         this.status = Status.IN_PROGRESS;
     }
 
-    public void changeStatusToComplete() {
+    public void changeStatusToPendingComplete() {
 
         if (this.status != Status.IN_PROGRESS) {
-            throwStatusException("완료 상태로 변경은 진행 상태에서만 가능합니다.");
+            throwStatusException("완료 대기 상태로 변경은 진행 상태에서만 가능합니다.");
+        }
+
+        this.status = Status.PENDING_COMPLETE;
+    }
+
+    public void changeStatusToComplete() {
+
+        if (this.status != Status.PENDING_COMPLETE) {
+            throwStatusException("완료 상태로 변경은 완료 대기 상태에서만 가능합니다.");
         }
 
         this.status = Status.COMPLETE;
@@ -88,6 +98,9 @@ public class Callback {
 
     private void throwStatusException(String message) {
 
+        if (this.status == Status.PENDING_COMPLETE) {
+            throw new AlreadyPendingCompleteException("완료 대기 상태의 콜백 입니다. " + message);
+        }
         if (this.status == Status.COMPLETE) {
             throw new AlreadyCompleteException("완료 상태의 콜백 입니다. " + message);
         }
@@ -111,6 +124,10 @@ public class Callback {
         return status.name();
     }
 
+    public Senior getSenior() {
+        return senior;
+    }
+
     public String getSeniorName() {
         return senior.getName();
     }
@@ -126,6 +143,7 @@ public class Callback {
     public enum Status {
         WAITING,
         IN_PROGRESS,
+        PENDING_COMPLETE,
         COMPLETE
     }
 

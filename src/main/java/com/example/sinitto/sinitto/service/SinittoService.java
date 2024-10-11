@@ -9,9 +9,8 @@ import com.example.sinitto.sinitto.dto.SinittoRequest;
 import com.example.sinitto.sinitto.dto.SinittoResponse;
 import com.example.sinitto.sinitto.exception.SinittoNotFoundException;
 import com.example.sinitto.sinitto.repository.SinittoRepository;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class SinittoService {
 
 
     @Transactional
-    public void createSinittoBankInfo(Long memberId, SinittoBankRequest sinittoBankRequest){
+    public void createSinittoBankInfo(Long memberId, SinittoBankRequest sinittoBankRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
@@ -37,7 +36,7 @@ public class SinittoService {
     }
 
     @Transactional(readOnly = true)
-    public SinittoResponse readSinitto(Long memberId){
+    public SinittoResponse readSinitto(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
@@ -48,43 +47,43 @@ public class SinittoService {
     }
 
     @Transactional
-    public void updateSinitto(Long memberId, SinittoRequest sinittoRequest){
+    public void updateSinitto(Long memberId, SinittoRequest sinittoRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                ()->new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
         member.updateMember(sinittoRequest.name(), sinittoRequest.email(), sinittoRequest.phoneNumber());
     }
 
     @Transactional
-    public void updateSinittoBankInfo(Long memberId, SinittoBankRequest sinittoBankRequest){
+    public void updateSinittoBankInfo(Long memberId, SinittoBankRequest sinittoBankRequest) {
         Sinitto sinitto = sinittoRepository.findByMemberId(memberId).orElseThrow(
-                ()-> new SinittoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
+                () -> new SinittoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
         );
         sinitto.updateSinitto(sinittoBankRequest.bankName(), sinittoBankRequest.accountNumber());
     }
 
     @Transactional
-    public void deleteSinitto(Long memberId){
+    public void deleteSinitto(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                ()->new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
         memberRepository.delete(member);
     }
 
     @Transactional
-    public void deleteSinittoBankInfo(Long memberId){
+    public void deleteSinittoBankInfo(Long memberId) {
         Sinitto sinitto = sinittoRepository.findByMemberId(memberId).orElseThrow(
-                ()->new SinittoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
+                () -> new SinittoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
         );
         sinittoRepository.delete(sinitto);
     }
 
     @Transactional
-    public List<SinittoResponse> readAllSinitto(){
+    public List<SinittoResponse> readAllSinitto() {
         List<Sinitto> sinittos = sinittoRepository.findAll();
 
         return sinittos.stream()
-                .map(m -> new SinittoResponse(m.getMember().getName(), m.getMember().getPhoneNumber(), m.getMember().getEmail(), m.getAccountNumber(),m.getBankName()))
+                .map(m -> new SinittoResponse(m.getMember().getName(), m.getMember().getPhoneNumber(), m.getMember().getEmail(), m.getAccountNumber(), m.getBankName()))
                 .toList();
     }
 
