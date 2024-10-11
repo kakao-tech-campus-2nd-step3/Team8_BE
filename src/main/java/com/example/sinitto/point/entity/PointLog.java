@@ -66,6 +66,27 @@ public class PointLog {
         this.status = Status.CHARGE_FAIL;
     }
 
+    public void changeStatusToWithdrawWaiting() {
+
+        checkStatusChange(Status.WITHDRAW_REQUEST);
+
+        this.status = Status.WITHDRAW_WAITING;
+    }
+
+    public void changeStatusToWithdrawComplete() {
+
+        checkStatusChange(Status.WITHDRAW_WAITING);
+
+        this.status = Status.WITHDRAW_COMPLETE;
+    }
+
+    public void changeStatusToWithdrawFail() {
+
+        checkStatusChange(Status.WITHDRAW_WAITING);
+
+        this.status = Status.WITHDRAW_FAIL_AND_RESTORE_POINT;
+    }
+
     private void checkStatusChange(Status wantStatus) {
 
         if (this.status != wantStatus) {
@@ -105,6 +126,7 @@ public class PointLog {
         WITHDRAW_REQUEST,
         WITHDRAW_WAITING,
         WITHDRAW_COMPLETE,
+        WITHDRAW_FAIL_AND_RESTORE_POINT,
         CHARGE_REQUEST,
         CHARGE_WAITING,
         CHARGE_COMPLETE,

@@ -43,9 +43,11 @@ public class PointController {
 
     @Operation(summary = "포인트 출금 요청", description = "시니또가 포인트 출금을 요청합니다.")
     @PostMapping("/withdraw")
-    public ResponseEntity<String> requestPointWithdraw(@RequestBody PointRequest request) {
-        // 임시 응답
-        return ResponseEntity.ok("포인트 출금 요청이 완료되었습니다.");
+    public ResponseEntity<Void> savePointWithdrawRequest(@MemberId Long memberId,
+                                                         @RequestBody PointRequest request) {
+
+        pointService.savePointWithdrawRequest(memberId, request.price());
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "포인트 로그 조회", description = "포인트 로그를 조회합니다.")

@@ -56,4 +56,42 @@ public class PointAdminService {
 
         pointLog.changeStatusToChargeFail();
     }
+
+    @Transactional(readOnly = true)
+    public List<PointLog> readAllPointWithdrawRequest() {
+
+        return pointLogRepository.findAllByStatusIn(List.of(PointLog.Status.WITHDRAW_REQUEST, PointLog.Status.WITHDRAW_WAITING));
+    }
+
+    @Transactional
+    public void changeWithdrawLogToWaiting(Long pointLogId) {
+
+        PointLog pointLog = pointLogRepository.findById(pointLogId)
+                .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다."));
+
+        pointLog.changeStatusToWithdrawWaiting();
+    }
+
+    @Transactional
+    public void changeWithdrawLogToComplete(Long pointLogId) {
+
+        PointLog pointLog = pointLogRepository.findById(pointLogId)
+                .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다."));
+
+        pointLog.changeStatusToWithdrawComplete();
+    }
+
+    @Transactional
+    public void changeWithdrawLogToFail(Long pointLogId) {
+
+        PointLog pointLog = pointLogRepository.findById(pointLogId)
+                .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다."));
+
+        Point point = pointRepository.findByMember(pointLog.getMember())
+                .orElseThrow(() -> new PointLogNotFoundException("포인트를 찾을 수 없습니다."));
+
+        point.earn(pointLog.getPrice());
+
+        pointLog.changeStatusToWithdrawFail();
+    }
 }

@@ -38,6 +38,7 @@
                       th:if="${logWithDepositMessage.status.toString()} == 'CHARGE_WAITING'">
                     <button type="submit">포인트 지급 & 완료 상태로 변경</button>
                 </form>
+
                 <!-- 상태가 CHARGE_WAITING일 때 -->
                 <form method="post"
                       th:action="@{/admin/point/charge/fail/{pointLogId}(pointLogId=${logWithDepositMessage.pointLogId})}"

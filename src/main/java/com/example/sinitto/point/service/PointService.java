@@ -8,6 +8,7 @@ import com.example.sinitto.point.dto.PointLogResponse;
 import com.example.sinitto.point.dto.PointResponse;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
+import com.example.sinitto.point.exception.NotEnoughPointException;
 import com.example.sinitto.point.exception.PointNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
@@ -65,11 +66,21 @@ public class PointService {
         return new PointChargeResponse(member.getDepositMessage());
     }
 
-    public void saverPointWithdrawRequest(Long memberId, int price) {
+    @Transactional
+    public void savePointWithdrawRequest(Long memberId, int price) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("멤버 없음"));
+                .orElseThrow(() -> new MemberNotFoundException("요청한 멤버를 찾을 수 없습니다"));
 
-        pointLogRepository.save(new PointLog("포인트 충전 요청", member, price, PointLog.Status.CHARGE_REQUEST));
+        Point point = pointRepository.findByMember(member)
+                .orElseThrow(() -> new PointNotFoundException("요청한 멤버의 포인트를 찾을 수 없습니다"));
+
+        if(!point.isSufficientForDeduction(price)){
+            throw new NotEnoughPointException(String.format("보유한 포인트(%d) 보다 더 많은 포인트에 대한 출금요청입니다", point.getPrice()));
+        }
+
+        point.deduct(price);
+
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, price, PointLog.Status.WITHDRAW_REQUEST));
     }
 }
