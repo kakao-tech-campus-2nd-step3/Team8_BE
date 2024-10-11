@@ -21,6 +21,7 @@ import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
+import com.example.sinitto.point.exception.NotEnoughPointException;
 import com.example.sinitto.point.exception.PointNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
@@ -81,6 +82,23 @@ public class HelloCallService {
                     timeSlotRequest.endTime(), savedHelloCall);
             timeSlotRepository.save(timeSlot);
         }
+
+        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
+                .orElseThrow(() -> new PointNotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        if (!point.isSufficientForDeduction(helloCall.getPrice())) {
+            throw new NotEnoughPointException("포인트가 부족합니다.");
+        }
+
+        point.deduct(helloCall.getPrice());
+
+        pointLogRepository.save(
+                new PointLog(
+                        PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(),
+                        senior.getMember(),
+                        helloCall.getPrice(),
+                        PointLog.Status.SPEND_COMPLETE
+                ));
     }
 
     @Transactional
@@ -176,6 +194,19 @@ public class HelloCallService {
 
         helloCall.checkStatusIsWaiting();
         helloCallRepository.delete(helloCall);
+
+        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
+                .orElseThrow(() -> new PointNotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        point.earn(helloCall.getPrice());
+
+        pointLogRepository.save(
+                new PointLog(
+                        PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(),
+                        member,
+                        helloCall.getPrice(),
+                        PointLog.Status.SPEND_CANCEL)
+        );
     }
 
     @Transactional(readOnly = true)
@@ -236,7 +267,13 @@ public class HelloCallService {
         Point sinittoPoint = pointRepository.findByMember(helloCall.getSinitto().getMember())
                 .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
         sinittoPoint.earn(helloCall.getPrice());
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), sinittoPoint.getMember(), helloCall.getPrice(), PointLog.Status.EARN));
+        pointLogRepository.save(
+                new PointLog(
+                        PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(),
+                        sinittoPoint.getMember(),
+                        helloCall.getPrice(),
+                        PointLog.Status.EARN)
+        );
     }
 
 

@@ -1,6 +1,6 @@
 package com.example.sinitto.point.controller;
 
-import com.example.sinitto.point.exception.InvalidPointStatusException;
+import com.example.sinitto.point.exception.InvalidPointLogStatusException;
 import com.example.sinitto.point.exception.PointNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -22,8 +22,8 @@ public class PointAdminControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
-    @ExceptionHandler(InvalidPointStatusException.class)
-    public ResponseEntity<ProblemDetail> handleInvalidPointStatusException(InvalidPointStatusException e) {
+    @ExceptionHandler(InvalidPointLogStatusException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidPointStatusException(InvalidPointLogStatusException e) {
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
         problemDetail.setType(URI.create("/errors/conflict"));

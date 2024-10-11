@@ -1,7 +1,7 @@
 package com.example.sinitto.point.entity;
 
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.point.exception.InvalidPointStatusException;
+import com.example.sinitto.point.exception.InvalidPointLogStatusException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -62,7 +62,7 @@ public class PointLog {
     private void checkStatusChange(Status wantStatus) {
 
         if (this.status != wantStatus) {
-            throw new InvalidPointStatusException(String.format("현재 %s 상태입니다. 이 상태에서는 %s 로의 전환이 불가합니다.", this.status, wantStatus));
+            throw new InvalidPointLogStatusException(String.format("현재 %s 상태입니다. 이 상태에서는 %s 로의 전환이 불가합니다.", this.status, wantStatus));
         }
     }
 
@@ -92,7 +92,6 @@ public class PointLog {
 
     public enum Status {
         EARN,
-        SPEND_RESERVE,
         SPEND_COMPLETE,
         SPEND_CANCEL,
         REFUND,
@@ -106,7 +105,10 @@ public class PointLog {
 
     public enum Content {
         COMPLETE_CALLBACK_AND_EARN("콜백 완료로 인한 포인트 적립"),
-        COMPLETE_HELLO_CALL_AND_EARN("안부 전화 완료로 인한 포인트 적립");
+        COMPLETE_HELLO_CALL_AND_EARN("안부 전화 완료로 인한 포인트 적립"),
+        SPEND_COMPLETE_CALLBACK("콜백 신청으로 인한 포인트 차감"),
+        SPEND_COMPLETE_HELLO_CALL("안부전화 신청으로 인한 포인트 차감"),
+        SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소로 인한 포인트 환불");
 
         private final String message;
 

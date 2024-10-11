@@ -2,7 +2,7 @@ package com.example.sinitto.point.entity;
 
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.point.exception.InvalidPointStatusException;
+import com.example.sinitto.point.exception.InvalidPointLogStatusException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,13 +41,13 @@ class PointLogTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"EARN", "SPEND_RESERVE", "SPEND_COMPLETE", "SPEND_CANCEL", "REFUND", "WITHDRAW_REQUEST", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE", "CHARGE_WAITING", "CHARGE_COMPLETE"})
+    @ValueSource(strings = {"EARN", "SPEND_COMPLETE", "SPEND_CANCEL", "REFUND", "WITHDRAW_REQUEST", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE", "CHARGE_WAITING", "CHARGE_COMPLETE"})
     @DisplayName("포인트 로그 ChargeWaiting 상태로 전환 실패")
     void changeStatusToChargeWaiting_fail(String initialStatus) {
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
         PointLog pointLog = pointLogRepository.save(new PointLog("content", member, 1000, status));
 
-        assertThrows(InvalidPointStatusException.class, pointLog::changeStatusToChargeWaiting);
+        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToChargeWaiting);
     }
 
     @Test
@@ -61,12 +61,12 @@ class PointLogTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"EARN", "SPEND_RESERVE", "SPEND_COMPLETE", "SPEND_CANCEL", "REFUND", "WITHDRAW_REQUEST", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE", "CHARGE_REQUEST", "CHARGE_COMPLETE"})
+    @ValueSource(strings = {"EARN", "SPEND_COMPLETE", "SPEND_CANCEL", "REFUND", "WITHDRAW_REQUEST", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE", "CHARGE_REQUEST", "CHARGE_COMPLETE"})
     @DisplayName("포인트 로그 ChargeComplete 상태로 전환 실패")
     void changeStatusToChargeComplete_fail(String initialStatus) {
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
         PointLog pointLog = pointLogRepository.save(new PointLog("content", member, 1000, status));
 
-        assertThrows(InvalidPointStatusException.class, pointLog::changeStatusToChargeComplete);
+        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToChargeComplete);
     }
 }

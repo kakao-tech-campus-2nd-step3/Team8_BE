@@ -37,8 +37,21 @@ public class Point {
         return member;
     }
 
-    public void earn(int earnedPrice) {
-        this.price += earnedPrice;
+    public void earn(int priceToAdd) {
+
+        this.price += priceToAdd;
     }
 
+    public void deduct(int priceToDeduct) {
+
+        this.price -= priceToDeduct;
+    }
+
+    public boolean isSufficientForDeduction(int priceToDeduct) {
+
+        if (this.price < priceToDeduct) {
+            return false;
+        }
+        return true;
+    }
 }

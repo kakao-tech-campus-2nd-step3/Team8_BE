@@ -19,14 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 public class CallbackService {
 
     public static final int CALLBACK_PRICE = 1500;
     private static final String SUCCESS_MESSAGE = "감사합니다. 잠시만 기다려주세요.";
-    private static final String FAIL_MESSAGE = "등록된 사용자가 아닙니다. 서비스 이용이 불가합니다.";
+    private static final String FAIL_MESSAGE_NOT_ENROLLED = "등록된 사용자가 아닙니다. 서비스 이용이 불가합니다.";
+    private static final String FAIL_MESSAGE_NOT_ENOUGH_POINT = "포인트가 부족합니다. 서비스 이용이 불가합니다.";
     private final CallbackRepository callbackRepository;
     private final MemberRepository memberRepository;
     private final SeniorRepository seniorRepository;
@@ -106,20 +105,43 @@ public class CallbackService {
         callback.changeStatusToWaiting();
     }
 
+    @Transactional
     public String add(String fromNumber) {
 
         String phoneNumber = TwilioHelper.trimPhoneNumber(fromNumber);
 
-        Optional<Senior> seniorOptional = seniorRepository.findByPhoneNumber(phoneNumber);
-
-        if (seniorOptional.isEmpty()) {
-            return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE);
+        Senior senior = findSeniorByPhoneNumber(phoneNumber);
+        if (senior == null) {
+            return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENROLLED);
         }
 
-        Senior senior = seniorOptional.get();
+        Point point = findPointWithWriteLock(senior.getMember().getId());
+        if (point == null || !point.isSufficientForDeduction(CALLBACK_PRICE)) {
+            return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENOUGH_POINT);
+        }
+
+        point.deduct(CALLBACK_PRICE);
+
+        pointLogRepository.save(
+                new PointLog(
+                        PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(),
+                        senior.getMember(),
+                        CALLBACK_PRICE,
+                        PointLog.Status.SPEND_COMPLETE)
+        );
         callbackRepository.save(new Callback(Callback.Status.WAITING, senior));
 
         return TwilioHelper.convertMessageToTwiML(SUCCESS_MESSAGE);
+    }
+
+    private Senior findSeniorByPhoneNumber(String phoneNumber) {
+        return seniorRepository.findByPhoneNumber(phoneNumber)
+                .orElse(null);
+    }
+
+    private Point findPointWithWriteLock(Long memberId) {
+        return pointRepository.findByMemberIdWithWriteLock(memberId)
+                .orElse(null);
     }
 
     public CallbackResponse getAcceptedCallback(Long memberId) {
