@@ -8,5 +8,6 @@ public record PointLogResponse(
         LocalDateTime postTime,
         String content,
         int price,
-        PointLog.Status status) {
+        PointLog.Status status
+) {
 }

@@ -27,7 +27,7 @@ public class PointAdminService {
     }
 
     @Transactional
-    public void changePointLogChargeRequestToChargeWaiting(Long pointLogId) {
+    public void changeChargeLogToWaiting(Long pointLogId) {
 
         PointLog pointLog = pointLogRepository.findById(pointLogId)
                 .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다"));
@@ -49,7 +49,7 @@ public class PointAdminService {
     }
 
     @Transactional
-    public void failPointCharge(Long pointLogId) {
+    public void changeChargeLogToFail(Long pointLogId) {
 
         PointLog pointLog = pointLogRepository.findById(pointLogId)
                 .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다."));

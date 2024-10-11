@@ -60,7 +60,7 @@ public class PointAdminController {
     @PostMapping("/admin/point/charge/waiting/{pointLogId}")
     public String changeToWaiting(@PathVariable Long pointLogId) {
 
-        pointAdminService.changePointLogChargeRequestToChargeWaiting(pointLogId);
+        pointAdminService.changeChargeLogToWaiting(pointLogId);
         return "redirect:/admin/point/charge";
     }
 
@@ -74,7 +74,7 @@ public class PointAdminController {
     @PostMapping("/admin/point/charge/fail/{pointLogId}")
     public String changeToFail(@PathVariable Long pointLogId) {
 
-        pointAdminService.failPointCharge(pointLogId);
+        pointAdminService.changeChargeLogToFail(pointLogId);
         return "redirect:/admin/point/charge";
     }
 
