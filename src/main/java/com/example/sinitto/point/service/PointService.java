@@ -3,6 +3,7 @@ package com.example.sinitto.point.service;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.point.dto.PointChargeResponse;
 import com.example.sinitto.point.dto.PointLogResponse;
 import com.example.sinitto.point.dto.PointResponse;
 import com.example.sinitto.point.entity.Point;
@@ -13,6 +14,7 @@ import com.example.sinitto.point.repository.PointRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PointService {
@@ -52,7 +54,18 @@ public class PointService {
                 ));
     }
 
-    public void savePointChargeRequest(Long memberId, int price) {
+    @Transactional
+    public PointChargeResponse savePointChargeRequest(Long memberId, int price) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("요청한 멤버를 찾을 수 없습니다"));
+
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
+
+        return new PointChargeResponse(member.getDepositMessage());
+    }
+
+    public void saverPointWithdrawRequest(Long memberId, int price) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("멤버 없음"));

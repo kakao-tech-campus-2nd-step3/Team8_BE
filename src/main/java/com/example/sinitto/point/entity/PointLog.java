@@ -59,6 +59,13 @@ public class PointLog {
         this.status = Status.CHARGE_COMPLETE;
     }
 
+    public void changeStatusToChargeFail() {
+
+        checkStatusChange(Status.CHARGE_WAITING);
+
+        this.status = Status.CHARGE_FAIL;
+    }
+
     private void checkStatusChange(Status wantStatus) {
 
         if (this.status != wantStatus) {
@@ -100,7 +107,8 @@ public class PointLog {
         WITHDRAW_COMPLETE,
         CHARGE_REQUEST,
         CHARGE_WAITING,
-        CHARGE_COMPLETE
+        CHARGE_COMPLETE,
+        CHARGE_FAIL
     }
 
     public enum Content {
@@ -108,7 +116,9 @@ public class PointLog {
         COMPLETE_HELLO_CALL_AND_EARN("안부 전화 완료로 인한 포인트 적립"),
         SPEND_COMPLETE_CALLBACK("콜백 신청으로 인한 포인트 차감"),
         SPEND_COMPLETE_HELLO_CALL("안부전화 신청으로 인한 포인트 차감"),
-        SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소로 인한 포인트 환불");
+        SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소로 인한 포인트 환불"),
+        CHARGE_REQUEST("포인트 충전 요청"),
+        WITHDRAW_REQUEST("포인트 출금 요청");
 
         private final String message;
 

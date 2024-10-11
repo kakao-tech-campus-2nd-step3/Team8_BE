@@ -1,6 +1,7 @@
 package com.example.sinitto.point.controller;
 
 import com.example.sinitto.common.annotation.MemberId;
+import com.example.sinitto.point.dto.PointChargeResponse;
 import com.example.sinitto.point.dto.PointLogResponse;
 import com.example.sinitto.point.dto.PointRequest;
 import com.example.sinitto.point.dto.PointResponse;
@@ -32,15 +33,13 @@ public class PointController {
         return ResponseEntity.ok(pointService.getPoint(memberId));
     }
 
-    @Operation(summary = "포인트 충전 요청", description = "(임시) 관리자가 직접 추가 - 바로 충전 되는거 아님. 신청->대기->완료 완료시점에 충전 됨")
+    @Operation(summary = "포인트 충전 요청", description = "관리자가 직접 추가 - 바로 충전 되는거 아님. 신청->대기->완료 완료시점에 충전 됨")
     @PutMapping("/charge")
-    public ResponseEntity<Void> savePointChargeRequest(@MemberId Long memberId,
-                                                       @RequestBody PointRequest request) {
+    public ResponseEntity<PointChargeResponse> savePointChargeRequest(@MemberId Long memberId,
+                                                                      @RequestBody PointRequest request) {
 
-        pointService.savePointChargeRequest(memberId, request.price());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(pointService.savePointChargeRequest(memberId, request.price()));
     }
-
 
     @Operation(summary = "포인트 출금 요청", description = "시니또가 포인트 출금을 요청합니다.")
     @PostMapping("/withdraw")

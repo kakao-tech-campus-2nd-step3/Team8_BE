@@ -36,16 +36,7 @@ public class PointAdminService {
     }
 
     @Transactional
-    public void changePointLogChargeWaitingToChargeComplete(Long pointLogId) {
-
-        PointLog pointLog = pointLogRepository.findById(pointLogId)
-                .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다"));
-
-        pointLog.changeStatusToChargeComplete();
-    }
-
-    @Transactional
-    public void earnPoint(Long pointLogId) {
+    public void earnPointAndChangeToChargeComplete(Long pointLogId) {
 
         PointLog pointLog = pointLogRepository.findById(pointLogId)
                 .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다."));
@@ -53,6 +44,16 @@ public class PointAdminService {
         Point point = pointRepository.findByMember(pointLog.getMember())
                 .orElseThrow(() -> new PointLogNotFoundException("포인트를 찾을 수 없습니다."));
 
+        pointLog.changeStatusToChargeComplete();
         point.earn(pointLog.getPrice());
+    }
+
+    @Transactional
+    public void failPointCharge(Long pointLogId) {
+
+        PointLog pointLog = pointLogRepository.findById(pointLogId)
+                .orElseThrow(() -> new PointLogNotFoundException("포인트 로그를 찾을 수 없습니다."));
+
+        pointLog.changeStatusToChargeFail();
     }
 }
