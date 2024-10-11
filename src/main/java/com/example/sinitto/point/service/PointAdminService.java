@@ -23,7 +23,7 @@ public class PointAdminService {
 
     public List<PointLog> readAllNotCompletedPointChargeRequest() {
 
-        return pointLogRepository.findAllByStatusInOOrderByPostTimeDesc(List.of(PointLog.Status.CHARGE_WAITING, PointLog.Status.CHARGE_REQUEST, PointLog.Status.CHARGE_COMPLETE, PointLog.Status.CHARGE_FAIL));
+        return pointLogRepository.findAllByStatusInOrderByPostTimeDesc(List.of(PointLog.Status.CHARGE_WAITING, PointLog.Status.CHARGE_REQUEST, PointLog.Status.CHARGE_COMPLETE, PointLog.Status.CHARGE_FAIL));
     }
 
     @Transactional
@@ -60,7 +60,7 @@ public class PointAdminService {
     @Transactional(readOnly = true)
     public List<PointLog> readAllPointWithdrawRequest() {
 
-        return pointLogRepository.findAllByStatusInOOrderByPostTimeDesc(List.of(PointLog.Status.WITHDRAW_REQUEST, PointLog.Status.WITHDRAW_WAITING, PointLog.Status.WITHDRAW_COMPLETE, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        return pointLogRepository.findAllByStatusInOrderByPostTimeDesc(List.of(PointLog.Status.WITHDRAW_REQUEST, PointLog.Status.WITHDRAW_WAITING, PointLog.Status.WITHDRAW_COMPLETE, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
     }
 
     @Transactional

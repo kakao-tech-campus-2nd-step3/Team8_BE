@@ -12,5 +12,5 @@ public interface PointLogRepository extends JpaRepository<PointLog, Long> {
 
     Page<PointLog> findAllByMember(Member member, Pageable pageable);
 
-    List<PointLog> findAllByStatusInOOrderByPostTimeDesc(List<PointLog.Status> statuses);
+    List<PointLog> findAllByStatusInOrderByPostTimeDesc(List<PointLog.Status> statuses);
 }
