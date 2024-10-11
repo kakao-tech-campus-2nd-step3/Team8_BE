@@ -58,8 +58,9 @@ public class PointAdminController {
     }
 
     @PostMapping("/admin/point/complete/{pointLogId}")
-    public String changeToComplete(@PathVariable Long pointLogId) {
+    public String changeToCompleteAndEarn(@PathVariable Long pointLogId) {
 
+        pointAdminService.earnPoint(pointLogId);
         pointAdminService.changePointLogChargeWaitingToChargeComplete(pointLogId);
         return "redirect:/admin/point";
     }
