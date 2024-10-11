@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PointService {
 
+    public static final double WITHDRAWAL_FEE_RATE = 0.8;
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
@@ -75,12 +76,14 @@ public class PointService {
         Point point = pointRepository.findByMember(member)
                 .orElseThrow(() -> new PointNotFoundException("요청한 멤버의 포인트를 찾을 수 없습니다"));
 
+        int adjustedPrice = (int) (price * WITHDRAWAL_FEE_RATE);
+
         if (!point.isSufficientForDeduction(price)) {
             throw new NotEnoughPointException(String.format("보유한 포인트(%d) 보다 더 많은 포인트에 대한 출금요청입니다", point.getPrice()));
         }
 
         point.deduct(price);
 
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, price, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, adjustedPrice, PointLog.Status.WITHDRAW_REQUEST));
     }
 }
