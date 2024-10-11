@@ -122,7 +122,6 @@ public class PointLog {
         EARN,
         SPEND_COMPLETE,
         SPEND_CANCEL,
-        REFUND,
         WITHDRAW_REQUEST,
         WITHDRAW_WAITING,
         WITHDRAW_COMPLETE,

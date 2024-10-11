@@ -192,9 +192,6 @@ public class HelloCallService {
             throw new UnauthorizedException("안부전화 신청을 취소할 권한이 없습니다.");
         }
 
-        helloCall.checkStatusIsWaiting();
-        helloCallRepository.delete(helloCall);
-
         Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
                 .orElseThrow(() -> new PointNotFoundException("멤버에 연관된 포인트가 없습니다."));
 
@@ -207,6 +204,9 @@ public class HelloCallService {
                         helloCall.getPrice(),
                         PointLog.Status.SPEND_CANCEL)
         );
+
+        helloCall.checkStatusIsWaiting();
+        helloCallRepository.delete(helloCall);
     }
 
     @Transactional(readOnly = true)
@@ -266,7 +266,9 @@ public class HelloCallService {
 
         Point sinittoPoint = pointRepository.findByMember(helloCall.getSinitto().getMember())
                 .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
+
         sinittoPoint.earn(helloCall.getPrice());
+
         pointLogRepository.save(
                 new PointLog(
                         PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(),
@@ -275,7 +277,6 @@ public class HelloCallService {
                         PointLog.Status.EARN)
         );
     }
-
 
     @Transactional(readOnly = true)
     public List<HelloCallReportResponse> readAllHelloCallReportByAdmin() {
