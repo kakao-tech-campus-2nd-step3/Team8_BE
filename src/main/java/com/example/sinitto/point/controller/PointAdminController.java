@@ -26,8 +26,8 @@ public class PointAdminController {
         this.pointAdminService = pointAdminService;
     }
 
-    @GetMapping("/admin/point")
-    public String showAll(Model model) {
+    @GetMapping("/admin/point/charge")
+    public String showAllChargeRequest(Model model) {
 
         List<PointLog> pointLogs = pointAdminService.readAllNotCompletedPointChargeRequest();
         List<PointLogWithBankAccountNumber> logWithBankAccountNumbers = new ArrayList<>();
@@ -50,18 +50,18 @@ public class PointAdminController {
         return "/point/charge";
     }
 
-    @PostMapping("/admin/point/waiting/{pointLogId}")
+    @PostMapping("/admin/point/charge/waiting/{pointLogId}")
     public String changeToWaiting(@PathVariable Long pointLogId) {
 
         pointAdminService.changePointLogChargeRequestToChargeWaiting(pointLogId);
-        return "redirect:/admin/point";
+        return "redirect:/admin/point/charge";
     }
 
-    @PostMapping("/admin/point/complete/{pointLogId}")
+    @PostMapping("/admin/point/charge/complete/{pointLogId}")
     public String changeToCompleteAndEarn(@PathVariable Long pointLogId) {
 
         pointAdminService.earnPoint(pointLogId);
         pointAdminService.changePointLogChargeWaitingToChargeComplete(pointLogId);
-        return "redirect:/admin/point";
+        return "redirect:/admin/point/charge";
     }
 }
