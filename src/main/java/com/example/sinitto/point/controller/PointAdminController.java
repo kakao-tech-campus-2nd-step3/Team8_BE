@@ -54,7 +54,7 @@ public class PointAdminController {
         }
         model.addAttribute("logWithDepositMessages", logWithDepositMessages);
 
-        return "/point/charge";
+        return "point/charge";
     }
 
     @PostMapping("/admin/point/charge/waiting/{pointLogId}")
@@ -101,7 +101,7 @@ public class PointAdminController {
         }
         model.addAttribute("logWithBankInfos", logWithBankInfos);
 
-        return "/point/withdraw";
+        return "point/withdraw";
     }
 
     @PostMapping("/admin/point/withdraw/waiting/{pointLogId}")
