@@ -25,7 +25,7 @@ public class GuardGuideline {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Senior senior;
 
-    public GuardGuideline() {
+    protected GuardGuideline() {
     }
 
     public GuardGuideline(Type type, String title, String content, Senior senior) {
