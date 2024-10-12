@@ -37,6 +37,11 @@ public class Member {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getDepositMessage() {
+
+        return name.substring(0, 3) + phoneNumber.substring(phoneNumber.length() - 4);
+    }
+
     public Long getId() {
         return id;
     }
