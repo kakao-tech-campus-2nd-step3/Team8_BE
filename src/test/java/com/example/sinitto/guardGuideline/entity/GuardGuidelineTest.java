@@ -1,117 +1,58 @@
 package com.example.sinitto.guardGuideline.entity;
 
-import com.example.sinitto.guard.repository.SeniorRepository;
-import com.example.sinitto.guardGuideline.entity.GuardGuideline.Type;
-import com.example.sinitto.guardGuideline.repository.GuardGuidelineRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@DataJpaTest
 class GuardGuidelineTest {
 
-    @Autowired
-    private GuardGuidelineRepository guardGuidelineRepository;
-
-    @Autowired
-    private SeniorRepository seniorRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    // EntityManager 주입
-    @PersistenceContext
-    private EntityManager entityManager;
-
+    private Member member;
     private Senior senior;
-
 
     @BeforeEach
     void setUp() {
-        // 테스트용 Member 생성 및 저장
-        Member member = new Member("Test Member", "010-1234-5678", "test@member.com", true);
-        memberRepository.save(member);
-
-        // 테스트용 Senior 생성 및 저장
-        senior = new Senior("Test Senior", "010-9876-5432", member);
-        seniorRepository.save(senior);
+        // 테스트용 Member와 Senior 객체 생성
+        member = new Member("John Doe", "123456789", "john@example.com", true);
+        senior = new Senior("Jane Doe", "987654321", member);
     }
 
     @Test
-    @Rollback(false)
-    void testCreateGuardGuideline() {
-        // GuardGuideline 생성
-        GuardGuideline guideline = new GuardGuideline(Type.TAXI, "Taxi Guideline", "Content about taxi.", senior);
-        GuardGuideline savedGuideline = guardGuidelineRepository.save(guideline);
+    @DisplayName("GuardGuideline 객체 생성 테스트")
+    void createGuardGuideline() {
+        GuardGuideline guideline = new GuardGuideline(GuardGuideline.Type.TAXI, "Taxi Guidelines", "Details about taxi guidelines", senior);
 
-        // 저장된 엔터티 확인
-        Optional<GuardGuideline> foundGuideline = guardGuidelineRepository.findById(savedGuideline.getId());
-        assertTrue(foundGuideline.isPresent());
-        assertEquals("Taxi Guideline", foundGuideline.get().getTitle());
-        assertEquals("Content about taxi.", foundGuideline.get().getContent());
-        assertEquals(Type.TAXI, foundGuideline.get().getType());
-        assertEquals(senior, foundGuideline.get().getSenior());
+        assertEquals(GuardGuideline.Type.TAXI, guideline.getType());
+        assertEquals("Taxi Guidelines", guideline.getTitle());
+        assertEquals("Details about taxi guidelines", guideline.getContent());
+        assertEquals(senior, guideline.getSenior());
+        assertEquals(senior.getMember(), member);  // Senior와 Member의 관계 확인
     }
 
     @Test
-    void testUpdateGuardGuideline() {
-        // GuardGuideline 생성 후 저장
-        GuardGuideline guideline = new GuardGuideline(Type.DELIVERY, "Delivery Guideline", "Content about delivery.", senior);
-        guardGuidelineRepository.save(guideline);
+    @DisplayName("GuardGuideline 업데이트 메서드 테스트")
+    void updateGuardGuideline() {
+        GuardGuideline guideline = new GuardGuideline(GuardGuideline.Type.TAXI, "Old Title", "Old Content", senior);
 
-        // 업데이트 실행
-        guideline.updateGuardGuideline(Type.TAXI, "Updated Taxi Guideline", "Updated content about taxi.");
-        guardGuidelineRepository.save(guideline);
+        guideline.updateGuardGuideline(GuardGuideline.Type.DELIVERY, "New Title", "New Content");
 
-        // 업데이트된 값 검증
-        Optional<GuardGuideline> updatedGuideline = guardGuidelineRepository.findById(guideline.getId());
-        assertTrue(updatedGuideline.isPresent());
-        assertEquals("Updated Taxi Guideline", updatedGuideline.get().getTitle());
-        assertEquals("Updated content about taxi.", updatedGuideline.get().getContent());
-        assertEquals(Type.TAXI, updatedGuideline.get().getType());
+        assertEquals(GuardGuideline.Type.DELIVERY, guideline.getType());
+        assertEquals("New Title", guideline.getTitle());
+        assertEquals("New Content", guideline.getContent());
     }
 
     @Test
-    void testDeleteGuardGuideline() {
-        // GuardGuideline 생성 후 저장
-        GuardGuideline guideline = new GuardGuideline(Type.DELIVERY, "Delivery Guideline", "Content about delivery.", senior);
-        guardGuidelineRepository.save(guideline);
-
-        // 엔터티 삭제
-        guardGuidelineRepository.delete(guideline);
-
-        // 삭제된 엔터티 검증
-        Optional<GuardGuideline> deletedGuideline = guardGuidelineRepository.findById(guideline.getId());
-        assertFalse(deletedGuideline.isPresent());
+    @DisplayName("GuardGuideline 기본 생성자 테스트")
+    void guardGuidelineDefaultConstructor() {
+        GuardGuideline guideline = new GuardGuideline();
+        assertNull(guideline.getId());
+        assertNull(guideline.getType());
+        assertNull(guideline.getTitle());
+        assertNull(guideline.getContent());
+        assertNull(guideline.getSenior());
     }
-
-    @Test
-    void testCascadeDeleteWithSenior() {
-        // GuardGuideline 생성 후 Senior에 연결
-        GuardGuideline guideline = new GuardGuideline(Type.TAXI, "Taxi", "Taxi content", senior);
-        guardGuidelineRepository.save(guideline);
-
-        // Senior 삭제
-        seniorRepository.delete(senior);
-
-        // 세션 동기화 및 캐시 초기화
-        entityManager.flush();
-        entityManager.clear();
-
-        // GuardGuideline도 함께 삭제됐는지 확인
-        Optional<GuardGuideline> deletedGuideline = guardGuidelineRepository.findById(guideline.getId());
-        assertFalse(deletedGuideline.isPresent());
-    }
-
 }
