@@ -14,6 +14,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,14 +33,14 @@ class CallbackTest {
     @Autowired
     private SeniorRepository seniorRepository;
     private Callback testCallback;
+    private Member testMember;
+    private Senior testSenior;
 
     @BeforeEach
     void setUp() {
-        Member testMember = new Member("member", "01043214321", "tjdgns5506@gmai.com", true);
-        memberRepository.save(testMember);
+        testMember = memberRepository.save(new Member("member", "01043214321", "tjdgns5506@gmai.com", true));
 
-        Senior testSenior = new Senior("senior", "01012341234", testMember);
-        seniorRepository.save(testSenior);
+        testSenior = seniorRepository.save(new Senior("senior", "01012341234", testMember));
 
         testCallback = callbackRepository.save(new Callback(Callback.Status.WAITING, testSenior));
     }
@@ -262,6 +268,25 @@ class CallbackTest {
 
         //when then
         assertThrows(AlreadyInProgressException.class, () -> testCallback.changeStatusToComplete());
+    }
+
+    @Test
+    @DisplayName("보호자에 연관된 다수의 시니어 리스트를 얻은후, 다수의 시니어들이 신청한 콜백 요청 기록 조회 테스트(CallbackService 의 getCallbackHistoryOfGuard() 테스트나 마찬가지)")
+    void getSeniorListAndReadCallbackHistoryOfSeniors() {
+        //given
+        Senior testSenior2 = new Senior("senior2", "01099999999", testMember);
+        seniorRepository.save(testSenior2);
+
+        callbackRepository.save(new Callback(Callback.Status.WAITING, testSenior2));
+        callbackRepository.save(new Callback(Callback.Status.COMPLETE, testSenior2));
+        Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, "postTime"));
+        //when
+        Page<Callback> result = callbackRepository.findAllBySeniorIn(List.of(testSenior, testSenior2), pageable);
+
+        //then
+        assertEquals(3, result.getTotalPages());
+        assertEquals(testSenior2, result.getContent().getFirst().getSenior());
+        assertEquals(Callback.Status.COMPLETE.toString(), result.getContent().getFirst().getStatus());
     }
 
 }

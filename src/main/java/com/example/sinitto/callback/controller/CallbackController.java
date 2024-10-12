@@ -1,6 +1,7 @@
 package com.example.sinitto.callback.controller;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
+import com.example.sinitto.callback.dto.CallbackUsageHistoryResponse;
 import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.annotation.MemberId;
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,5 +79,13 @@ public class CallbackController {
     public ResponseEntity<CallbackResponse> getAcceptedCallback(@MemberId Long memberId) {
 
         return ResponseEntity.ok(callbackService.getAcceptedCallback(memberId));
+    }
+
+    @Operation(summary = "보호자의 콜백 이용 내역 조회", description = "보호자에게 연관된 모든 콜백 내역을 조회합니다. 기본적으로 최신 내역 부터 조회됩니다.")
+    @GetMapping("/guard/requested")
+    public ResponseEntity<Page<CallbackUsageHistoryResponse>> getAcceptedCallback(@MemberId Long memberId,
+                                                                                  @PageableDefault(sort = "postTime", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return ResponseEntity.ok(callbackService.getCallbackHistoryOfGuard(memberId, pageable));
     }
 }

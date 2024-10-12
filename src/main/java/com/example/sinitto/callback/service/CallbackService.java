@@ -1,6 +1,7 @@
 package com.example.sinitto.callback.service;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
+import com.example.sinitto.callback.dto.CallbackUsageHistoryResponse;
 import com.example.sinitto.callback.entity.Callback;
 import com.example.sinitto.callback.exception.*;
 import com.example.sinitto.callback.repository.CallbackRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -142,5 +144,18 @@ public class CallbackService {
         if (!assignedMemberId.equals(memberId)) {
             throw new NotAssignedException("이 콜백에 할당된 시니또가 아닙니다");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CallbackUsageHistoryResponse> getCallbackHistoryOfGuard(Long memberId, Pageable pageable) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotMemberException("멤버가 아닙니다"));
+
+        List<Senior> seniors = seniorRepository.findAllByMember(member);
+
+
+        return callbackRepository.findAllBySeniorIn(seniors, pageable)
+                .map(callback -> new CallbackUsageHistoryResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus()));
     }
 }
