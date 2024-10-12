@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/point.css" rel="stylesheet">
+    <title>출금 페이지</title>
+</head>
+<body>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>출금 요청시간</th>
+            <th>출금 포인트</th>
+            <th>은행 이름</th>
+            <th>계좌번호</th>
+            <th>상태</th>
+            <th>상태전환</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="logWithBankInfo : ${logWithBankInfos}">
+            <td th:text="${logWithBankInfo.postTime()}">요청 시간</td>
+            <td th:text="${logWithBankInfo.price()}">요청된 포인트</td>
+            <td th:text="${logWithBankInfo.bankName()}">은행 이름</td>
+            <td th:text="${logWithBankInfo.bankAccountNumber()}">계좌번호</td>
+            <td th:text="${logWithBankInfo.status().toString()}">상태</td>
+
+            <td>
+                <!-- 상태가 WITHDRAW_REQUEST일 때 -->
+                <form method="post"
+                      th:action="@{/admin/point/withdraw/waiting/{pointLogId}(pointLogId=${logWithBankInfo.pointLogId()})}"
+                      th:if="${logWithBankInfo.status().toString()} == 'WITHDRAW_REQUEST'">
+                    <button type="submit">대기 상태로 변경</button>
+                </form>
+
+                <!-- 상태가 CHARGE_WAITING일 때 -->
+                <form method="post"
+                      th:action="@{/admin/point/withdraw/complete/{pointLogId}(pointLogId=${logWithBankInfo.pointLogId()})}"
+                      th:if="${logWithBankInfo.status().toString()} == 'WITHDRAW_WAITING'">
+                    <button type="submit">입금 완료 & 완료 상태로 변경</button>
+                </form>
+
+                <!-- 상태가 CHARGE_WAITING일 때 -->
+                <form method="post"
+                      th:action="@{/admin/point/charge/fail/{pointLogId}(pointLogId=${logWithBankInfo.pointLogId})}"
+                      th:if="${logWithBankInfo.status.toString()} == 'WITHDRAW_WAITING'">
+                    <button type="submit">실패 상태로 변경</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

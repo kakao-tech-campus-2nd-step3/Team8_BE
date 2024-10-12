@@ -12,6 +12,9 @@ import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.repository.PointLogRepository;
+import com.example.sinitto.point.repository.PointRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -38,6 +41,10 @@ class CallbackServiceTest {
     MemberRepository memberRepository;
     @Mock
     SeniorRepository seniorRepository;
+    @Mock
+    PointRepository pointRepository;
+    @Mock
+    PointLogRepository pointLogRepository;
     @InjectMocks
     CallbackService callbackService;
 
@@ -66,7 +73,7 @@ class CallbackServiceTest {
 
         //then
         assertEquals(1, result.getContent().size());
-        assertEquals("James", result.getContent().get(0).seniorName());
+        assertEquals("James", result.getContent().getFirst().seniorName());
     }
 
     @Test
@@ -172,13 +179,19 @@ class CallbackServiceTest {
         String fromPhoneNumber = "+821012341234";
         String trimmedPhoneNumber = TwilioHelper.trimPhoneNumber(fromPhoneNumber);
         Senior senior = mock(Senior.class);
+        Member member = mock(Member.class);
+        Point point = mock(Point.class);
 
         when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.of(senior));
-
+        when(senior.getMember()).thenReturn(member);
+        when(member.getId()).thenReturn(1L);
+        when(pointRepository.findByMemberIdWithWriteLock(1L)).thenReturn(Optional.of(point));
+        when(point.isSufficientForDeduction(anyInt())).thenReturn(true);
         //when
         String result = callbackService.add(fromPhoneNumber);
 
         //then
+        verify(pointLogRepository, times(1)).save(any());
         verify(callbackRepository, times(1)).save(any());
         assertNotNull(result);
     }
@@ -209,12 +222,14 @@ class CallbackServiceTest {
         Member member = mock(Member.class);
         Callback callback = mock(Callback.class);
         Senior senior = mock(Senior.class);
+        Point point = mock(Point.class);
 
         when(member.getId()).thenReturn(1L);
         when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
         when(callback.getSenior()).thenReturn(senior);
         when(senior.getMember()).thenReturn(member);
         when(senior.getMember().getId()).thenReturn(1L);
+        when(pointRepository.findByMemberId(any())).thenReturn(Optional.of(point));
 
         //when
         callbackService.complete(memberId, callbackId);

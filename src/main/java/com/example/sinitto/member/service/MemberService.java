@@ -12,6 +12,8 @@ import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.exception.NotUniqueException;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.repository.PointRepository;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +26,15 @@ public class MemberService implements MemberIdProvider {
     private final TokenService tokenService;
     private final KakaoApiService kakaoApiService;
     private final KakaoTokenService kakaoTokenService;
+    private final PointRepository pointRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-
-    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService
-            ,RedisTemplate<String, String> redisTemplate) {
+    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, RedisTemplate<String, String> redisTemplate) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.kakaoApiService = kakaoApiService;
         this.kakaoTokenService = kakaoTokenService;
+        this.pointRepository = pointRepository;
         this.redisTemplate = redisTemplate;
     }
 
@@ -74,6 +76,8 @@ public class MemberService implements MemberIdProvider {
 
         Member newMember = new Member(name, phoneNumber, email, isSinitto);
         memberRepository.save(newMember);
+
+        pointRepository.save(new Point(0, newMember));
 
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
