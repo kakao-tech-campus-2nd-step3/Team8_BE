@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface CallbackRepository extends JpaRepository<Callback, Long> {
 
-    Page<Callback> findAll(Pageable pageable);
+    Page<Callback> findAllByStatus(Callback.Status status, Pageable pageable);
 
     Optional<Callback> findByAssignedMemberIdAndStatus(Long memberId, Callback.Status status);
 

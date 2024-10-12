@@ -26,10 +26,10 @@ public class CallbackController {
 
     @Operation(summary = "콜백 전화 리스트 보기(페이지)", description = "시니어가 요청한 콜백전화를 페이징으로 보여줍니다.")
     @GetMapping
-    public ResponseEntity<Page<CallbackResponse>> getCallbackList(@MemberId Long memberId,
-                                                                  @PageableDefault(sort = "postTime", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Page<CallbackResponse>> getWaitingCallbackList(@MemberId Long memberId,
+                                                                         @PageableDefault(sort = "postTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        return ResponseEntity.ok(callbackService.getCallbacks(memberId, pageable));
+        return ResponseEntity.ok(callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Operation(summary = "진행 상태인 콜백을 완료 대기 상태로 전환(시니또가)", description = "시니또가 수락한 콜백 수행을 완료했을때 이 api 호출하면 완료 대기 상태로 변합니다.")

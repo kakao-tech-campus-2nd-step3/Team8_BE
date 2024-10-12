@@ -50,7 +50,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("getCallbacks - 성공")
-    void getCallbacks() {
+    void getWaitingCallbacks() {
         //given
         Long memberId = 1L;
         Pageable pageable = PageRequest.of(0, 10);
@@ -66,10 +66,10 @@ class CallbackServiceTest {
 
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(member.isSinitto()).thenReturn(true);
-        when(callbackRepository.findAll(pageable)).thenReturn(callbackPage);
+        when(callbackRepository.findAllByStatus(Callback.Status.WAITING, pageable)).thenReturn(callbackPage);
 
         //when
-        Page<CallbackResponse> result = callbackService.getCallbacks(memberId, pageable);
+        Page<CallbackResponse> result = callbackService.getWaitingCallbacks(memberId, pageable);
 
         //then
         assertEquals(1, result.getContent().size());
@@ -78,7 +78,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("getCallbacks 멤버가 없을때 - 실패")
-    void getCallbacks_Fail_WhenNotMember() {
+    void getWaitingCallbacks_Fail_WhenNotMember() {
         //given
         Long memberId = 1L;
         Pageable pageable = PageRequest.of(0, 10);
@@ -86,7 +86,7 @@ class CallbackServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         //when then
-        assertThrows(NotMemberException.class, () -> callbackService.getCallbacks(memberId, pageable));
+        assertThrows(NotMemberException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Test
@@ -101,7 +101,7 @@ class CallbackServiceTest {
         when(member.isSinitto()).thenReturn(false);
 
         //when then
-        assertThrows(NotSinittoException.class, () -> callbackService.getCallbacks(memberId, pageable));
+        assertThrows(NotSinittoException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Test

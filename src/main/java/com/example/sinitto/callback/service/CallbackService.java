@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CallbackService {
@@ -45,11 +44,11 @@ public class CallbackService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CallbackResponse> getCallbacks(Long memberId, Pageable pageable) {
+    public Page<CallbackResponse> getWaitingCallbacks(Long memberId, Pageable pageable) {
 
         checkAuthorization(memberId);
 
-        return callbackRepository.findAll(pageable)
+        return callbackRepository.findAllByStatus(Callback.Status.WAITING, pageable)
                 .map((callback) -> new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId()));
     }
 
