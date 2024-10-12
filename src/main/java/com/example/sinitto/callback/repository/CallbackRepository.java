@@ -12,4 +12,6 @@ public interface CallbackRepository extends JpaRepository<Callback, Long> {
     Page<Callback> findAll(Pageable pageable);
 
     Optional<Callback> findByAssignedMemberIdAndStatus(Long memberId, Callback.Status status);
+
+    boolean existsByAssignedMemberIdAndStatus(Long memberId, Callback.Status status);
 }

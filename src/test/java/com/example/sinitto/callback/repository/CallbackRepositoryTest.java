@@ -97,4 +97,74 @@ class CallbackRepositoryTest {
         //then
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    @DisplayName("콜백에 할당된 멤버id와 상태를 매게변수로한 조회 - 성공")
+    void existsByAssignedMemberIdAndStatus() {
+        //given
+        testCallback.assignMember(memberId);
+        testCallback.changeStatusToInProgress();
+
+        //when
+        boolean result = callbackRepository.existsByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS);
+
+        //then
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("콜백에 할당된 멤버id와 상태를 매게변수로한 조회 - 실패(멤버id 아닌 경우)")
+    void existsByAssignedMemberIdAndStatus_fail1() {
+        //given
+        testCallback.assignMember(memberId);
+        testCallback.changeStatusToInProgress();
+
+        //when
+        boolean result = callbackRepository.existsByAssignedMemberIdAndStatus(memberId + 1L, Callback.Status.IN_PROGRESS);
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("콜백에 할당된 멤버id와 상태를 매게변수로한 조회 - 실패(멤버id만 틀리는 경우)")
+    void existsByAssignedMemberIdAndStatus_fail2() {
+        //given
+        testCallback.assignMember(memberId);
+        testCallback.changeStatusToInProgress();
+
+        //when
+        boolean result = callbackRepository.existsByAssignedMemberIdAndStatus(memberId + 1L, Callback.Status.IN_PROGRESS);
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("콜백에 할당된 멤버id와 상태를 매게변수로한 조회 - 실패(콜백 상태만 틀리는 경우)")
+    void existsByAssignedMemberIdAndStatus_fail3() {
+        //given
+        testCallback.assignMember(memberId);
+        testCallback.changeStatusToInProgress();
+
+        //when
+        boolean result = callbackRepository.existsByAssignedMemberIdAndStatus(memberId, Callback.Status.PENDING_COMPLETE);
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("콜백에 할당된 멤버id와 상태를 매게변수로한 조회 - 실패(멤버id, 콜백 상태 모두 틀리는 경우)")
+    void existsByAssignedMemberIdAndStatus_fail4() {
+        //given
+        testCallback.assignMember(memberId);
+        testCallback.changeStatusToInProgress();
+
+        //when
+        boolean result = callbackRepository.existsByAssignedMemberIdAndStatus(memberId + 1L, Callback.Status.WAITING);
+
+        //then
+        assertFalse(result);
+    }
 }

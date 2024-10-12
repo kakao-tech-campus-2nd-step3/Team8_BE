@@ -45,6 +45,10 @@ public class CallbackService {
 
         checkAuthorization(memberId);
 
+        if (callbackRepository.existsByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)) {
+            throw new MemberHasInProgressCallbackException("이 요청을 한 시니또는 이미 진행중인 콜백이 있습니다.");
+        }
+
         Callback callback = getCallbackOrThrow(callbackId);
 
         callback.assignMember(memberId);
