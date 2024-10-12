@@ -8,9 +8,9 @@ import com.example.sinitto.guardGuideline.dto.GuardGuidelineResponse;
 import com.example.sinitto.guardGuideline.entity.GuardGuideline;
 import com.example.sinitto.guardGuideline.entity.GuardGuideline.Type;
 import com.example.sinitto.guardGuideline.exception.GuardGuidelineNotFoundException;
+import com.example.sinitto.guardGuideline.exception.SeniorAndGuardMemberMismatchException;
 import com.example.sinitto.guardGuideline.repository.GuardGuidelineRepository;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +28,15 @@ public class GuardGuidelineService {
     }
 
     @Transactional
-    public void addGuardGuideline(GuardGuidelineRequest guardguidelineRequest){
-        Senior senior = seniorRepository.findById(guardguidelineRequest.seniorId()).orElseThrow(
+    public void addGuardGuideline(Long memberId, GuardGuidelineRequest guardGuidelineRequest) {
+        Senior senior = seniorRepository.findById(guardGuidelineRequest.seniorId()).orElseThrow(
                 () -> new SeniorNotFoundException("시니어를 찾을 수 없습니다.")
         );
+        if (senior.isNotGuard(memberId)) {
+            throw new SeniorAndGuardMemberMismatchException("해당 Guard의 Senior가 아닙니다.");
+        }
 
-        guardGuidelineRepository.save(new GuardGuideline(guardguidelineRequest.type(), guardguidelineRequest.title(), guardguidelineRequest.content(), senior));
+        guardGuidelineRepository.save(new GuardGuideline(guardGuidelineRequest.type(), guardGuidelineRequest.title(), guardGuidelineRequest.content(), senior));
     }
 
     @Transactional(readOnly = true)
@@ -46,10 +49,18 @@ public class GuardGuidelineService {
     }
 
     @Transactional
-    public void updateGuardGuideline(Long guidelineId, GuardGuidelineRequest guardGuidelineRequest){
+    public void updateGuardGuideline(Long memberId, Long guidelineId, GuardGuidelineRequest guardGuidelineRequest) {
         GuardGuideline guardGuideline = guardGuidelineRepository.findById(guidelineId).orElseThrow(
                 ()-> new GuardGuidelineNotFoundException("해당 가이드라인이 존재하지 않습니다.")
         );
+
+        Senior senior = seniorRepository.findById(guardGuidelineRequest.seniorId()).orElseThrow(
+                () -> new SeniorNotFoundException("시니어를 찾을 수 없습니다.")
+        );
+
+        if (senior.isNotGuard(memberId)) {
+            throw new SeniorAndGuardMemberMismatchException("해당 Guard의 Senior가 아닙니다.");
+        }
 
         guardGuideline.updateGuardGuideline(guardGuidelineRequest.type(), guardGuidelineRequest.title(), guardGuidelineRequest.content());
     }

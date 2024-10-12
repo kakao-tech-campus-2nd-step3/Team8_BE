@@ -1,5 +1,6 @@
 package com.example.sinitto.guardGuideline.controller;
 
+import com.example.sinitto.common.annotation.MemberId;
 import com.example.sinitto.guardGuideline.dto.GuardGuidelineRequest;
 import com.example.sinitto.guardGuideline.dto.GuardGuidelineResponse;
 import com.example.sinitto.guardGuideline.entity.GuardGuideline;
@@ -22,8 +23,8 @@ public class GuardGuidelineController {
 
     @Operation(summary = "가이드라인 추가", description = "보호자가 시니어별 가이드라인을 추가합니다.")
     @PostMapping
-    public ResponseEntity<String> addGuardGuideline(@RequestBody GuardGuidelineRequest guardGuidelineRequest) {
-        guardGuidelineService.addGuardGuideline(guardGuidelineRequest);
+    public ResponseEntity<String> addGuardGuideline(@MemberId Long memberId, @RequestBody GuardGuidelineRequest guardGuidelineRequest) {
+        guardGuidelineService.addGuardGuideline(memberId, guardGuidelineRequest);
         return ResponseEntity.ok("가이드라인이 추가되었습니다.");
     }
 
@@ -35,8 +36,8 @@ public class GuardGuidelineController {
 
     @Operation(summary = "가이드라인 수정", description = "보호자가 특정 가이드라인을 수정할 때 필요합니다.")
     @PutMapping("/{guidelineId}")
-    public ResponseEntity<String> updateGuardGuideline(@PathVariable Long guidelineId, @RequestBody GuardGuidelineRequest guardGuidelineRequest) {
-        guardGuidelineService.updateGuardGuideline(guidelineId, guardGuidelineRequest);
+    public ResponseEntity<String> updateGuardGuideline(@MemberId Long memberId, @PathVariable Long guidelineId, @RequestBody GuardGuidelineRequest guardGuidelineRequest) {
+        guardGuidelineService.updateGuardGuideline(memberId, guidelineId, guardGuidelineRequest);
         return ResponseEntity.ok("가이드라인이 수정되었습니다.");
     }
 
