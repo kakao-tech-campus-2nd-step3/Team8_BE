@@ -13,6 +13,7 @@ import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -128,7 +129,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("콜백 완료 대기 - 성공")
-    void complete() {
+    void changeCallbackStatusToCompleteByGuard() {
         //given
         Long memberId = 1L;
         Long callbackId = 1L;
@@ -215,7 +216,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("보호자가 콜백 대기 상태를 완료 생태로 변경 - 성공")
-    void completeByGuard() {
+    void changeCallbackStatusToCompleteByGuardByGuard() {
         //given
         Long memberId = 1L;
         Long callbackId = 1L;
@@ -232,7 +233,7 @@ class CallbackServiceTest {
         when(pointRepository.findByMemberId(any())).thenReturn(Optional.of(point));
 
         //when
-        callbackService.complete(memberId, callbackId);
+        callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId);
 
         //then
         verify(callback).changeStatusToComplete();
@@ -240,7 +241,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("보호자가 콜백 대기 상태를 완료 생태로 변경 - 일치하는 보호자 ID가 아니어서 실패")
-    void completeByGuard_fail() {
+    void changeCallbackStatusToCompleteByGuardByGuard_fail() {
         //given
         Long memberId = 10L;
         Long callbackId = 1L;
@@ -255,7 +256,7 @@ class CallbackServiceTest {
         when(senior.getMember().getId()).thenReturn(1L);
 
         //when then
-        assertThrows(GuardMismatchException.class, () -> callbackService.complete(memberId, callbackId));
+        assertThrows(GuardMismatchException.class, () -> callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId));
     }
 
     @Test
@@ -291,5 +292,53 @@ class CallbackServiceTest {
 
         //when then
         assertThrows(NotExistCallbackException.class, () -> callbackService.getAcceptedCallback(memberId));
+    }
+
+    @Test
+    @DisplayName("changeOldPendingCompleteToCompleteByPolicy() - 성공")
+    void changeOldPendingCompleteToCompleteByPolicy_Success() {
+        // given
+        Callback callback = mock(Callback.class);
+        Point point = mock(Point.class);
+
+        when(callback.getPendingCompleteTime()).thenReturn(LocalDateTime.now().minusDays(3));
+        when(callback.getAssignedMemberId()).thenReturn(1L);
+
+        List<Callback> callbacks = List.of(callback);
+        when(callbackRepository.findAllByStatus(Callback.Status.PENDING_COMPLETE)).thenReturn(callbacks);
+        when(pointRepository.findByMemberId(1L)).thenReturn(Optional.of(point));
+
+        // when
+        callbackService.changeOldPendingCompleteToCompleteByPolicy();
+
+        // then
+        verify(callback).changeStatusToComplete();
+        verify(callbackRepository, times(1)).findAllByStatus(Callback.Status.PENDING_COMPLETE);
+        verify(pointLogRepository, times(1)).save(any(PointLog.class));
+    }
+
+    @Test
+    @DisplayName("LocalDateTime 의 isBefore 메서드 공부 겸 테스트, 엣지 케이스")
+    void localDateTimeBeforeCalculateTest() {
+        //given
+        //메서드 실행 시간
+        LocalDateTime 일월3일13시00분 = LocalDateTime.of(2024, 1, 3, 13, 0);
+        LocalDateTime 일월3일13시10분 = LocalDateTime.of(2024, 1, 3, 13, 10);
+
+        //콜백이 Pending Complete 상태가 된 시간
+        LocalDateTime 일월1일12시59분 = LocalDateTime.of(2024, 1, 1, 12, 59);
+        LocalDateTime 일월1일13시00분 = LocalDateTime.of(2024, 1, 1, 13, 0);
+        LocalDateTime 일월1일13시01분 = LocalDateTime.of(2024, 1, 1, 13, 1);
+
+        //when then
+        // 1월 3일 13시 00분에 2일전에 COMPLETE 된 콜백의 존재를 확인한다.
+        assertTrue(일월1일12시59분.isBefore(일월3일13시00분.minusDays(2)));
+        assertFalse(일월1일13시00분.isBefore(일월3일13시00분.minusDays(2)));
+        assertFalse(일월1일13시01분.isBefore(일월3일13시00분.minusDays(2)));
+
+        //10분뒤인 1월 3일 13시 10분에 2일전에 COMPLETE 된 콜백의 존재를 확인한다. 결국 모두 TRUE 로 처리가 되는것을 확인.
+        assertTrue(일월1일12시59분.isBefore(일월3일13시10분.minusDays(2)));
+        assertTrue(일월1일13시00분.isBefore(일월3일13시10분.minusDays(2)));
+        assertTrue(일월1일13시01분.isBefore(일월3일13시10분.minusDays(2)));
     }
 }

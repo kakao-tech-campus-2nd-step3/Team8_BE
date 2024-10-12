@@ -46,7 +46,7 @@ public class CallbackController {
     public ResponseEntity<Void> completeCallback(@MemberId Long memberId,
                                                  @PathVariable Long callbackId) {
 
-        callbackService.complete(memberId, callbackId);
+        callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 

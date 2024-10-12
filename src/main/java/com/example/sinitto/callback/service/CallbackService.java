@@ -17,14 +17,17 @@ import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class CallbackService {
 
+    private static final int DAYS_FOR_AUTO_COMPLETE = 2;
     public static final int CALLBACK_PRICE = 1500;
     private static final String SUCCESS_MESSAGE = "감사합니다. 잠시만 기다려주세요.";
     private static final String FAIL_MESSAGE_NOT_ENROLLED = "등록된 사용자가 아닙니다. 서비스 이용이 불가합니다.";
@@ -77,10 +80,11 @@ public class CallbackService {
         checkAssignment(memberId, callback.getAssignedMemberId());
 
         callback.changeStatusToPendingComplete();
+        callback.setPendingCompleteTime(LocalDateTime.now());
     }
 
     @Transactional
-    public void complete(Long memberId, Long callbackId) {
+    public void changeCallbackStatusToCompleteByGuard(Long memberId, Long callbackId) {
 
         Callback callback = getCallbackOrThrow(callbackId);
 
@@ -91,12 +95,35 @@ public class CallbackService {
             throw new GuardMismatchException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
         }
 
-        Point sinittoPoint = pointRepository.findByMemberId(callback.getAssignedMemberId())
-                .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
-        sinittoPoint.earn(CALLBACK_PRICE);
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), sinittoPoint.getMember(), CALLBACK_PRICE, PointLog.Status.EARN));
-
+        earnPointForSinitto(callback.getAssignedMemberId());
         callback.changeStatusToComplete();
+    }
+
+    private void earnPointForSinitto(Long sinittoMemberId) {
+
+        Point sinittoPoint = pointRepository.findByMemberId(sinittoMemberId)
+                .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
+
+        sinittoPoint.earn(CALLBACK_PRICE);
+
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), sinittoPoint.getMember(), CALLBACK_PRICE, PointLog.Status.EARN));
+    }
+
+    @Scheduled(cron = "0 */10 * * * *")
+    @Transactional
+    public void changeOldPendingCompleteToCompleteByPolicy() {
+
+        List<Callback> callbacks = callbackRepository.findAllByStatus(Callback.Status.PENDING_COMPLETE);
+
+        LocalDateTime referenceDateTimeForComplete = LocalDateTime.now().minusDays(DAYS_FOR_AUTO_COMPLETE);
+
+        for (Callback callback : callbacks) {
+            if (callback.getPendingCompleteTime().isBefore(referenceDateTimeForComplete)) {
+
+                earnPointForSinitto(callback.getAssignedMemberId());
+                callback.changeStatusToComplete();
+            }
+        }
     }
 
     @Transactional
