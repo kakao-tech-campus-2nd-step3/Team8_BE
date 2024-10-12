@@ -35,6 +35,7 @@ public class GuardGuideline {
         this.senior = senior;
     }
 
+
     public void updateGuardGuideline(Type type, String title, String content) {
         this.type = type;
         this.title = title;
