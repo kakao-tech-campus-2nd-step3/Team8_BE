@@ -22,7 +22,7 @@ public class GuardGuidelineService {
     private final GuardGuidelineRepository guardGuidelineRepository;
     private final SeniorRepository seniorRepository;
 
-    public GuardGuidelineService (GuardGuidelineRepository guardGuidelineRepository, SeniorRepository seniorRepository, MemberRepository memberRepository){
+    public GuardGuidelineService (GuardGuidelineRepository guardGuidelineRepository, SeniorRepository seniorRepository){
         this.guardGuidelineRepository = guardGuidelineRepository;
         this.seniorRepository = seniorRepository;
     }
