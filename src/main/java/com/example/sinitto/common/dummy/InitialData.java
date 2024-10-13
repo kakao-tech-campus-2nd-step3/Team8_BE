@@ -80,6 +80,7 @@ public class InitialData implements CommandLineRunner {
         Senior senior10 = seniorRepository.save(new Senior("우지현", "01013576420", guard5));
         Senior senior11 = seniorRepository.save(new Senior("서예진", "01035798642", guard5));
         Senior senior12 = seniorRepository.save(new Senior("이도훈", "01047389557", guard1));
+        Senior senior13 = seniorRepository.save(new Senior("정성훈", "01095502346", guard1));
 
         //포인트와 포인트로그
         pointRepository.save(new Point(50000, sinitto1));
