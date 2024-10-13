@@ -3,6 +3,8 @@ package com.example.sinitto.common.dummy;
 import com.example.sinitto.callback.entity.Callback;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.guard.repository.SeniorRepository;
+import com.example.sinitto.guardGuideline.entity.GuardGuideline;
+import com.example.sinitto.guardGuideline.repository.GuardGuidelineRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.entity.Sinitto;
@@ -11,6 +13,8 @@ import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.review.entity.Review;
+import com.example.sinitto.review.repository.ReviewRepository;
 import com.example.sinitto.sinitto.repository.SinittoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -24,14 +28,18 @@ public class InitialData implements CommandLineRunner {
     private final CallbackRepository callbackRepository;
     private final SinittoRepository sinittoRepository;
     private final PointLogRepository pointLogRepository;
+    private final ReviewRepository reviewRepository;
+    private final GuardGuidelineRepository guardGuidelineRepository;
 
-    public InitialData(MemberRepository memberRepository, SeniorRepository seniorRepository, PointRepository pointRepository, CallbackRepository callbackRepository, SinittoRepository sinittoRepository, PointLogRepository pointLogRepository) {
+    public InitialData(MemberRepository memberRepository, SeniorRepository seniorRepository, PointRepository pointRepository, CallbackRepository callbackRepository, SinittoRepository sinittoRepository, PointLogRepository pointLogRepository, ReviewRepository reviewRepository, GuardGuidelineRepository guardGuidelineRepository) {
         this.memberRepository = memberRepository;
         this.seniorRepository = seniorRepository;
         this.pointRepository = pointRepository;
         this.callbackRepository = callbackRepository;
         this.sinittoRepository = sinittoRepository;
         this.pointLogRepository = pointLogRepository;
+        this.reviewRepository = reviewRepository;
+        this.guardGuidelineRepository = guardGuidelineRepository;
     }
 
     @Override
@@ -140,8 +148,15 @@ public class InitialData implements CommandLineRunner {
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior11));
         callbackRepository.save(new Callback(Callback.Status.WAITING, senior11));
 
-        //남은건 GuardGuideline HelloCall HelloCallTimeLog TimeSlot Review 입니다!
-        //아래에 이어서 쭉 하시면 될거같아요.
+        //리뷰
+        reviewRepository.save(new Review(5, 4, 5, "테스트용 리뷰 1", guard1));
+        reviewRepository.save(new Review(5, 2, 2, "테스트용 리뷰 2", guard2));
+        reviewRepository.save(new Review(2, 3, 1, "테스트용 리뷰 3", guard3));
+        reviewRepository.save(new Review(4, 1, 4, "테스트용 리뷰 4", guard4));
+        reviewRepository.save(new Review(2, 5, 3, "테스트용 리뷰 5", guard5));
+
+        //남은건 GuardGuideline HelloCall HelloCallTimeLog TimeSlot 입니다!
+        //아래에 이어서 쭉 하시면 될거같아요~
     }
 
 }
