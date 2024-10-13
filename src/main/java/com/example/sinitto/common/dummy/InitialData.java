@@ -61,24 +61,25 @@ public class InitialData implements CommandLineRunner {
         sinittoRepository.save(new Sinitto("기업은행", "96-6-99-45", sinitto5));
 
         //보호자
-        Member guard1 = memberRepository.save(new Member("정예린", "010-6789-0123", "jeong@example.com", false));
-        Member guard2 = memberRepository.save(new Member("한상훈", "010-7890-1234", "han@example.com", false));
-        Member guard3 = memberRepository.save(new Member("오수빈", "010-8901-2345", "oh@example.com", false));
-        Member guard4 = memberRepository.save(new Member("임지훈", "010-9012-3456", "lim@example.com", false));
-        Member guard5 = memberRepository.save(new Member("송하늘", "010-0123-4567", "song@example.com", false));
+        Member guard1 = memberRepository.save(new Member("정예린", "01067890123", "jeong@example.com", false));
+        Member guard2 = memberRepository.save(new Member("한상훈", "01078901234", "han@example.com", false));
+        Member guard3 = memberRepository.save(new Member("오수빈", "01089012345", "oh@example.com", false));
+        Member guard4 = memberRepository.save(new Member("임지훈", "01090123456", "lim@example.com", false));
+        Member guard5 = memberRepository.save(new Member("송하늘", "01001234567", "song@example.com", false));
 
         //시니어
-        Senior senior1 = seniorRepository.save(new Senior("권지민", "010-1357-2468", guard1));
-        Senior senior2 = seniorRepository.save(new Senior("배정호", "010-2468-1357", guard1));
-        Senior senior3 = seniorRepository.save(new Senior("윤수현", "010-4680-9753", guard1));
-        Senior senior4 = seniorRepository.save(new Senior("하재민", "010-5791-0864", guard2));
-        Senior senior5 = seniorRepository.save(new Senior("민서영", "010-6802-1975", guard2));
-        Senior senior6 = seniorRepository.save(new Senior("전진우", "010-7913-2086", guard3));
-        Senior senior7 = seniorRepository.save(new Senior("나미래", "010-8024-3197", guard3));
-        Senior senior8 = seniorRepository.save(new Senior("임소라", "010-9135-4208", guard4));
-        Senior senior9 = seniorRepository.save(new Senior("조예빈", "010-0246-5319", guard4));
-        Senior senior10 = seniorRepository.save(new Senior("우지현", "010-1357-6420", guard5));
-        Senior senior11 = seniorRepository.save(new Senior("서예진", "010-3579-8642", guard5));
+        Senior senior1 = seniorRepository.save(new Senior("권지민", "01013572468", guard1));
+        Senior senior2 = seniorRepository.save(new Senior("배정호", "01024681357", guard1));
+        Senior senior3 = seniorRepository.save(new Senior("윤수현", "01046809753", guard1));
+        Senior senior4 = seniorRepository.save(new Senior("하재민", "01057910864", guard2));
+        Senior senior5 = seniorRepository.save(new Senior("민서영", "01068021975", guard2));
+        Senior senior6 = seniorRepository.save(new Senior("전진우", "01079132086", guard3));
+        Senior senior7 = seniorRepository.save(new Senior("나미래", "01080243197", guard3));
+        Senior senior8 = seniorRepository.save(new Senior("임소라", "01091354208", guard4));
+        Senior senior9 = seniorRepository.save(new Senior("조예빈", "01002465319", guard4));
+        Senior senior10 = seniorRepository.save(new Senior("우지현", "01013576420", guard5));
+        Senior senior11 = seniorRepository.save(new Senior("서예진", "01035798642", guard5));
+        Senior senior12 = seniorRepository.save(new Senior("이도훈", "01047389557", guard1));
 
         //포인트와 포인트로그
         pointRepository.save(new Point(50000, sinitto1));
