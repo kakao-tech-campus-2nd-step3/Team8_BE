@@ -54,9 +54,6 @@ public class Point {
 
     public boolean isSufficientForDeduction(int priceToDeduct) {
 
-        if (this.price < priceToDeduct) {
-            return false;
-        }
-        return true;
+        return this.price >= priceToDeduct;
     }
 }
