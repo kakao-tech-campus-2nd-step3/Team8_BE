@@ -2,6 +2,7 @@ package com.example.sinitto.callback.entity;
 
 import com.example.sinitto.callback.exception.AlreadyCompleteException;
 import com.example.sinitto.callback.exception.AlreadyInProgressException;
+import com.example.sinitto.callback.exception.AlreadyPendingCompleteException;
 import com.example.sinitto.callback.exception.AlreadyWaitingException;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.guard.repository.SeniorRepository;
@@ -49,14 +50,14 @@ class CallbackTest {
     }
 
     @Test
-    @DisplayName("Complete -> In Progress - 예외 발생")
+    @DisplayName("Pending Complete -> In Progress - 예외 발생")
     void changeStatusToInProgress_fail1() {
         //given
         testCallback.changeStatusToInProgress();
-        testCallback.changeStatusToComplete();
+        testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyCompleteException.class, () -> testCallback.changeStatusToInProgress());
+        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.changeStatusToInProgress());
     }
 
     @Test
@@ -70,34 +71,34 @@ class CallbackTest {
     }
 
     @Test
-    @DisplayName("In Progress -> Complete - 성공")
-    void changeStatusToComplete() {
+    @DisplayName("In Progress -> Pending Complete - 성공")
+    void changeStatusToPendingComplete() {
         //given
         testCallback.changeStatusToInProgress();
 
         //when
-        testCallback.changeStatusToComplete();
+        testCallback.changeStatusToPendingComplete();
 
         //then
-        assertEquals(testCallback.getStatus(), Callback.Status.COMPLETE.name());
+        assertEquals(testCallback.getStatus(), Callback.Status.PENDING_COMPLETE.name());
     }
 
     @Test
-    @DisplayName("Waiting -> Complete - 예외 발생")
-    void changeStatusToComplete_fail1() {
+    @DisplayName("Waiting -> Pending Complete - 예외 발생")
+    void changeStatusToPendingComplete_fail1() {
         //when then
-        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToComplete());
+        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToPendingComplete());
     }
 
     @Test
-    @DisplayName("Complete -> Complete - 예외 발생")
-    void changeStatusToComplete_fail2() {
+    @DisplayName("Pending Complete -> Pending Complete - 예외 발생")
+    void changeStatusToPendingComplete_fail2() {
         //given
         testCallback.changeStatusToInProgress();
-        testCallback.changeStatusToComplete();
+        testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyCompleteException.class, () -> testCallback.changeStatusToComplete());
+        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.changeStatusToPendingComplete());
     }
 
     @Test
@@ -121,14 +122,14 @@ class CallbackTest {
     }
 
     @Test
-    @DisplayName("Complete -> Waiting - 예외 발생")
+    @DisplayName("Pending Complete -> Waiting - 예외 발생")
     void changeStatusToWaiting_fail2() {
         //given
         testCallback.changeStatusToInProgress();
-        testCallback.changeStatusToComplete();
+        testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyCompleteException.class, () -> testCallback.changeStatusToWaiting());
+        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.changeStatusToWaiting());
     }
 
     @Test
@@ -155,10 +156,22 @@ class CallbackTest {
     }
 
     @Test
-    @DisplayName("Complete 상태에서 멤버Id 할당 - 예외 발생")
+    @DisplayName("Pending Complete 상태에서 멤버Id 할당 - 예외 발생")
     void checkAssignedMemberId_fail2() {
         //given
         testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToPendingComplete();
+
+        //when then
+        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.assignMember(3L));
+    }
+
+    @Test
+    @DisplayName("Complete 상태에서 멤버Id 할당 - 예외 발생")
+    void checkAssignedMemberId_fail3() {
+        //given
+        testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToPendingComplete();
         testCallback.changeStatusToComplete();
 
         //when then
@@ -181,14 +194,14 @@ class CallbackTest {
     }
 
     @Test
-    @DisplayName("Complete 상태에서 할당 취소 - 예외 발생")
+    @DisplayName("Pending Complete 상태에서 할당 취소 - 예외 발생")
     void cancelAssignment_fail1() {
         //given
         testCallback.changeStatusToInProgress();
-        testCallback.changeStatusToComplete();
+        testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyCompleteException.class, () -> testCallback.cancelAssignment());
+        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.cancelAssignment());
     }
 
     @Test
@@ -197,4 +210,58 @@ class CallbackTest {
         //when then
         assertThrows(AlreadyWaitingException.class, () -> testCallback.cancelAssignment());
     }
+
+    @Test
+    @DisplayName("Complete 상태에서 할당 취소 - 예외 발생")
+    void cancelAssignment_fail3() {
+        //given
+        testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToPendingComplete();
+        testCallback.changeStatusToComplete();
+
+        //when then
+        assertThrows(AlreadyCompleteException.class, () -> testCallback.cancelAssignment());
+    }
+
+    @Test
+    @DisplayName("Pending Complete -> Complete - 성공")
+    void changeStatusToComplete() {
+        //when
+        testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToPendingComplete();
+        testCallback.changeStatusToComplete();
+
+        //then
+        assertEquals(testCallback.getStatus(), Callback.Status.COMPLETE.name());
+    }
+
+    @Test
+    @DisplayName("Complete -> Complete - 예외 발생")
+    void changeStatusToComplete_fail() {
+        //when
+        testCallback.changeStatusToInProgress();
+        testCallback.changeStatusToPendingComplete();
+        testCallback.changeStatusToComplete();
+
+        //then
+        assertThrows(AlreadyCompleteException.class, () -> testCallback.changeStatusToComplete());
+    }
+
+    @Test
+    @DisplayName("Waiting -> Complete - 예외 발생")
+    void changeStatusToComplete_fail1() {
+        //when then
+        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToComplete());
+    }
+
+    @Test
+    @DisplayName("In Progress -> Complete - 예외 발생")
+    void changeStatusToComplete_fail2() {
+        //given
+        testCallback.changeStatusToInProgress();
+
+        //when then
+        assertThrows(AlreadyInProgressException.class, () -> testCallback.changeStatusToComplete());
+    }
+
 }

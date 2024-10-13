@@ -1,20 +1,25 @@
 package com.example.sinitto.helloCall.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 public record HelloCallDetailResponse(
-        Date startDate,
-        Date endDate,
+        LocalDate startDate,
+        LocalDate endDate,
         List<TimeSlot> timeSlots,
-        String content
+        String requirement,
+        String seniorName,
+        String seniorPhoneNumber,
+        int price
 ) {
-
     public record TimeSlot(
-            String day,
+            String dayName,
+            @JsonFormat(pattern = "kk:mm")
             LocalTime startTime,
-            LocalTime endTime,
-            int serviceTime) {
+            @JsonFormat(pattern = "kk:mm")
+            LocalTime endTime) {
     }
 }

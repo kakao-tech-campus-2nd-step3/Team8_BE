@@ -1,4 +1,4 @@
-package com.example.sinitto.auth.dto;
+package com.example.sinitto.member.dto;
 
 public record RegisterResponse(
         String accessToken,

@@ -1,7 +1,6 @@
 package com.example.sinitto.sinitto.controller;
 
 import com.example.sinitto.common.annotation.MemberId;
-import com.example.sinitto.guard.dto.SeniorRequest;
 import com.example.sinitto.sinitto.dto.SinittoBankRequest;
 import com.example.sinitto.sinitto.dto.SinittoRequest;
 import com.example.sinitto.sinitto.dto.SinittoResponse;

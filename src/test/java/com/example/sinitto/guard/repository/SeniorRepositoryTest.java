@@ -19,7 +19,7 @@ public class SeniorRepositoryTest {
 
     @Test
     @DisplayName("저장 테스트")
-    void saveSenior(){
+    void saveSenior() {
         //given
         Member member = memberRepository.save(new Member("test", "01012345678", "test@test.com", false));
         Senior senior = new Senior("testSenior", "01000000000", member);
@@ -31,7 +31,7 @@ public class SeniorRepositoryTest {
 
     @Test
     @DisplayName("조회 확인")
-    void readSenior(){
+    void readSenior() {
         //given
         Member member = memberRepository.save(new Member("test", "01012345678", "test@test.com", false));
         Senior senior = seniorRepository.save(new Senior("testSenior", "01000000000", member));
@@ -45,7 +45,7 @@ public class SeniorRepositoryTest {
 
     @Test
     @DisplayName("findByMemberId 메소드 테스트")
-    void findByMemberIdTest(){
+    void findByMemberIdTest() {
         //given
         Member member = memberRepository.save(new Member("test", "01012345678", "test@test.com", false));
         Senior senior = seniorRepository.save(new Senior("testSenior", "01000000000", member));
@@ -59,7 +59,7 @@ public class SeniorRepositoryTest {
 
     @Test
     @DisplayName("findByIdAndMemberId 메소드 테스트")
-    void findByIdAndMemberIdTest(){
+    void findByIdAndMemberIdTest() {
         //given
         Member member = memberRepository.save(new Member("test", "01012345678", "test@test.com", false));
         Senior senior = seniorRepository.save(new Senior("testSenior", "01000000000", member));
