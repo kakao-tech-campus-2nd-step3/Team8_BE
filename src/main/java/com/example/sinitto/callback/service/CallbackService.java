@@ -27,8 +27,8 @@ import java.util.List;
 @Service
 public class CallbackService {
 
+    private static final int CALLBACK_PRICE = 1500;
     private static final int DAYS_FOR_AUTO_COMPLETE = 2;
-    public static final int CALLBACK_PRICE = 1500;
     private static final String SUCCESS_MESSAGE = "감사합니다. 잠시만 기다려주세요.";
     private static final String FAIL_MESSAGE_NOT_ENROLLED = "등록된 사용자가 아닙니다. 서비스 이용이 불가합니다.";
     private static final String FAIL_MESSAGE_NOT_ENOUGH_POINT = "포인트가 부족합니다. 서비스 이용이 불가합니다.";

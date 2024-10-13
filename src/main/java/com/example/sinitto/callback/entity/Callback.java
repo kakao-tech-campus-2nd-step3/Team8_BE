@@ -141,12 +141,12 @@ public class Callback {
         return assignedMemberId;
     }
 
-    public void setPendingCompleteTime(LocalDateTime pendingCompleteTime) {
-        this.pendingCompleteTime = pendingCompleteTime;
-    }
-
     public LocalDateTime getPendingCompleteTime() {
         return pendingCompleteTime;
+    }
+
+    public void setPendingCompleteTime(LocalDateTime pendingCompleteTime) {
+        this.pendingCompleteTime = pendingCompleteTime;
     }
 
     public enum Status {
