@@ -123,6 +123,22 @@ public class InitialData implements CommandLineRunner {
         Senior senior12 = seniorRepository.save(new Senior("이도훈", "01047389557", guard1));
         Senior senior13 = seniorRepository.save(new Senior("정성훈", "01095502346", guard1));
         Senior senior14 = seniorRepository.save(new Senior("이지호", "01099329746", guard1));
+        Senior senior15 = seniorRepository.save(new Senior("김강민", "01030957259", guard1));
+        Senior senior16 = seniorRepository.save(new Senior("김지훈", "01062479134", guard2));
+        Senior senior17 = seniorRepository.save(new Senior("박서연", "01083649205", guard2));
+        Senior senior18 = seniorRepository.save(new Senior("홍승현", "01074102368", guard3));
+        Senior senior19 = seniorRepository.save(new Senior("이수빈", "01051908364", guard3));
+        Senior senior20 = seniorRepository.save(new Senior("최민지", "01096347281", guard4));
+        Senior senior21 = seniorRepository.save(new Senior("백승민", "01018539647", guard4));
+        Senior senior22 = seniorRepository.save(new Senior("윤지수", "01073214950", guard5));
+        Senior senior23 = seniorRepository.save(new Senior("한유정", "01058231946", guard5));
+        Senior senior24 = seniorRepository.save(new Senior("전현우", "01031905728", guard1));
+        Senior senior25 = seniorRepository.save(new Senior("송예은", "01071489352", guard2));
+        Senior senior26 = seniorRepository.save(new Senior("고유민", "01040257193", guard2));
+        Senior senior27 = seniorRepository.save(new Senior("황지호", "01062079351", guard3));
+        Senior senior28 = seniorRepository.save(new Senior("김도현", "01081724630", guard3));
+        Senior senior29 = seniorRepository.save(new Senior("서민재", "01079320584", guard4));
+        Senior senior30 = seniorRepository.save(new Senior("오예림", "01091268437", guard5));
 
         //포인트와 포인트로그
         pointRepository.save(new Point(50000, MemberSinitto1));
@@ -237,6 +253,21 @@ public class InitialData implements CommandLineRunner {
         HelloCall helloCall9 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 6, 7), LocalDate.of(2024, 9, 8), 8500, 15, "아버님께서는 요즘 운동을 자주 하려고 하시는데, 날씨가 추워지면서 잘하고 계신지 물어봐 주세요. 운동과 관련된 대화를 나누면 좋을 것 같습니다.", senior12));
         HelloCall helloCall10 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 6, 5), LocalDate.of(2024, 9, 8), 7550, 15, "어머님께서는 최근에 동네 산책을 즐겨 하십니다. 요즘 날씨 때문에 산책이 어려우신지, 산책하시며 만나는 사람들과 근황을 나누고 계신지 물어봐 주시면 좋을 것 같아요.", senior13));
         HelloCall helloCall11 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 6, 5), LocalDate.of(2024, 9, 6), 16550, 5, "아버님께서는 요즘 음악 듣는 시간을 즐기세요. 특히 트로트를 좋아하시는데, 최근에 어떤 노래를 들으셨는지 여쭤봐 주세요. 음악 이야기로 대화를 시작하면 기분 좋으실 거예요.", senior14));
+        HelloCall helloCall12 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 2), LocalDate.of(2024, 10, 1), 12500, 10, "어머님께서는 뜨개질을 즐기세요. 요즘 어떤 작품을 만들고 계신지 여쭤보고, 새로운 작품 계획이 있으신지 물어봐 주세요.", senior16));
+        HelloCall helloCall13 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 3), LocalDate.of(2024, 10, 2), 14000, 15, "아버님께서는 고전 문학을 좋아하세요. 최근에 읽으신 책이나 추천하실 만한 책이 있으신지 대화를 시작해 주세요.", senior17));
+        HelloCall helloCall14 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 4), LocalDate.of(2024, 10, 3), 13500, 10, "어머님께서는 요리를 매우 좋아하십니다. 최근에 어떤 음식을 만드셨는지 여쭤보시면 기분 좋은 대화를 나누실 수 있을 거예요.", senior18));
+        HelloCall helloCall15 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 5), LocalDate.of(2024, 10, 4), 14500, 5, "아버님께서는 오래된 추억 이야기를 자주 하세요. 어린 시절의 추억에 대해 물어보시면 즐거운 대화를 이어가실 겁니다.", senior19));
+        HelloCall helloCall16 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 6), LocalDate.of(2024, 10, 5), 12000, 15, "어머님께서는 손으로 만드는 공예품을 좋아하세요. 최근에 어떤 작품을 완성하셨는지 이야기 나눠보세요.", senior20));
+        HelloCall helloCall17 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 7), LocalDate.of(2024, 10, 6), 15500, 10, "아버님께서는 최근 건강 관리에 신경을 많이 쓰고 계십니다. 운동이나 식단 관련 이야기를 나누시면 좋을 것 같습니다.", senior21));
+        HelloCall helloCall18 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 8), LocalDate.of(2024, 10, 7), 16000, 10, "어머님께서는 손주들 사진을 자주 보신다고 합니다. 최근에 손주들이 어떻게 지내고 있는지 물어보시면 기분 좋게 대화하실 거예요.", senior22));
+        HelloCall helloCall19 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 9), LocalDate.of(2024, 10, 8), 11000, 15, "아버님께서는 오래된 음악을 즐겨 들으십니다. 좋아하시는 노래나 추억의 음악에 대해 이야기 나눠보세요.", senior23));
+        HelloCall helloCall20 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 10), LocalDate.of(2024, 10, 9), 10500, 5, "어머님께서는 식물 기르는 것을 좋아하세요. 최근에 새로운 식물을 들이셨는지, 잘 자라고 있는지 물어봐 주세요.", senior24));
+        HelloCall helloCall21 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 11), LocalDate.of(2024, 10, 10), 15000, 15, "아버님께서는 스포츠 경기를 즐겨 보십니다. 최근에 어떤 경기를 보셨는지, 가장 기억에 남는 순간이 무엇인지 물어봐 주세요.", senior25));
+        HelloCall helloCall22 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 12), LocalDate.of(2024, 10, 11), 13000, 10, "어머님께서는 주말에 친구들과 산책을 즐기십니다. 요즘 산책이 편하신지, 친구들과 자주 만나시는지 여쭤봐 주세요.", senior26));
+        HelloCall helloCall23 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 13), LocalDate.of(2024, 10, 12), 14500, 15, "아버님께서는 바둑 두는 것을 좋아하세요. 최근에 바둑을 두셨는지, 바둑에 대한 이야기를 나누면 좋을 것 같습니다.", senior27));
+        HelloCall helloCall24 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 14), LocalDate.of(2024, 10, 13), 12500, 5, "어머님께서는 정원 가꾸는 일을 즐기십니다. 최근에 심은 꽃이나 식물들이 잘 자라고 있는지 물어봐 주세요.", senior28));
+        HelloCall helloCall25 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 15), LocalDate.of(2024, 10, 14), 14000, 10, "아버님께서는 요즘 정치에 관심이 많으십니다. 최근 뉴스나 정치 이슈에 대해 대화를 나눠보세요.", senior29));
+        HelloCall helloCall26 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 9, 16), LocalDate.of(2024, 10, 15), 11000, 5, "어머님께서는 손주들 사진을 자주 보신다고 합니다. 최근에 손주들이 어떻게 지내고 있는지 물어보시면 즐거운 대화를 나눌 수 있을 겁니다.", senior30));
 
         //안부전화별 타임슬롯
         timeSlotRepository.save(new TimeSlot("월", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall1));
@@ -280,6 +311,66 @@ public class InitialData implements CommandLineRunner {
         timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall11));
         timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall11));
         timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall11));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall12));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall12));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall12));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall13));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall13));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall13));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall14));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall14));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall14));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall15));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall15));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall15));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall16));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall16));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall16));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall17));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall17));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall17));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall18));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall18));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall18));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall19));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall19));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall19));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall20));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall20));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall20));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall21));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall21));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall21));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall22));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall22));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall22));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall23));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall23));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall23));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall24));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall24));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall24));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall25));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall25));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall25));
+
+        timeSlotRepository.save(new TimeSlot("수", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall26));
+        timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall26));
+        timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall26));
 
         //안부전화 실시 타임로그
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 5, 18, 30), LocalDateTime.of(2024, 8, 5, 18, 40)));
