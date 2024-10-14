@@ -23,6 +23,7 @@ public class Callback {
     private Long id;
     @CreatedDate
     private LocalDateTime postTime;
+    private LocalDateTime pendingCompleteTime;
     @NotNull
     @Enumerated(EnumType.STRING)
     private Callback.Status status;
@@ -138,6 +139,14 @@ public class Callback {
 
     public Long getAssignedMemberId() {
         return assignedMemberId;
+    }
+
+    public LocalDateTime getPendingCompleteTime() {
+        return pendingCompleteTime;
+    }
+
+    public void setPendingCompleteTime(LocalDateTime pendingCompleteTime) {
+        this.pendingCompleteTime = pendingCompleteTime;
     }
 
     public enum Status {
