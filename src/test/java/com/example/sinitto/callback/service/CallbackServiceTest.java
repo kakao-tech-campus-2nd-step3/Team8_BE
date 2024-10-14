@@ -295,26 +295,39 @@ class CallbackServiceTest {
     }
 
     @Test
-    @DisplayName("changeOldPendingCompleteToCompleteByPolicy() - 성공")
+    @DisplayName("일정 기간동안 PendingComplete 인 콜백 자동으로 Complete 로 전환  - 성공")
     void changeOldPendingCompleteToCompleteByPolicy_Success() {
-        // given
-        Callback callback = mock(Callback.class);
+        // Given
+        Callback callback1 = mock(Callback.class);
         Point point = mock(Point.class);
 
-        when(callback.getPendingCompleteTime()).thenReturn(LocalDateTime.now().minusDays(3));
-        when(callback.getAssignedMemberId()).thenReturn(1L);
-
-        List<Callback> callbacks = List.of(callback);
-        when(callbackRepository.findAllByStatus(Callback.Status.PENDING_COMPLETE)).thenReturn(callbacks);
+        when(callback1.getAssignedMemberId()).thenReturn(1L);
         when(pointRepository.findByMemberId(1L)).thenReturn(Optional.of(point));
 
-        // when
+        when(callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(eq(Callback.Status.PENDING_COMPLETE), any(LocalDateTime.class)))
+                .thenReturn(List.of(callback1));
+
+        // When
         callbackService.changeOldPendingCompleteToCompleteByPolicy();
 
-        // then
-        verify(callback).changeStatusToComplete();
-        verify(callbackRepository, times(1)).findAllByStatus(Callback.Status.PENDING_COMPLETE);
+        // Then
+        verify(callback1, times(1)).changeStatusToComplete();
+        verify(point, times(1)).earn(1500);
         verify(pointLogRepository, times(1)).save(any(PointLog.class));
+    }
+
+    @Test
+    @DisplayName("일정 기간동안 PendingComplete 인 콜백 자동으로 Complete 로 전환  - 조건에 맞는 콜백 없을 때")
+    void changeOldPendingCompleteToCompleteByPolicy_Success_zeroList() {
+        // Given
+        when(callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(eq(Callback.Status.PENDING_COMPLETE), any(LocalDateTime.class)))
+                .thenReturn(List.of());
+
+        // When
+        callbackService.changeOldPendingCompleteToCompleteByPolicy();
+
+        // Then
+        verify(pointLogRepository, times(0)).save(any(PointLog.class));
     }
 
     @Test

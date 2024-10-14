@@ -113,16 +113,14 @@ public class CallbackService {
     @Transactional
     public void changeOldPendingCompleteToCompleteByPolicy() {
 
-        List<Callback> callbacks = callbackRepository.findAllByStatus(Callback.Status.PENDING_COMPLETE);
-
         LocalDateTime referenceDateTimeForComplete = LocalDateTime.now().minusDays(DAYS_FOR_AUTO_COMPLETE);
 
-        for (Callback callback : callbacks) {
-            if (callback.getPendingCompleteTime().isBefore(referenceDateTimeForComplete)) {
+        List<Callback> callbacks = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, referenceDateTimeForComplete);
 
-                earnPointForSinitto(callback.getAssignedMemberId());
-                callback.changeStatusToComplete();
-            }
+        for (Callback callback : callbacks) {
+
+            earnPointForSinitto(callback.getAssignedMemberId());
+            callback.changeStatusToComplete();
         }
     }
 

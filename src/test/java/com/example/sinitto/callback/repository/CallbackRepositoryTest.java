@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,10 +28,11 @@ class CallbackRepositoryTest {
     private SeniorRepository seniorRepository;
     private Callback testCallback;
     private Long memberId;
+    private Member testMember;
 
     @BeforeEach
     void setUp() {
-        Member testMember = new Member("member", "01043214321", "tjdgns5506@gmai.com", true);
+        testMember = new Member("member", "01043214321", "tjdgns5506@gmai.com", true);
         memberRepository.save(testMember);
 
         memberId = testMember.getId();
@@ -166,5 +169,55 @@ class CallbackRepositoryTest {
 
         //then
         assertFalse(result);
+    }
+
+
+    @Test
+    @DisplayName("findAllByStatusAndPendingCompleteTimeBefore 이용해서 2일이 지난 PendingComplete 콜백 조회 - 성공")
+    void findAllByStatusAndPendingCompleteTimeBefore_success() {
+        // given
+        LocalDateTime beforeTime = LocalDateTime.of(2024, 1, 5, 13, 00).minusDays(2);
+        Senior testSenior = seniorRepository.save(new Senior("senior", "01012341234", testMember));
+
+        Callback callback1 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callback1.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 12, 58));
+        Callback callback2 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callback2.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 12, 59));
+        Callback callback3 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callback3.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 12, 59));
+        Callback callback4 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callback4.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 01));
+        Callback callback5 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callback5.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 02));
+
+        // when
+        List<Callback> result = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, beforeTime);
+
+        // then
+        assertEquals(3, result.size());
+        assertTrue(result.contains(callback1));
+        assertTrue(result.contains(callback2));
+        assertTrue(result.contains(callback3));
+    }
+
+    @Test
+    @DisplayName("findAllByStatusAndPendingCompleteTimeBefore 이용해서 2일이 지난 PendingComplete 콜백 조회 - 만약 아무것도 조건에 해당 안될 경우 테스트")
+    void findAllByStatusAndPendingCompleteTimeBefore_success_zeroList() {
+        // given
+        LocalDateTime beforeTime = LocalDateTime.of(2024, 1, 5, 13, 00).minusDays(2);
+        Senior testSenior = seniorRepository.save(new Senior("senior", "01012341234", testMember));
+
+        Callback callback1 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callback1.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 01));
+        Callback callback2 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callback2.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 02));
+
+        // when
+        List<Callback> result = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, beforeTime);
+
+        // then
+        assertNotNull(result);
+        assertEquals(0, result.size());
+
     }
 }
