@@ -138,7 +138,7 @@ public class HelloCallController {
     }
 
     @Operation(summary = "[보호자용] 완료 대기 상태 안부전화 완료 처리", description = "보호자가 완료 대기 상태인 안부전화의 상태를 완료로 변경합니다.")
-    @PostMapping("/complete/{callId}")
+    @PutMapping("/complete/{callId}")
     public ResponseEntity<StringMessageResponse> completeHelloCall(@MemberId Long memberId, @PathVariable Long callId) {
 
         helloCallService.makeCompleteHelloCallByGuard(memberId, callId);
