@@ -126,10 +126,6 @@ public class HelloCall {
         return helloCallTimeLogs;
     }
 
-    public boolean checkUnAuthorization(Member member) {
-        return !this.senior.getMember().equals(member);
-    }
-
     public void checkStatusIsWaiting() {
         if (status.canNotModifyOrDelete()) {
             throw new InvalidStatusException("안부전화 서비스가 수행 대기중일 때만 삭제가 가능합니다.");
@@ -144,7 +140,7 @@ public class HelloCall {
 
     public void checkGuardIsCorrect(Member member) {
         if (!this.senior.getMember().equals(member)) {
-            throw new UnauthorizedException("해당 시니어의 안부전화를 신청한 보호자가 아닙니다.");
+            throw new UnauthorizedException("해당 시니어의 안부전화를 신청한 보호자가 아닙니다. 권한이 없습니다.");
         }
     }
 
