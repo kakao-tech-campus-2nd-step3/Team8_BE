@@ -71,7 +71,7 @@ class HelloCallTimeLogRepositoryTest {
         HelloCallTimeLog timeLog = new HelloCallTimeLog(helloCall, sinitto, LocalDateTime.of(2024, 1, 1, 10, 0), LocalDateTime.of(2024, 1, 1, 11, 0));
         helloCallTimeLogRepository.save(timeLog);
 
-        Optional<HelloCallTimeLog> foundTimeLog = helloCallTimeLogRepository.findBySinittoAndAndHelloCallId(sinitto, helloCall.getId());
+        Optional<HelloCallTimeLog> foundTimeLog = helloCallTimeLogRepository.findBySinittoAndHelloCallId(sinitto, helloCall.getId());
 
         assertThat(foundTimeLog).isPresent();
         assertThat(foundTimeLog.get().getHelloCall()).isEqualTo(helloCall);
