@@ -37,7 +37,7 @@ public class CallbackController {
     public ResponseEntity<Void> pendingCompleteCallback(@MemberId Long memberId,
                                                         @PathVariable Long callbackId) {
 
-        callbackService.pendingComplete(memberId, callbackId);
+        callbackService.changeCallbackStatusToPendingCompleteBySinitto(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 
@@ -55,7 +55,7 @@ public class CallbackController {
     public ResponseEntity<Void> acceptCallback(@MemberId Long memberId,
                                                @PathVariable Long callbackId) {
 
-        callbackService.accept(memberId, callbackId);
+        callbackService.acceptCallbackBySinitto(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 
@@ -64,14 +64,14 @@ public class CallbackController {
     public ResponseEntity<Void> cancelCallback(@MemberId Long memberId,
                                                @PathVariable Long callbackId) {
 
-        callbackService.cancel(memberId, callbackId);
+        callbackService.cancelCallbackAssignmentBySinitto(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/twilio")
     public ResponseEntity<String> addCallCheck(@RequestParam("From") String fromNumber) {
 
-        return ResponseEntity.ok(callbackService.add(fromNumber));
+        return ResponseEntity.ok(callbackService.createCallbackByCall(fromNumber));
     }
 
     @Operation(summary = "시니또에게 현재 할당된 콜백 조회", description = "현재 시니또 본인에게 할당된 콜백을 조회합니다.")
