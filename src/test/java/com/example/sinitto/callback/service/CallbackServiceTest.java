@@ -347,7 +347,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("일정 기간동안 PendingComplete 인 콜백 자동으로 Complete 로 전환  - 성공")
-    void changeOldChangeCallbackStatusToPendingCompleteToCompleteBySinittoByPolicy_Success() {
+    void changeOldPendingCompleteToCompleteByPolicy_Success() {
         // Given
         Callback callback1 = mock(Callback.class);
         Point point = mock(Point.class);
@@ -369,7 +369,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("일정 기간동안 PendingComplete 인 콜백 자동으로 Complete 로 전환  - 조건에 맞는 콜백 없을 때")
-    void changeOldChangeCallbackStatusToPendingCompleteToCompleteBySinittoByPolicy_Success_zeroList() {
+    void changeOldPendingCompleteToCompleteByPolicy_Success_zeroList() {
         // Given
         when(callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(eq(Callback.Status.PENDING_COMPLETE), any(LocalDateTime.class)))
                 .thenReturn(List.of());
