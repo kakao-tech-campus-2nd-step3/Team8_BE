@@ -67,7 +67,7 @@ public class HelloCallService {
     @Transactional
     public void createHelloCallByGuard(Long memberId, HelloCallRequest helloCallRequest) {
         Senior senior = seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)
-                .orElseThrow(() -> new SeniorNotFoundException("시니어를 찾을 수 없습니다."));
+                .orElseThrow(() -> new SeniorNotFoundException("보호자님과 연관된 시니어가 아니거나, 시니어를 찾을 수 없습니다."));
 
         if (helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))) {
             throw new HelloCallAlreadyExistsException("이미 해당 시니어에게 할당되어 대기중 또는 진행중인 안부 전화 서비스가 존재합니다.");
