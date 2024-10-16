@@ -31,6 +31,7 @@ dependencies {
     implementation group: 'com.twilio.sdk', name: 'twilio', version: '10.5.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
 }
 
 tasks.named('test') {

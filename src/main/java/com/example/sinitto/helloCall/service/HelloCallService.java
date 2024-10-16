@@ -159,9 +159,7 @@ public class HelloCallService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
-        if (helloCall.checkUnAuthorization(member)) {
-            throw new UnauthorizedException("안부전화 정보를 수정할 권한이 없습니다.");
-        }
+        helloCall.checkGuardIsCorrect(member);
 
         helloCall.updateHelloCall(helloCallDetailUpdateRequest.startDate(), helloCallDetailUpdateRequest.endDate(),
                 helloCallDetailUpdateRequest.price(), helloCallDetailUpdateRequest.serviceTime(), helloCallDetailUpdateRequest.requirement());
@@ -188,9 +186,7 @@ public class HelloCallService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
-        if (helloCall.checkUnAuthorization(member)) {
-            throw new UnauthorizedException("안부전화 신청을 취소할 권한이 없습니다.");
-        }
+        helloCall.checkGuardIsCorrect(member);
 
         Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
                 .orElseThrow(() -> new PointNotFoundException("멤버에 연관된 포인트가 없습니다."));
@@ -217,9 +213,7 @@ public class HelloCallService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
-        if (helloCall.checkUnAuthorization(member)) {
-            throw new UnauthorizedException("안부전화 로그를 조회할 권한이 없습니다.");
-        }
+        helloCall.checkGuardIsCorrect(member);
 
         List<HelloCallTimeLog> helloCallTimeLogs = helloCallTimeLogRepository.findAllByHelloCallId(helloCallId);
 

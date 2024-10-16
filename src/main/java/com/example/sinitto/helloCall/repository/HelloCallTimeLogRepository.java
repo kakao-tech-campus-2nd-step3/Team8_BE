@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HelloCallTimeLogRepository extends JpaRepository<HelloCallTimeLog, Long> {
-    Optional<HelloCallTimeLog> findBySinittoAndAndHelloCallId(Sinitto sinitto, Long helloCallId);
+    Optional<HelloCallTimeLog> findBySinittoAndHelloCallId(Sinitto sinitto, Long helloCallId);
 
     List<HelloCallTimeLog> findAllByHelloCallId(Long helloCallId);
 

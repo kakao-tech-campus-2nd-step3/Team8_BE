@@ -34,9 +34,9 @@ public record HelloCallPriceRequest(
 ) {
     public record TimeSlot(
             String dayName,
-            @JsonFormat(pattern = "kk:mm")
+            @JsonFormat(pattern = "HH:mm")
             LocalTime startTime,
-            @JsonFormat(pattern = "kk:mm")
+            @JsonFormat(pattern = "HH:mm")
             LocalTime endTime) {
     }
 }
