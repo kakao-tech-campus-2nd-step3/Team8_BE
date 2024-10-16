@@ -43,7 +43,7 @@
 
                 <!-- 상태가 CHARGE_WAITING일 때 -->
                 <form method="post"
-                      th:action="@{/admin/point/charge/fail/{pointLogId}(pointLogId=${logWithBankInfo.pointLogId})}"
+                      th:action="@{/admin/point/withdraw/fail/{pointLogId}(pointLogId=${logWithBankInfo.pointLogId})}"
                       th:if="${logWithBankInfo.status.toString()} == 'WITHDRAW_WAITING'">
                     <button type="submit">실패 상태로 변경</button>
                 </form>
