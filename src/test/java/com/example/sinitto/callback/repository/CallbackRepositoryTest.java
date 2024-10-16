@@ -220,4 +220,27 @@ class CallbackRepositoryTest {
         assertEquals(0, result.size());
 
     }
+
+    @Test
+    @DisplayName("시니어와 상태들을 조건을 활용한 조회 테스트")
+    void existsBySeniorAndStatusIn() {
+        // given
+        Senior testSenior = seniorRepository.save(new Senior("senior", "01012341234", testMember));
+
+        callbackRepository.save(new Callback(Callback.Status.WAITING, testSenior));
+        callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
+        callbackRepository.save(new Callback(Callback.Status.COMPLETE, testSenior));
+
+        // when
+        boolean result1 = callbackRepository.existsBySeniorAndStatusIn(testSenior, List.of(Callback.Status.IN_PROGRESS, Callback.Status.WAITING));
+        boolean result2 = callbackRepository.existsBySeniorAndStatusIn(testSenior, List.of(Callback.Status.WAITING));
+        boolean result3 = callbackRepository.existsBySeniorAndStatusIn(testSenior, List.of(Callback.Status.IN_PROGRESS));
+        boolean result4 = callbackRepository.existsBySeniorAndStatusIn(testSenior, List.of(Callback.Status.COMPLETE));
+
+        // then
+        assertTrue(result1);
+        assertTrue(result2);
+        assertFalse(result3);
+        assertTrue(result4);
+    }
 }

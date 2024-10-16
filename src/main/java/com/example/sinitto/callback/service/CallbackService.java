@@ -32,6 +32,7 @@ public class CallbackService {
     private static final String SUCCESS_MESSAGE = "감사합니다. 잠시만 기다려주세요.";
     private static final String FAIL_MESSAGE_NOT_ENROLLED = "등록된 사용자가 아닙니다. 서비스 이용이 불가합니다.";
     private static final String FAIL_MESSAGE_NOT_ENOUGH_POINT = "포인트가 부족합니다. 서비스 이용이 불가합니다.";
+    private static final String FAIL_MESSAGE_ALREADY_HAS_CALLBACK_IN_PROGRESS_OR_WAITING = "어르신의 요청이 이미 접수되었습니다. 잠시 기다려주시면 연락드리겠습니다.";
     private final CallbackRepository callbackRepository;
     private final MemberRepository memberRepository;
     private final SeniorRepository seniorRepository;
@@ -56,7 +57,7 @@ public class CallbackService {
     }
 
     @Transactional
-    public void accept(Long memberId, Long callbackId) {
+    public void acceptCallbackBySinitto(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
 
@@ -71,7 +72,7 @@ public class CallbackService {
     }
 
     @Transactional
-    public void pendingComplete(Long memberId, Long callbackId) {
+    public void changeCallbackStatusToPendingCompleteBySinitto(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
 
@@ -125,7 +126,7 @@ public class CallbackService {
     }
 
     @Transactional
-    public void cancel(Long memberId, Long callbackId) {
+    public void cancelCallbackAssignmentBySinitto(Long memberId, Long callbackId) {
 
         checkAuthorization(memberId);
 
@@ -138,7 +139,7 @@ public class CallbackService {
     }
 
     @Transactional
-    public String add(String fromNumber) {
+    public String createCallbackByCall(String fromNumber) {
 
         String phoneNumber = TwilioHelper.trimPhoneNumber(fromNumber);
 
@@ -150,6 +151,10 @@ public class CallbackService {
         Point point = findPointWithWriteLock(senior.getMember().getId());
         if (point == null || !point.isSufficientForDeduction(CALLBACK_PRICE)) {
             return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENOUGH_POINT);
+        }
+
+        if (callbackRepository.existsBySeniorAndStatusIn(senior, List.of(Callback.Status.WAITING, Callback.Status.IN_PROGRESS))) {
+            return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_ALREADY_HAS_CALLBACK_IN_PROGRESS_OR_WAITING);
         }
 
         point.deduct(CALLBACK_PRICE);

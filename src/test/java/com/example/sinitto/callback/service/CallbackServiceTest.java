@@ -107,7 +107,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("콜백 수락 - 성공")
-    void accept() {
+    void acceptCallbackBySinitto() {
         //given
         Long memberId = 1L;
         Long callbackId = 1L;
@@ -120,7 +120,7 @@ class CallbackServiceTest {
         when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
 
         //when
-        callbackService.accept(memberId, callbackId);
+        callbackService.acceptCallbackBySinitto(memberId, callbackId);
 
         //then
         verify(callback).assignMember(memberId);
@@ -144,7 +144,7 @@ class CallbackServiceTest {
         when(callback.getAssignedMemberId()).thenReturn(assignedMemberId);
 
         //when
-        callbackService.pendingComplete(memberId, callbackId);
+        callbackService.changeCallbackStatusToPendingCompleteBySinitto(memberId, callbackId);
 
         //then
         verify(callback).changeStatusToPendingComplete();
@@ -152,7 +152,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("수락한 콜백 취소 - 성공")
-    void cancel() {
+    void cancelCallbackAssignmentBySinitto() {
         //given
         Long memberId = 1L;
         Long callbackId = 1L;
@@ -166,7 +166,7 @@ class CallbackServiceTest {
         when(callback.getAssignedMemberId()).thenReturn(1L);
 
         //when
-        callbackService.cancel(memberId, callbackId);
+        callbackService.cancelCallbackAssignmentBySinitto(memberId, callbackId);
 
         //then
         verify(callback).cancelAssignment();
@@ -175,7 +175,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("새로운 콜백 등록")
-    void addCallback() {
+    void createCallbackByCall() {
         //given
         String fromPhoneNumber = "+821012341234";
         String trimmedPhoneNumber = TwilioHelper.trimPhoneNumber(fromPhoneNumber);
@@ -189,7 +189,7 @@ class CallbackServiceTest {
         when(pointRepository.findByMemberIdWithWriteLock(1L)).thenReturn(Optional.of(point));
         when(point.isSufficientForDeduction(anyInt())).thenReturn(true);
         //when
-        String result = callbackService.add(fromPhoneNumber);
+        String result = callbackService.createCallbackByCall(fromPhoneNumber);
 
         //then
         verify(pointLogRepository, times(1)).save(any());
@@ -199,7 +199,7 @@ class CallbackServiceTest {
 
     @Test
     @DisplayName("새로운 콜백 등록할 때 전화온 번호가 등록된 번호가 아닐 때")
-    void addCallback_fail() {
+    void createCallbackByCallingCallback_fail() {
         //given
         String fromPhoneNumber = "+821012341234";
         String trimmedPhoneNumber = TwilioHelper.trimPhoneNumber(fromPhoneNumber);
@@ -207,10 +207,61 @@ class CallbackServiceTest {
         when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.empty());
 
         //when
-        String result = callbackService.add(fromPhoneNumber);
+        String result = callbackService.createCallbackByCall(fromPhoneNumber);
 
         //then
-        verify(callbackRepository, times(0)).save(any());
+        verify(callbackRepository, never()).save(any());
+        assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("새로운 콜백 등록할 때 포인트가 부족할 때")
+    void createCallbackByCallingCallback_fail1() {
+        //given
+        String fromPhoneNumber = "+821012341234";
+        String trimmedPhoneNumber = TwilioHelper.trimPhoneNumber(fromPhoneNumber);
+        Member member = mock(Member.class);
+        Senior senior = mock(Senior.class);
+        Point point = mock(Point.class);
+
+        when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.of(senior));
+        when(senior.getMember()).thenReturn(member);
+        when(member.getId()).thenReturn(1L);
+        when(pointRepository.findByMemberIdWithWriteLock(any(Long.class))).thenReturn(Optional.of(point));
+        when(point.isSufficientForDeduction(anyInt())).thenReturn(false);
+
+        //when
+        String result = callbackService.createCallbackByCall(fromPhoneNumber);
+
+        //then
+        verify(point, never()).deduct(anyInt());
+        verify(callbackRepository, never()).save(any());
+        assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("새로운 콜백 등록할 때 이미 시니어가 신청한 진행중 or 대기중인 콜백이 존재할때")
+    void createCallbackByCallingCallback_fail2() {
+        //given
+        String fromPhoneNumber = "+821012341234";
+        String trimmedPhoneNumber = TwilioHelper.trimPhoneNumber(fromPhoneNumber);
+        Member member = mock(Member.class);
+        Senior senior = mock(Senior.class);
+        Point point = mock(Point.class);
+
+        when(seniorRepository.findByPhoneNumber(trimmedPhoneNumber)).thenReturn(Optional.of(senior));
+        when(senior.getMember()).thenReturn(member);
+        when(member.getId()).thenReturn(1L);
+        when(pointRepository.findByMemberIdWithWriteLock(any(Long.class))).thenReturn(Optional.of(point));
+        when(point.isSufficientForDeduction(anyInt())).thenReturn(true);
+        when(callbackRepository.existsBySeniorAndStatusIn(any(), any())).thenReturn(true);
+
+        //when
+        String result = callbackService.createCallbackByCall(fromPhoneNumber);
+
+        //then
+        verify(point, never()).deduct(anyInt());
+        verify(callbackRepository, never()).save(any());
         assertNotNull(result);
     }
 
@@ -327,7 +378,7 @@ class CallbackServiceTest {
         callbackService.changeOldPendingCompleteToCompleteByPolicy();
 
         // Then
-        verify(pointLogRepository, times(0)).save(any(PointLog.class));
+        verify(pointLogRepository, never()).save(any(PointLog.class));
     }
 
     @Test
