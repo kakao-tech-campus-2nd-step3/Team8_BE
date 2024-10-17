@@ -5,8 +5,8 @@ import com.example.sinitto.helloCall.entity.HelloCall;
 import com.example.sinitto.helloCall.repository.HelloCallRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.member.repository.MemberRepository;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -78,8 +78,8 @@ class HelloCallRepositoryTest {
     }
 
     @Test
-    @DisplayName("SinittoBankInfo 기반으로 HelloCall 리스트 찾기 테스트")
-    void findAllBySinittoTest() {
+    @DisplayName("member 기반으로 HelloCall 리스트 찾기 테스트")
+    void findAllByMemberTest() {
         Senior senior1 = new Senior("Senior1", "01012345678", sinittoMember2);
         seniorRepository.save(senior1);
         Senior senior2 = new Senior("Senior2", "01098765432", sinittoMember2);
@@ -101,8 +101,8 @@ class HelloCallRepositoryTest {
         List<HelloCall> helloCalls = helloCallRepository.findAllByMember(sinittoMember1);
 
         assertThat(helloCalls).hasSize(2);
-        assertThat(helloCalls.get(0).getMember()).isEqualTo(sinittoBankInfo1);
-        assertThat(helloCalls.get(1).getMember()).isEqualTo(sinittoBankInfo1);
+        assertThat(helloCalls.get(0).getMember()).isEqualTo(sinittoMember1);
+        assertThat(helloCalls.get(1).getMember()).isEqualTo(sinittoMember1);
     }
 
     @Test
@@ -141,14 +141,14 @@ class HelloCallRepositoryTest {
 
         Optional<HelloCall> savedHelloCall = helloCallRepository.findById(helloCall.getId());
         assertThat(savedHelloCall).isPresent();
-        assertThat(savedHelloCall.get().getMember()).isEqualTo(sinittoBankInfo1);
+        assertThat(savedHelloCall.get().getMember()).isEqualTo(sinittoMember1);
 
         savedHelloCall.get().setMember(sinittoMember2);
         helloCallRepository.save(savedHelloCall.get());
 
         Optional<HelloCall> updatedHelloCall = helloCallRepository.findById(helloCall.getId());
         assertThat(updatedHelloCall).isPresent();
-        assertThat(updatedHelloCall.get().getMember()).isEqualTo(sinittoBankInfo2);
+        assertThat(updatedHelloCall.get().getMember()).isEqualTo(sinittoMember2);
     }
 
     @Test
