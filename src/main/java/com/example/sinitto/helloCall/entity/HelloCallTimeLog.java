@@ -1,6 +1,6 @@
 package com.example.sinitto.helloCall.entity;
 
-import com.example.sinitto.sinitto.entity.SinittoBankInfo;
+import com.example.sinitto.member.entity.Member;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,18 +18,18 @@ public class HelloCallTimeLog {
     private HelloCall helloCall;
     @ManyToOne
     @JoinColumn(name = "sinitto_id")
-    private SinittoBankInfo sinittoBankInfo;
+    private Member member;
 
-    public HelloCallTimeLog(HelloCall helloCall, SinittoBankInfo sinittoBankInfo) {
+    public HelloCallTimeLog(HelloCall helloCall, Member member) {
         this.helloCall = helloCall;
-        this.sinittoBankInfo = sinittoBankInfo;
+        this.member = member;
     }
 
-    public HelloCallTimeLog(HelloCall helloCall, SinittoBankInfo sinittoBankInfo, LocalDateTime startDateAndTime, LocalDateTime endDateAndTime) {
+    public HelloCallTimeLog(HelloCall helloCall, Member member, LocalDateTime startDateAndTime, LocalDateTime endDateAndTime) {
         this.helloCall = helloCall;
         this.startDateAndTime = startDateAndTime;
         this.endDateAndTime = endDateAndTime;
-        this.sinittoBankInfo = sinittoBankInfo;
+        this.member = member;
     }
 
     protected HelloCallTimeLog() {
@@ -52,14 +52,14 @@ public class HelloCallTimeLog {
     }
 
     public String getSinittoName() {
-        return this.sinittoBankInfo.getMember().getName();
+        return this.member.getName();
     }
 
     public HelloCall getHelloCall() {
         return helloCall;
     }
 
-    public SinittoBankInfo getSinitto() {
-        return sinittoBankInfo;
+    public Member getSinitto() {
+        return member;
     }
 }

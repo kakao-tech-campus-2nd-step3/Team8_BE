@@ -13,10 +13,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class SinittoRepositoryTest {
+class SinittoBankInfoRepositoryTest {
 
     @Autowired
-    private SinittoRepository sinittoRepository;
+    private SinittoBankInfoRepository sinittoBankInfoRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -30,12 +30,12 @@ class SinittoRepositoryTest {
         memberRepository.save(member);
 
         sinittoBankInfo = new SinittoBankInfo("Bank A", "987654321", member);
-        sinittoRepository.save(sinittoBankInfo);
+        sinittoBankInfoRepository.save(sinittoBankInfo);
     }
 
     @Test
     void testFindByMemberId() {
-        Optional<SinittoBankInfo> foundSinitto = sinittoRepository.findByMemberId(member.getId());
+        Optional<SinittoBankInfo> foundSinitto = sinittoBankInfoRepository.findByMemberId(member.getId());
         assertTrue(foundSinitto.isPresent());
         assertEquals(sinittoBankInfo.getBankName(), foundSinitto.get().getBankName());
     }
@@ -46,7 +46,7 @@ class SinittoRepositoryTest {
         memberRepository.save(newMember);
 
         SinittoBankInfo newSinittoBankInfo = new SinittoBankInfo("Bank B", "123456789", newMember);
-        SinittoBankInfo savedSinittoBankInfo = sinittoRepository.save(newSinittoBankInfo);
+        SinittoBankInfo savedSinittoBankInfo = sinittoBankInfoRepository.save(newSinittoBankInfo);
         assertNotNull(savedSinittoBankInfo);
         assertEquals("Bank B", savedSinittoBankInfo.getBankName());
     }
@@ -54,8 +54,8 @@ class SinittoRepositoryTest {
 
     @Test
     void testDeleteSinitto() {
-        sinittoRepository.delete(sinittoBankInfo);
-        Optional<SinittoBankInfo> deletedSinitto = sinittoRepository.findById(sinittoBankInfo.getId());
+        sinittoBankInfoRepository.delete(sinittoBankInfo);
+        Optional<SinittoBankInfo> deletedSinitto = sinittoBankInfoRepository.findById(sinittoBankInfo.getId());
         assertFalse(deletedSinitto.isPresent());
     }
 }

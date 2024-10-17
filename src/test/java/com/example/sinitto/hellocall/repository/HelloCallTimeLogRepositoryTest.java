@@ -9,7 +9,7 @@ import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.sinitto.repository.SinittoRepository;
+import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class HelloCallTimeLogRepositoryTest {
     private HelloCallRepository helloCallRepository;
 
     @Autowired
-    private SinittoRepository sinittoRepository;
+    private SinittoBankInfoRepository sinittoBankInfoRepository;
 
     @Autowired
     private SeniorRepository seniorRepository;
@@ -53,7 +53,7 @@ class HelloCallTimeLogRepositoryTest {
         memberRepository.save(sinittoMember);
 
         sinittoBankInfo = new SinittoBankInfo("sinittoBank", "sinittoAccount", sinittoMember);
-        sinittoRepository.save(sinittoBankInfo);
+        sinittoBankInfoRepository.save(sinittoBankInfo);
 
         seniorMember = new Member("testSenior", "01033334444", "senior@test.com", false);
         memberRepository.save(seniorMember);

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface SinittoRepository extends JpaRepository<SinittoBankInfo, Long> {
+public interface SinittoBankInfoRepository extends JpaRepository<SinittoBankInfo, Long> {
     Optional<SinittoBankInfo> findByMemberId(Long memberId);
 
     boolean existsByMemberId(Long memberId);

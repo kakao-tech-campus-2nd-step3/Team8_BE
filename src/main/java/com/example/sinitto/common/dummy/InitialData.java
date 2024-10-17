@@ -22,7 +22,7 @@ import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import com.example.sinitto.review.entity.Review;
 import com.example.sinitto.review.repository.ReviewRepository;
-import com.example.sinitto.sinitto.repository.SinittoRepository;
+import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +37,7 @@ public class InitialData implements CommandLineRunner {
     private final SeniorRepository seniorRepository;
     private final PointRepository pointRepository;
     private final CallbackRepository callbackRepository;
-    private final SinittoRepository sinittoRepository;
+    private final SinittoBankInfoRepository sinittoBankInfoRepository;
     private final PointLogRepository pointLogRepository;
     private final ReviewRepository reviewRepository;
     private final GuardGuidelineRepository guardGuidelineRepository;
@@ -49,7 +49,7 @@ public class InitialData implements CommandLineRunner {
 
     public InitialData(MemberRepository memberRepository, SeniorRepository seniorRepository,
                        PointRepository pointRepository, CallbackRepository callbackRepository,
-                       SinittoRepository sinittoRepository, PointLogRepository pointLogRepository,
+                       SinittoBankInfoRepository sinittoBankInfoRepository, PointLogRepository pointLogRepository,
                        ReviewRepository reviewRepository, GuardGuidelineRepository guardGuidelineRepository,
                        HelloCallRepository helloCallRepository, TimeSlotRepository timeSlotRepository,
                        HelloCallTimeLogRepository helloCallTimeLogRepository, TokenService tokenService) {
@@ -57,7 +57,7 @@ public class InitialData implements CommandLineRunner {
         this.seniorRepository = seniorRepository;
         this.pointRepository = pointRepository;
         this.callbackRepository = callbackRepository;
-        this.sinittoRepository = sinittoRepository;
+        this.sinittoBankInfoRepository = sinittoBankInfoRepository;
         this.pointLogRepository = pointLogRepository;
         this.reviewRepository = reviewRepository;
         this.guardGuidelineRepository = guardGuidelineRepository;
@@ -91,15 +91,15 @@ public class InitialData implements CommandLineRunner {
     private void initial() {
         //시니또
         Member MemberSinitto1 = memberRepository.save(new Member("김철수", "01012345678", "1chulsoo@example.com", true));
-        SinittoBankInfo sinittoBankInfo1 = sinittoRepository.save(new SinittoBankInfo("신한은행", "123-23-444-422", MemberSinitto1));
+        SinittoBankInfo sinittoBankInfo1 = sinittoBankInfoRepository.save(new SinittoBankInfo("신한은행", "123-23-444-422", MemberSinitto1));
         Member MemberSinitto2 = memberRepository.save(new Member("김유진", "01023456789", "2kim@example.com", true));
-        SinittoBankInfo sinittoBankInfo2 = sinittoRepository.save(new SinittoBankInfo("대구은행", "446-5-11-2", MemberSinitto2));
+        SinittoBankInfo sinittoBankInfo2 = sinittoBankInfoRepository.save(new SinittoBankInfo("대구은행", "446-5-11-2", MemberSinitto2));
         Member MemberSinitto3 = memberRepository.save(new Member("이민호", "01034567890", "3lee@example.com", true));
-        SinittoBankInfo sinittoBankInfo3 = sinittoRepository.save(new SinittoBankInfo("IBK은행", "7-66-8-422", MemberSinitto3));
+        SinittoBankInfo sinittoBankInfo3 = sinittoBankInfoRepository.save(new SinittoBankInfo("IBK은행", "7-66-8-422", MemberSinitto3));
         Member MemberSinitto4 = memberRepository.save(new Member("박소연", "01045678901", "4park@example.com", true));
-        SinittoBankInfo sinittoBankInfo4 = sinittoRepository.save(new SinittoBankInfo("토스뱅크", "777-1-2-3", MemberSinitto4));
+        SinittoBankInfo sinittoBankInfo4 = sinittoBankInfoRepository.save(new SinittoBankInfo("토스뱅크", "777-1-2-3", MemberSinitto4));
         Member MemberSinitto5 = memberRepository.save(new Member("최진우", "01056789012", "5choi@example.com", true));
-        SinittoBankInfo sinittoBankInfo5 = sinittoRepository.save(new SinittoBankInfo("기업은행", "96-6-99-45", MemberSinitto5));
+        SinittoBankInfo sinittoBankInfo5 = sinittoBankInfoRepository.save(new SinittoBankInfo("기업은행", "96-6-99-45", MemberSinitto5));
 
         //보호자
         Member guard1 = memberRepository.save(new Member("정예린", "01067890123", "6jeong@example.com", false));

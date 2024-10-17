@@ -7,7 +7,7 @@ import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.exception.PointLogNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
-import com.example.sinitto.sinitto.repository.SinittoRepository;
+import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +19,12 @@ public class PointAdminService {
 
     private final PointLogRepository pointLogRepository;
     private final PointRepository pointRepository;
-    private final SinittoRepository sinittoRepository;
+    private final SinittoBankInfoRepository sinittoBankInfoRepository;
 
-    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository, SinittoRepository sinittoRepository) {
+    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository, SinittoBankInfoRepository sinittoBankInfoRepository) {
         this.pointLogRepository = pointLogRepository;
         this.pointRepository = pointRepository;
-        this.sinittoRepository = sinittoRepository;
+        this.sinittoBankInfoRepository = sinittoBankInfoRepository;
     }
 
     public List<PointLog> readAllNotCompletedPointChargeRequest() {
@@ -103,7 +103,7 @@ public class PointAdminService {
         List<PointLogWithBankInfo> logWithBankInfos = new ArrayList<>();
 
         for (PointLog pointLog : withdrawPointLogs) {
-            SinittoBankInfo sinittoBankInfo = sinittoRepository.findByMemberId(pointLog.getMember().getId())
+            SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(pointLog.getMember().getId())
                     .orElse(new SinittoBankInfo("등록된 계좌 없음", "등록된 계좌 없음", null));
 
             PointLogWithBankInfo pointLogWithBankInfo = new PointLogWithBankInfo(
