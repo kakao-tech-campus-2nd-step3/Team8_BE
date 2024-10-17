@@ -138,8 +138,8 @@ public class PointLog {
         SPEND_COMPLETE_CALLBACK("콜백 신청으로 인한 포인트 차감"),
         SPEND_COMPLETE_HELLO_CALL("안부전화 신청으로 인한 포인트 차감"),
         SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소로 인한 포인트 환불"),
-        CHARGE_REQUEST("포인트 충전 요청"),
-        WITHDRAW_REQUEST("포인트 출금 요청");
+        CHARGE_REQUEST("포인트 충전"),
+        WITHDRAW_REQUEST("포인트 출금");
 
         private final String message;
 
