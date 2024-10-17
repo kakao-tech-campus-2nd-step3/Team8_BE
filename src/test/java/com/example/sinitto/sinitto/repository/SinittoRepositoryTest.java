@@ -1,7 +1,7 @@
 package com.example.sinitto.sinitto.repository;
 
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.member.entity.Sinitto;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,22 +22,22 @@ class SinittoRepositoryTest {
     private MemberRepository memberRepository;
 
     private Member member;
-    private Sinitto sinitto;
+    private SinittoBankInfo sinittoBankInfo;
 
     @BeforeEach
     void setUp() {
         member = new Member("John Doe", "123-4567", "johndoe@example.com", true);
         memberRepository.save(member);
 
-        sinitto = new Sinitto("Bank A", "987654321", member);
-        sinittoRepository.save(sinitto);
+        sinittoBankInfo = new SinittoBankInfo("Bank A", "987654321", member);
+        sinittoRepository.save(sinittoBankInfo);
     }
 
     @Test
     void testFindByMemberId() {
-        Optional<Sinitto> foundSinitto = sinittoRepository.findByMemberId(member.getId());
+        Optional<SinittoBankInfo> foundSinitto = sinittoRepository.findByMemberId(member.getId());
         assertTrue(foundSinitto.isPresent());
-        assertEquals(sinitto.getBankName(), foundSinitto.get().getBankName());
+        assertEquals(sinittoBankInfo.getBankName(), foundSinitto.get().getBankName());
     }
 
     @Test
@@ -45,17 +45,17 @@ class SinittoRepositoryTest {
         Member newMember = new Member("Jane Doe", "987-6543", "janedoe@example.com", true);
         memberRepository.save(newMember);
 
-        Sinitto newSinitto = new Sinitto("Bank B", "123456789", newMember);
-        Sinitto savedSinitto = sinittoRepository.save(newSinitto);
-        assertNotNull(savedSinitto);
-        assertEquals("Bank B", savedSinitto.getBankName());
+        SinittoBankInfo newSinittoBankInfo = new SinittoBankInfo("Bank B", "123456789", newMember);
+        SinittoBankInfo savedSinittoBankInfo = sinittoRepository.save(newSinittoBankInfo);
+        assertNotNull(savedSinittoBankInfo);
+        assertEquals("Bank B", savedSinittoBankInfo.getBankName());
     }
 
 
     @Test
     void testDeleteSinitto() {
-        sinittoRepository.delete(sinitto);
-        Optional<Sinitto> deletedSinitto = sinittoRepository.findById(sinitto.getId());
+        sinittoRepository.delete(sinittoBankInfo);
+        Optional<SinittoBankInfo> deletedSinitto = sinittoRepository.findById(sinittoBankInfo.getId());
         assertFalse(deletedSinitto.isPresent());
     }
 }

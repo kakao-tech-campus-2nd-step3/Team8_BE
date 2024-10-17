@@ -1,7 +1,6 @@
 package com.example.sinitto.sinitto.entity;
 
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.member.entity.Sinitto;
 import com.example.sinitto.sinitto.repository.SinittoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,58 +19,58 @@ class SinittoTest {
     @Mock
     private SinittoRepository sinittoRepository;
 
-    private Sinitto sinitto;
+    private SinittoBankInfo sinittoBankInfo;
     private Member member;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         member = new Member("John Doe", "123-4567", "johndoe@example.com", true);
-        sinitto = new Sinitto("Bank A", "987654321", member);
+        sinittoBankInfo = new SinittoBankInfo("Bank A", "987654321", member);
     }
 
     @Test
     void testCreateSinitto() {
-        when(sinittoRepository.save(sinitto)).thenReturn(sinitto);
+        when(sinittoRepository.save(sinittoBankInfo)).thenReturn(sinittoBankInfo);
 
-        Sinitto savedSinitto = sinittoRepository.save(sinitto);
+        SinittoBankInfo savedSinittoBankInfo = sinittoRepository.save(sinittoBankInfo);
 
-        assertNotNull(savedSinitto);
-        assertEquals("Bank A", savedSinitto.getBankName());
-        assertEquals("987654321", savedSinitto.getAccountNumber());
-        assertEquals(member, savedSinitto.getMember());
+        assertNotNull(savedSinittoBankInfo);
+        assertEquals("Bank A", savedSinittoBankInfo.getBankName());
+        assertEquals("987654321", savedSinittoBankInfo.getAccountNumber());
+        assertEquals(member, savedSinittoBankInfo.getMember());
 
-        verify(sinittoRepository, times(1)).save(sinitto);
+        verify(sinittoRepository, times(1)).save(sinittoBankInfo);
     }
 
     @Test
     void testUpdateSinitto() {
-        sinitto.updateSinitto("Bank B", "123456789");
+        sinittoBankInfo.updateSinitto("Bank B", "123456789");
 
-        when(sinittoRepository.save(sinitto)).thenReturn(sinitto);
+        when(sinittoRepository.save(sinittoBankInfo)).thenReturn(sinittoBankInfo);
 
-        Sinitto updatedSinitto = sinittoRepository.save(sinitto);
+        SinittoBankInfo updatedSinittoBankInfo = sinittoRepository.save(sinittoBankInfo);
 
-        assertNotNull(updatedSinitto);
-        assertEquals("Bank B", updatedSinitto.getBankName());
-        assertEquals("123456789", updatedSinitto.getAccountNumber());
+        assertNotNull(updatedSinittoBankInfo);
+        assertEquals("Bank B", updatedSinittoBankInfo.getBankName());
+        assertEquals("123456789", updatedSinittoBankInfo.getAccountNumber());
 
-        verify(sinittoRepository, times(1)).save(sinitto);
+        verify(sinittoRepository, times(1)).save(sinittoBankInfo);
     }
 
     @Test
     void testFindSinittoById() {
-        when(sinittoRepository.findById(1L)).thenReturn(Optional.of(sinitto));
+        when(sinittoRepository.findById(1L)).thenReturn(Optional.of(sinittoBankInfo));
 
-        Optional<Sinitto> foundSinitto = sinittoRepository.findById(1L);
+        Optional<SinittoBankInfo> foundSinitto = sinittoRepository.findById(1L);
 
         assertTrue(foundSinitto.isPresent());
-        assertEquals(sinitto.getId(), foundSinitto.get().getId());
+        assertEquals(sinittoBankInfo.getId(), foundSinitto.get().getId());
     }
 
     @Test
     void testDeleteSinitto() {
-        sinittoRepository.delete(sinitto);
-        verify(sinittoRepository, times(1)).delete(sinitto);
+        sinittoRepository.delete(sinittoBankInfo);
+        verify(sinittoRepository, times(1)).delete(sinittoBankInfo);
     }
 }

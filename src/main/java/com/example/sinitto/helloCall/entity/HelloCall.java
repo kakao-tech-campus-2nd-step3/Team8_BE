@@ -5,7 +5,7 @@ import com.example.sinitto.helloCall.exception.InvalidStatusException;
 import com.example.sinitto.helloCall.exception.TimeRuleException;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.entity.Sinitto;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -45,7 +45,7 @@ public class HelloCall {
     private List<TimeSlot> timeSlots = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "sinitto_id")
-    private Sinitto sinitto;
+    private SinittoBankInfo sinittoBankInfo;
     @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
     private List<HelloCallTimeLog> helloCallTimeLogs = new ArrayList<>();
 
@@ -102,12 +102,12 @@ public class HelloCall {
         return serviceTime;
     }
 
-    public Sinitto getSinitto() {
-        return sinitto;
+    public SinittoBankInfo getSinitto() {
+        return sinittoBankInfo;
     }
 
-    public void setSinitto(Sinitto sinitto) {
-        this.sinitto = sinitto;
+    public void setSinitto(SinittoBankInfo sinittoBankInfo) {
+        this.sinittoBankInfo = sinittoBankInfo;
     }
 
     public String getReport() {
@@ -119,7 +119,7 @@ public class HelloCall {
     }
 
     public String getSinittoName() {
-        return this.sinitto.getMember().getName();
+        return this.sinittoBankInfo.getMember().getName();
     }
 
     public List<HelloCallTimeLog> getHelloCallTimeLogs() {
@@ -132,8 +132,8 @@ public class HelloCall {
         }
     }
 
-    public void checkSiniitoIsSame(Sinitto sinitto) {
-        if (!this.sinitto.equals(sinitto)) {
+    public void checkSiniitoIsSame(SinittoBankInfo sinittoBankInfo) {
+        if (!this.sinittoBankInfo.equals(sinittoBankInfo)) {
             throw new UnauthorizedException("안부전화 서비스 리포트를 작성할 권한이 없습니다.");
         }
     }

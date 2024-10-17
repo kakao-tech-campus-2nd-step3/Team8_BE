@@ -1,6 +1,6 @@
 package com.example.sinitto.point.service;
 
-import com.example.sinitto.member.entity.Sinitto;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.point.dto.PointLogWithBankInfo;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
@@ -103,16 +103,16 @@ public class PointAdminService {
         List<PointLogWithBankInfo> logWithBankInfos = new ArrayList<>();
 
         for (PointLog pointLog : withdrawPointLogs) {
-            Sinitto sinitto = sinittoRepository.findByMemberId(pointLog.getMember().getId())
-                    .orElse(new Sinitto("등록된 계좌 없음", "등록된 계좌 없음", null));
+            SinittoBankInfo sinittoBankInfo = sinittoRepository.findByMemberId(pointLog.getMember().getId())
+                    .orElse(new SinittoBankInfo("등록된 계좌 없음", "등록된 계좌 없음", null));
 
             PointLogWithBankInfo pointLogWithBankInfo = new PointLogWithBankInfo(
                     pointLog.getId(),
                     pointLog.getPrice(),
                     pointLog.getPostTime(),
                     pointLog.getStatus(),
-                    sinitto.getBankName(),
-                    sinitto.getAccountNumber()
+                    sinittoBankInfo.getBankName(),
+                    sinittoBankInfo.getAccountNumber()
             );
             logWithBankInfos.add(pointLogWithBankInfo);
         }

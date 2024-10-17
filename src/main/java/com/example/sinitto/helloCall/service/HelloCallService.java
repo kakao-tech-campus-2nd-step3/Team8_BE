@@ -1,6 +1,5 @@
 package com.example.sinitto.helloCall.service;
 
-import com.example.sinitto.auth.exception.UnauthorizedException;
 import com.example.sinitto.guard.exception.SeniorNotFoundException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.helloCall.dto.*;
@@ -16,7 +15,7 @@ import com.example.sinitto.helloCall.repository.HelloCallTimeLogRepository;
 import com.example.sinitto.helloCall.repository.TimeSlotRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.entity.Sinitto;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
@@ -293,11 +292,11 @@ public class HelloCallService {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
-        Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
+        SinittoBankInfo sinittoBankInfo = sinittoRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
 
         helloCall.changeStatusToInProgress();
-        helloCall.setSinitto(sinitto);
+        helloCall.setSinitto(sinittoBankInfo);
     }
 
     @Transactional
@@ -305,17 +304,17 @@ public class HelloCallService {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
-        Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
+        SinittoBankInfo sinittoBankInfo = sinittoRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
 
         Optional<HelloCallTimeLog> recentLog = helloCallTimeLogRepository
-                .findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(sinitto, helloCall);
+                .findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(sinittoBankInfo, helloCall);
 
         if (recentLog.isPresent() && recentLog.get().getEndDateAndTime() == null) {
             throw new TimeLogSequenceException("이미 시작된 안부전화가 있습니다. 종료를 먼저 완료해주세요.");
         }
 
-        HelloCallTimeLog helloCallTimeLog = new HelloCallTimeLog(helloCall, sinitto);
+        HelloCallTimeLog helloCallTimeLog = new HelloCallTimeLog(helloCall, sinittoBankInfo);
         helloCallTimeLog.setStartDateAndTime(LocalDateTime.now());
 
         HelloCallTimeLog savedHelloCallTimeLog = helloCallTimeLogRepository.save(helloCallTimeLog);
@@ -327,11 +326,11 @@ public class HelloCallService {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
-        Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
+        SinittoBankInfo sinittoBankInfo = sinittoRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
 
         HelloCallTimeLog helloCallTimeLog = helloCallTimeLogRepository
-                .findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(sinitto, helloCall)
+                .findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(sinittoBankInfo, helloCall)
                 .orElseThrow(() -> new HelloCallNotFoundException("안부전화 로그를 찾을 수 없습니다."));
 
         if (helloCallTimeLog.getEndDateAndTime() != null) {
@@ -361,10 +360,10 @@ public class HelloCallService {
         HelloCall helloCall = helloCallRepository.findById(helloCallReportRequest.helloCallId())
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
-        Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
+        SinittoBankInfo sinittoBankInfo = sinittoRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
 
-        helloCall.checkSiniitoIsSame(sinitto);
+        helloCall.checkSiniitoIsSame(sinittoBankInfo);
         if (helloCall.checkIsNotAfterEndDate()) {
             throw new CompletionConditionNotFulfilledException("서비스 종료 날짜보다 이른 날짜에 종료할 수 없습니다.");
         }
@@ -375,10 +374,10 @@ public class HelloCallService {
 
     @Transactional(readOnly = true)
     public List<HelloCallResponse> readOwnHelloCallBySinitto(Long memberId) {
-        Sinitto sinitto = sinittoRepository.findByMemberId(memberId)
+        SinittoBankInfo sinittoBankInfo = sinittoRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new SinittoNotFoundException("id에 해당하는 시니또를 찾을 수 없습니다."));
 
-        List<HelloCall> helloCalls = helloCallRepository.findAllBySinitto(sinitto);
+        List<HelloCall> helloCalls = helloCallRepository.findAllBySinitto(sinittoBankInfo);
 
         List<HelloCallResponse> helloCallResponses = new ArrayList<>();
 

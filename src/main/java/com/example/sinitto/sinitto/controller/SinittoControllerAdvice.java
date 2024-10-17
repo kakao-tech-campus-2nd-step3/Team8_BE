@@ -15,7 +15,7 @@ public class SinittoControllerAdvice {
     public ResponseEntity<ProblemDetail> handleSinittoNotFoundException(SinittoNotFoundException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
         problemDetail.setType(URI.create("/error/sinitto-not-found"));
-        problemDetail.setTitle("Sinitto Not Found");
+        problemDetail.setTitle("SinittoBankInfo Not Found");
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }

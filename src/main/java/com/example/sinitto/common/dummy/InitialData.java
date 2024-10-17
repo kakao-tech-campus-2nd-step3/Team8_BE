@@ -14,7 +14,7 @@ import com.example.sinitto.helloCall.repository.HelloCallTimeLogRepository;
 import com.example.sinitto.helloCall.repository.TimeSlotRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.entity.Sinitto;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
@@ -91,15 +91,15 @@ public class InitialData implements CommandLineRunner {
     private void initial() {
         //시니또
         Member MemberSinitto1 = memberRepository.save(new Member("김철수", "01012345678", "1chulsoo@example.com", true));
-        Sinitto sinitto1 = sinittoRepository.save(new Sinitto("신한은행", "123-23-444-422", MemberSinitto1));
+        SinittoBankInfo sinittoBankInfo1 = sinittoRepository.save(new SinittoBankInfo("신한은행", "123-23-444-422", MemberSinitto1));
         Member MemberSinitto2 = memberRepository.save(new Member("김유진", "01023456789", "2kim@example.com", true));
-        Sinitto sinitto2 = sinittoRepository.save(new Sinitto("대구은행", "446-5-11-2", MemberSinitto2));
+        SinittoBankInfo sinittoBankInfo2 = sinittoRepository.save(new SinittoBankInfo("대구은행", "446-5-11-2", MemberSinitto2));
         Member MemberSinitto3 = memberRepository.save(new Member("이민호", "01034567890", "3lee@example.com", true));
-        Sinitto sinitto3 = sinittoRepository.save(new Sinitto("IBK은행", "7-66-8-422", MemberSinitto3));
+        SinittoBankInfo sinittoBankInfo3 = sinittoRepository.save(new SinittoBankInfo("IBK은행", "7-66-8-422", MemberSinitto3));
         Member MemberSinitto4 = memberRepository.save(new Member("박소연", "01045678901", "4park@example.com", true));
-        Sinitto sinitto4 = sinittoRepository.save(new Sinitto("토스뱅크", "777-1-2-3", MemberSinitto4));
+        SinittoBankInfo sinittoBankInfo4 = sinittoRepository.save(new SinittoBankInfo("토스뱅크", "777-1-2-3", MemberSinitto4));
         Member MemberSinitto5 = memberRepository.save(new Member("최진우", "01056789012", "5choi@example.com", true));
-        Sinitto sinitto5 = sinittoRepository.save(new Sinitto("기업은행", "96-6-99-45", MemberSinitto5));
+        SinittoBankInfo sinittoBankInfo5 = sinittoRepository.save(new SinittoBankInfo("기업은행", "96-6-99-45", MemberSinitto5));
 
         //보호자
         Member guard1 = memberRepository.save(new Member("정예린", "01067890123", "6jeong@example.com", false));
@@ -502,41 +502,41 @@ public class InitialData implements CommandLineRunner {
         timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall26));
 
         //안부전화 실시 타임로그
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 5, 18, 30), LocalDateTime.of(2024, 8, 5, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 7, 18, 30), LocalDateTime.of(2024, 8, 7, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 9, 18, 30), LocalDateTime.of(2024, 8, 9, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 11, 18, 30), LocalDateTime.of(2024, 8, 11, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinittoBankInfo1, LocalDateTime.of(2024, 8, 5, 18, 30), LocalDateTime.of(2024, 8, 5, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinittoBankInfo1, LocalDateTime.of(2024, 8, 7, 18, 30), LocalDateTime.of(2024, 8, 7, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinittoBankInfo1, LocalDateTime.of(2024, 8, 9, 18, 30), LocalDateTime.of(2024, 8, 9, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinittoBankInfo1, LocalDateTime.of(2024, 8, 11, 18, 30), LocalDateTime.of(2024, 8, 11, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinittoBankInfo1, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, sinitto1, LocalDateTime.of(2024, 8, 2, 10, 30), LocalDateTime.of(2024, 8, 2, 10, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, sinitto2, LocalDateTime.of(2024, 8, 5, 11, 30), LocalDateTime.of(2024, 8, 5, 11, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, sinittoBankInfo1, LocalDateTime.of(2024, 8, 2, 10, 30), LocalDateTime.of(2024, 8, 2, 10, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, sinittoBankInfo2, LocalDateTime.of(2024, 8, 5, 11, 30), LocalDateTime.of(2024, 8, 5, 11, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, sinitto2, LocalDateTime.of(2024, 10, 8, 18, 30), LocalDateTime.of(2024, 10, 8, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, sinitto2, LocalDateTime.of(2024, 10, 10, 18, 30), LocalDateTime.of(2024, 10, 10, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, sinittoBankInfo2, LocalDateTime.of(2024, 10, 8, 18, 30), LocalDateTime.of(2024, 10, 8, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, sinittoBankInfo2, LocalDateTime.of(2024, 10, 10, 18, 30), LocalDateTime.of(2024, 10, 10, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, sinitto2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, sinitto2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, sinittoBankInfo2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, sinittoBankInfo2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, sinitto3, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, sinitto5, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, sinittoBankInfo3, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, sinittoBankInfo5, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, sinittoBankInfo4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, sinittoBankInfo4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, sinittoBankInfo4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, sinittoBankInfo4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, sinitto5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, sinitto5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, sinittoBankInfo5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, sinittoBankInfo5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, sinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, sinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, sinittoBankInfo5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, sinittoBankInfo5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, sinitto2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, sinitto2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, sinittoBankInfo2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, sinittoBankInfo2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, sinitto3, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, sinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, sinittoBankInfo3, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, sinittoBankInfo5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
 
     }
 
