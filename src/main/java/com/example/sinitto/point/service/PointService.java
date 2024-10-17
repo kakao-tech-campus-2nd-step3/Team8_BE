@@ -1,5 +1,6 @@
 package com.example.sinitto.point.service;
 
+import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
@@ -72,6 +73,10 @@ public class PointService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("요청한 멤버를 찾을 수 없습니다"));
+
+        if(!member.isSinitto()){
+            throw new NotSinittoException("출금 요청은 시니또만 가능합니다. 지금 요청은 시니또가 요청하지 않았습니다.");
+        }
 
         Point point = pointRepository.findByMember(member)
                 .orElseThrow(() -> new PointNotFoundException("요청한 멤버의 포인트를 찾을 수 없습니다"));
