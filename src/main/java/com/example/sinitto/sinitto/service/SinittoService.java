@@ -25,16 +25,6 @@ public class SinittoService {
         this.sinittoRepository = sinittoRepository;
     }
 
-
-    @Transactional
-    public void createSinittoBankInfo(Long memberId, SinittoBankRequest sinittoBankRequest) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
-        );
-        Sinitto sinitto = new Sinitto(sinittoBankRequest.bankName(), sinittoBankRequest.accountNumber(), member);
-        sinittoRepository.save(sinitto);
-    }
-
     @Transactional(readOnly = true)
     public SinittoResponse readSinitto(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
