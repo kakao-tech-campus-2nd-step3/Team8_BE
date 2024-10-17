@@ -11,10 +11,11 @@ public class Sinitto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+
     private String bankName;
-    @NotNull
+
     private String accountNumber;
+
     @OneToOne
     @JoinColumn(name = "member_id")
     @NotNull
@@ -27,6 +28,10 @@ public class Sinitto {
     public Sinitto(String bankName, String accountNumber, Member member) {
         this.bankName = bankName;
         this.accountNumber = accountNumber;
+        this.member = member;
+    }
+
+    public Sinitto(Member member) {
         this.member = member;
     }
 
