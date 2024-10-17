@@ -88,4 +88,12 @@ public class CallbackController {
 
         return ResponseEntity.ok(callbackService.getCallbackHistoryOfGuard(memberId, pageable));
     }
+
+    @Operation(summary = "콜백 단건 조회", description = "콜백 id 로 콜백을 단건 조회합니다.")
+    @GetMapping("/{callbackId}")
+    public ResponseEntity<CallbackResponse> getCallback(@PathVariable("callbackId") Long callbackId) {
+
+        return ResponseEntity.ok(callbackService.getCallback(callbackId));
+    }
+
 }
