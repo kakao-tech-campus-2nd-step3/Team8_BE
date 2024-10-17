@@ -32,7 +32,7 @@ public class SinittoController {
     @Operation(summary = "계좌정보 등록", description = "시니또가 계좌정보 등록합니다.")
     @PostMapping("/bank")
     public ResponseEntity<String> createSeniorBankInfo(@MemberId Long memberId, @RequestBody SinittoBankRequest sinittoBankRequest) {
-        sinittoService.createSinittoBankInfo(memberId, sinittoBankRequest);
+        sinittoService.updateSinittoBankInfo(memberId, sinittoBankRequest);
         return ResponseEntity.ok("계좌등록되었습니다.");
     }
 
