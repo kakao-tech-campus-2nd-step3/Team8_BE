@@ -1,12 +1,13 @@
-package com.example.sinitto.member.entity;
+package com.example.sinitto.sinitto.entity;
 
+import com.example.sinitto.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-public class Sinitto {
+public class SinittoBankInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +22,10 @@ public class Sinitto {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public Sinitto() {
+    protected SinittoBankInfo() {
     }
 
-    public Sinitto(String bankName, String accountNumber, Member member) {
+    public SinittoBankInfo(String bankName, String accountNumber, Member member) {
         this.bankName = bankName;
         this.accountNumber = accountNumber;
         this.member = member;

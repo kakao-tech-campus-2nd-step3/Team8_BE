@@ -1,8 +1,8 @@
 package com.example.sinitto.helloCall.repository;
 
 import com.example.sinitto.helloCall.entity.HelloCall;
+import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.entity.Sinitto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ public interface HelloCallRepository extends JpaRepository<HelloCall, Long> {
 
     Optional<HelloCall> findBySenior(Senior senior);
 
-    List<HelloCall> findAllBySinitto(Sinitto sinitto);
+    List<HelloCall> findAllByMember(Member member);
 
     List<HelloCall> findAllBySeniorIn(List<Senior> seniors);
 

@@ -5,9 +5,9 @@ import com.example.sinitto.helloCall.entity.HelloCall;
 import com.example.sinitto.helloCall.repository.HelloCallRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.entity.Sinitto;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.sinitto.repository.SinittoRepository;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
+import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,13 +33,13 @@ class HelloCallRepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private SinittoRepository sinittoRepository;
+    private SinittoBankInfoRepository sinittoBankInfoRepository;
 
     private Member sinittoMember1;
     private Member sinittoMember2;
     private Member seniorMember;
-    private Sinitto sinitto1;
-    private Sinitto sinitto2;
+    private SinittoBankInfo sinittoBankInfo1;
+    private SinittoBankInfo sinittoBankInfo2;
     private Senior senior;
 
     @BeforeEach
@@ -47,14 +47,14 @@ class HelloCallRepositoryTest {
         sinittoMember1 = new Member("test1", "01011111111", "test1@test.com", true);
         memberRepository.save(sinittoMember1);
 
-        sinitto1 = new Sinitto("sinittoBank1", "BankAccount1", sinittoMember1);
-        sinittoRepository.save(sinitto1);
+        sinittoBankInfo1 = new SinittoBankInfo("sinittoBank1", "BankAccount1", sinittoMember1);
+        sinittoBankInfoRepository.save(sinittoBankInfo1);
 
         sinittoMember2 = new Member("test2", "01022222222", "test2@test.com", true);
         memberRepository.save(sinittoMember2);
 
-        sinitto2 = new Sinitto("SinittoBank2", "BankAccount2", sinittoMember2);
-        sinittoRepository.save(sinitto2);
+        sinittoBankInfo2 = new SinittoBankInfo("SinittoBank2", "BankAccount2", sinittoMember2);
+        sinittoBankInfoRepository.save(sinittoBankInfo2);
 
         seniorMember = new Member("test3", "01033333333", "test3@test.com", false);
         memberRepository.save(seniorMember);
@@ -78,8 +78,8 @@ class HelloCallRepositoryTest {
     }
 
     @Test
-    @DisplayName("Sinitto 기반으로 HelloCall 리스트 찾기 테스트")
-    void findAllBySinittoTest() {
+    @DisplayName("member 기반으로 HelloCall 리스트 찾기 테스트")
+    void findAllByMemberTest() {
         Senior senior1 = new Senior("Senior1", "01012345678", sinittoMember2);
         seniorRepository.save(senior1);
         Senior senior2 = new Senior("Senior2", "01098765432", sinittoMember2);
@@ -92,17 +92,17 @@ class HelloCallRepositoryTest {
                 LocalDate.of(2024, 1, 4), 15000, 90,
                 "요구사항2", senior2);
 
-        helloCall1.setSinitto(sinitto1);
-        helloCall2.setSinitto(sinitto1);
+        helloCall1.setMember(sinittoMember1);
+        helloCall2.setMember(sinittoMember1);
 
         helloCallRepository.save(helloCall1);
         helloCallRepository.save(helloCall2);
 
-        List<HelloCall> helloCalls = helloCallRepository.findAllBySinitto(sinitto1);
+        List<HelloCall> helloCalls = helloCallRepository.findAllByMember(sinittoMember1);
 
         assertThat(helloCalls).hasSize(2);
-        assertThat(helloCalls.get(0).getSinitto()).isEqualTo(sinitto1);
-        assertThat(helloCalls.get(1).getSinitto()).isEqualTo(sinitto1);
+        assertThat(helloCalls.get(0).getMember()).isEqualTo(sinittoMember1);
+        assertThat(helloCalls.get(1).getMember()).isEqualTo(sinittoMember1);
     }
 
     @Test
@@ -136,19 +136,19 @@ class HelloCallRepositoryTest {
                 LocalDate.of(2024, 1, 2), 10000, 60,
                 "요구사항", senior);
 
-        helloCall.setSinitto(sinitto1);
+        helloCall.setMember(sinittoMember1);
         helloCallRepository.save(helloCall);
 
         Optional<HelloCall> savedHelloCall = helloCallRepository.findById(helloCall.getId());
         assertThat(savedHelloCall).isPresent();
-        assertThat(savedHelloCall.get().getSinitto()).isEqualTo(sinitto1);
+        assertThat(savedHelloCall.get().getMember()).isEqualTo(sinittoMember1);
 
-        savedHelloCall.get().setSinitto(sinitto2);
+        savedHelloCall.get().setMember(sinittoMember2);
         helloCallRepository.save(savedHelloCall.get());
 
         Optional<HelloCall> updatedHelloCall = helloCallRepository.findById(helloCall.getId());
         assertThat(updatedHelloCall).isPresent();
-        assertThat(updatedHelloCall.get().getSinitto()).isEqualTo(sinitto2);
+        assertThat(updatedHelloCall.get().getMember()).isEqualTo(sinittoMember2);
     }
 
     @Test

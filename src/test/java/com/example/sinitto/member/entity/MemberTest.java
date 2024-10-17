@@ -31,7 +31,7 @@ public class MemberTest {
     }
 
     @Test
-    @DisplayName("Member Sinitto 여부 확인 테스트")
+    @DisplayName("Member SinittoBankInfo 여부 확인 테스트")
     void isSinittoTest() {
         assertThat(member.isSinitto()).isTrue();
 

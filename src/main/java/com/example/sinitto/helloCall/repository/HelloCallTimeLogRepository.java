@@ -2,16 +2,17 @@ package com.example.sinitto.helloCall.repository;
 
 import com.example.sinitto.helloCall.entity.HelloCall;
 import com.example.sinitto.helloCall.entity.HelloCallTimeLog;
-import com.example.sinitto.member.entity.Sinitto;
+import com.example.sinitto.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.nio.file.OpenOption;
 import java.util.List;
 import java.util.Optional;
 
 public interface HelloCallTimeLogRepository extends JpaRepository<HelloCallTimeLog, Long> {
-    Optional<HelloCallTimeLog> findBySinittoAndHelloCallId(Sinitto sinitto, Long helloCallId);
-
     List<HelloCallTimeLog> findAllByHelloCallId(Long helloCallId);
 
-    Optional<HelloCallTimeLog> findTopBySinittoAndHelloCallOrderByStartDateAndTimeDesc(Sinitto sinitto, HelloCall helloCall);
+    Optional<HelloCallTimeLog> findByMemberAndHelloCallId(Member member, Long helloCallId);
+
+    Optional<HelloCallTimeLog> findTopByMemberAndHelloCallOrderByStartDateAndTimeDesc(Member member, HelloCall helloCall);
 }

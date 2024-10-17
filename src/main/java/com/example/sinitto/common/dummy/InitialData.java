@@ -12,9 +12,9 @@ import com.example.sinitto.helloCall.entity.TimeSlot;
 import com.example.sinitto.helloCall.repository.HelloCallRepository;
 import com.example.sinitto.helloCall.repository.HelloCallTimeLogRepository;
 import com.example.sinitto.helloCall.repository.TimeSlotRepository;
+import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.entity.Sinitto;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
@@ -22,7 +22,8 @@ import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import com.example.sinitto.review.entity.Review;
 import com.example.sinitto.review.repository.ReviewRepository;
-import com.example.sinitto.sinitto.repository.SinittoRepository;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
+import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +38,7 @@ public class InitialData implements CommandLineRunner {
     private final SeniorRepository seniorRepository;
     private final PointRepository pointRepository;
     private final CallbackRepository callbackRepository;
-    private final SinittoRepository sinittoRepository;
+    private final SinittoBankInfoRepository sinittoBankInfoRepository;
     private final PointLogRepository pointLogRepository;
     private final ReviewRepository reviewRepository;
     private final GuardGuidelineRepository guardGuidelineRepository;
@@ -45,19 +46,20 @@ public class InitialData implements CommandLineRunner {
     private final TimeSlotRepository timeSlotRepository;
     private final HelloCallTimeLogRepository helloCallTimeLogRepository;
     private final TokenService tokenService;
+    private final HelloCallService helloCallService;
 
 
     public InitialData(MemberRepository memberRepository, SeniorRepository seniorRepository,
                        PointRepository pointRepository, CallbackRepository callbackRepository,
-                       SinittoRepository sinittoRepository, PointLogRepository pointLogRepository,
+                       SinittoBankInfoRepository sinittoBankInfoRepository, PointLogRepository pointLogRepository,
                        ReviewRepository reviewRepository, GuardGuidelineRepository guardGuidelineRepository,
                        HelloCallRepository helloCallRepository, TimeSlotRepository timeSlotRepository,
-                       HelloCallTimeLogRepository helloCallTimeLogRepository, TokenService tokenService) {
+                       HelloCallTimeLogRepository helloCallTimeLogRepository, TokenService tokenService, HelloCallService helloCallService) {
         this.memberRepository = memberRepository;
         this.seniorRepository = seniorRepository;
         this.pointRepository = pointRepository;
         this.callbackRepository = callbackRepository;
-        this.sinittoRepository = sinittoRepository;
+        this.sinittoBankInfoRepository = sinittoBankInfoRepository;
         this.pointLogRepository = pointLogRepository;
         this.reviewRepository = reviewRepository;
         this.guardGuidelineRepository = guardGuidelineRepository;
@@ -65,6 +67,7 @@ public class InitialData implements CommandLineRunner {
         this.timeSlotRepository = timeSlotRepository;
         this.helloCallTimeLogRepository = helloCallTimeLogRepository;
         this.tokenService = tokenService;
+        this.helloCallService = helloCallService;
     }
 
     @Override
@@ -90,16 +93,16 @@ public class InitialData implements CommandLineRunner {
 
     private void initial() {
         //시니또
-        Member MemberSinitto1 = memberRepository.save(new Member("김철수", "01012345678", "1chulsoo@example.com", true));
-        Sinitto sinitto1 = sinittoRepository.save(new Sinitto("신한은행", "123-23-444-422", MemberSinitto1));
-        Member MemberSinitto2 = memberRepository.save(new Member("김유진", "01023456789", "2kim@example.com", true));
-        Sinitto sinitto2 = sinittoRepository.save(new Sinitto("대구은행", "446-5-11-2", MemberSinitto2));
-        Member MemberSinitto3 = memberRepository.save(new Member("이민호", "01034567890", "3lee@example.com", true));
-        Sinitto sinitto3 = sinittoRepository.save(new Sinitto("IBK은행", "7-66-8-422", MemberSinitto3));
-        Member MemberSinitto4 = memberRepository.save(new Member("박소연", "01045678901", "4park@example.com", true));
-        Sinitto sinitto4 = sinittoRepository.save(new Sinitto("토스뱅크", "777-1-2-3", MemberSinitto4));
-        Member MemberSinitto5 = memberRepository.save(new Member("최진우", "01056789012", "5choi@example.com", true));
-        Sinitto sinitto5 = sinittoRepository.save(new Sinitto("기업은행", "96-6-99-45", MemberSinitto5));
+        Member memberSinitto1 = memberRepository.save(new Member("김철수", "01012345678", "1chulsoo@example.com", true));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("신한은행", "123-23-444-422", memberSinitto1));
+        Member memberSinitto2 = memberRepository.save(new Member("김유진", "01023456789", "2kim@example.com", true));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("대구은행", "446-5-11-2", memberSinitto2));
+        Member memberSinitto3 = memberRepository.save(new Member("이민호", "01034567890", "3lee@example.com", true));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("IBK은행", "7-66-8-422", memberSinitto3));
+        Member memberSinitto4 = memberRepository.save(new Member("박소연", "01045678901", "4park@example.com", true));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("토스뱅크", "777-1-2-3", memberSinitto4));
+        Member memberSinitto5 = memberRepository.save(new Member("최진우", "01056789012", "5choi@example.com", true));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("기업은행", "96-6-99-45", memberSinitto5));
 
         //보호자
         Member guard1 = memberRepository.save(new Member("정예린", "01067890123", "6jeong@example.com", false));
@@ -141,81 +144,81 @@ public class InitialData implements CommandLineRunner {
         Senior senior30 = seniorRepository.save(new Senior("오예림", "01091268437", guard5));
 
         //포인트와 포인트로그
-        pointRepository.save(new Point(50000, MemberSinitto1));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), MemberSinitto1, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), MemberSinitto1, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), MemberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), MemberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), MemberSinitto1, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto1, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointRepository.save(new Point(50000, memberSinitto1));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto1, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto1, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto1, 50000, PointLog.Status.SPEND_CANCEL));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
-        pointRepository.save(new Point(50000, MemberSinitto2));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), MemberSinitto2, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), MemberSinitto2, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), MemberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), MemberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), MemberSinitto2, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto2, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointRepository.save(new Point(50000, memberSinitto2));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto2, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto2, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto2, 50000, PointLog.Status.SPEND_CANCEL));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
-        pointRepository.save(new Point(50000, MemberSinitto3));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), MemberSinitto3, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), MemberSinitto3, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), MemberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), MemberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), MemberSinitto3, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointRepository.save(new Point(50000, memberSinitto3));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto3, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto3, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto3, 50000, PointLog.Status.SPEND_CANCEL));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
 
-        pointRepository.save(new Point(50000, MemberSinitto4));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), MemberSinitto4, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), MemberSinitto4, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), MemberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), MemberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), MemberSinitto4, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto4, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointRepository.save(new Point(50000, memberSinitto4));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto4, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto4, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto4, 50000, PointLog.Status.SPEND_CANCEL));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
-        pointRepository.save(new Point(50000, MemberSinitto5));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), MemberSinitto5, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), MemberSinitto5, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), MemberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), MemberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), MemberSinitto5, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), MemberSinitto5, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointRepository.save(new Point(50000, memberSinitto5));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto5, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto5, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto5, 50000, PointLog.Status.SPEND_CANCEL));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, guard1));
         pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard1, 50000, PointLog.Status.CHARGE_FAIL));
@@ -501,42 +504,55 @@ public class InitialData implements CommandLineRunner {
         timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall26));
         timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall26));
 
+        //시니또 안부전화 할당
+        helloCallService.acceptHelloCallBySinitto(memberSinitto1.getId(), helloCall1.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto1.getId(), helloCall2.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto2.getId(), helloCall3.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto2.getId(), helloCall4.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto3.getId(), helloCall5.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto4.getId(), helloCall6.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto4.getId(), helloCall7.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto5.getId(), helloCall8.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto5.getId(), helloCall9.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto2.getId(), helloCall10.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto3.getId(), helloCall11.getId());
+
         //안부전화 실시 타임로그
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 5, 18, 30), LocalDateTime.of(2024, 8, 5, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 7, 18, 30), LocalDateTime.of(2024, 8, 7, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 9, 18, 30), LocalDateTime.of(2024, 8, 9, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 11, 18, 30), LocalDateTime.of(2024, 8, 11, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, sinitto1, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto3, LocalDateTime.of(2024, 8, 5, 18, 30), LocalDateTime.of(2024, 8, 5, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto3, LocalDateTime.of(2024, 8, 7, 18, 30), LocalDateTime.of(2024, 8, 7, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 9, 18, 30), LocalDateTime.of(2024, 8, 9, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 11, 18, 30), LocalDateTime.of(2024, 8, 11, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, sinitto1, LocalDateTime.of(2024, 8, 2, 10, 30), LocalDateTime.of(2024, 8, 2, 10, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, sinitto2, LocalDateTime.of(2024, 8, 5, 11, 30), LocalDateTime.of(2024, 8, 5, 11, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, memberSinitto1, LocalDateTime.of(2024, 8, 2, 10, 30), LocalDateTime.of(2024, 8, 2, 10, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, memberSinitto1, LocalDateTime.of(2024, 8, 5, 11, 30), LocalDateTime.of(2024, 8, 5, 11, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, sinitto2, LocalDateTime.of(2024, 10, 8, 18, 30), LocalDateTime.of(2024, 10, 8, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, sinitto2, LocalDateTime.of(2024, 10, 10, 18, 30), LocalDateTime.of(2024, 10, 10, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, memberSinitto2, LocalDateTime.of(2024, 10, 8, 18, 30), LocalDateTime.of(2024, 10, 8, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, memberSinitto2, LocalDateTime.of(2024, 10, 10, 18, 30), LocalDateTime.of(2024, 10, 10, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, sinitto2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, sinitto2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, memberSinitto2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall4, memberSinitto2, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, sinitto3, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, sinitto5, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, memberSinitto3, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, memberSinitto3, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, memberSinitto3, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, memberSinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, sinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, memberSinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, memberSinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, sinitto5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, sinitto5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, memberSinitto5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall8, memberSinitto5, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, sinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, sinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, memberSinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall9, memberSinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, sinitto2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, sinitto2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, memberSinitto2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall10, memberSinitto2, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, sinitto3, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, sinitto5, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, memberSinitto3, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall11, memberSinitto3, LocalDateTime.of(2024, 6, 13, 18, 30), LocalDateTime.of(2024, 6, 13, 18, 40)));
 
     }
 
