@@ -1,13 +1,17 @@
 package com.example.sinitto.point.service;
 
+import com.example.sinitto.member.entity.Sinitto;
+import com.example.sinitto.point.dto.PointLogWithBankInfo;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.exception.PointLogNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.sinitto.repository.SinittoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,10 +19,12 @@ public class PointAdminService {
 
     private final PointLogRepository pointLogRepository;
     private final PointRepository pointRepository;
+    private final SinittoRepository sinittoRepository;
 
-    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository) {
+    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository, SinittoRepository sinittoRepository) {
         this.pointLogRepository = pointLogRepository;
         this.pointRepository = pointRepository;
+        this.sinittoRepository = sinittoRepository;
     }
 
     public List<PointLog> readAllNotCompletedPointChargeRequest() {
@@ -57,12 +63,6 @@ public class PointAdminService {
         pointLog.changeStatusToChargeFail();
     }
 
-    @Transactional(readOnly = true)
-    public List<PointLog> readAllPointWithdrawRequest() {
-
-        return pointLogRepository.findAllByStatusInOrderByPostTimeDesc(List.of(PointLog.Status.WITHDRAW_REQUEST, PointLog.Status.WITHDRAW_WAITING, PointLog.Status.WITHDRAW_COMPLETE, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
-    }
-
     @Transactional
     public void changeWithdrawLogToWaiting(Long pointLogId) {
 
@@ -93,5 +93,29 @@ public class PointAdminService {
         point.earn(pointLog.getPrice());
 
         pointLog.changeStatusToWithdrawFail();
+    }
+
+    @Transactional(readOnly = true)
+    public List<PointLogWithBankInfo> getPointLogWithBankInfo() {
+
+        List<PointLog> withdrawPointLogs = pointLogRepository.findAllByStatusInOrderByPostTimeDesc(List.of(PointLog.Status.WITHDRAW_REQUEST, PointLog.Status.WITHDRAW_WAITING, PointLog.Status.WITHDRAW_COMPLETE, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+
+        List<PointLogWithBankInfo> logWithBankInfos = new ArrayList<>();
+
+        for (PointLog pointLog : withdrawPointLogs) {
+            Sinitto sinitto = sinittoRepository.findByMemberId(pointLog.getMember().getId())
+                    .orElse(new Sinitto("등록된 계좌 없음", "등록된 계좌 없음", null));
+
+            PointLogWithBankInfo pointLogWithBankInfo = new PointLogWithBankInfo(
+                    pointLog.getId(),
+                    pointLog.getPrice(),
+                    pointLog.getPostTime(),
+                    pointLog.getStatus(),
+                    sinitto.getBankName(),
+                    sinitto.getAccountNumber()
+            );
+            logWithBankInfos.add(pointLogWithBankInfo);
+        }
+        return logWithBankInfos;
     }
 }
