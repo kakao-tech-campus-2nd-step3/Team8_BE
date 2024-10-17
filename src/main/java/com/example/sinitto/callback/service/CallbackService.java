@@ -226,4 +226,13 @@ public class CallbackService {
         return callbackRepository.findAllBySeniorIn(seniors, pageable)
                 .map(callback -> new CallbackUsageHistoryResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus()));
     }
+
+    public CallbackResponse getCallback(Long callbackId) {
+
+        Callback callback = callbackRepository.findById(callbackId)
+                .orElseThrow(() -> new NotExistCallbackException("해당 콜백 id에 해당하는 콜백이 없습니다."));
+
+        return new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId());
+    }
+
 }
