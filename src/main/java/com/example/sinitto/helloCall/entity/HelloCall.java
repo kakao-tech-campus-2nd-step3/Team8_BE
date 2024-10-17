@@ -142,7 +142,7 @@ public class HelloCall {
     }
 
     public void checkMemberIsRightSinitto(Member member) {
-        if (!this.member.equals(member)) {
+        if (this.member == null || !this.member.equals(member)) {
             throw new UnauthorizedException("해당 안부전화를 수행하는 시니또가 아닙니다.");
         }
     }
