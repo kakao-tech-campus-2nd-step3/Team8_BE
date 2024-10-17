@@ -12,9 +12,9 @@ import com.example.sinitto.helloCall.entity.TimeSlot;
 import com.example.sinitto.helloCall.repository.HelloCallRepository;
 import com.example.sinitto.helloCall.repository.HelloCallTimeLogRepository;
 import com.example.sinitto.helloCall.repository.TimeSlotRepository;
+import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
@@ -22,6 +22,7 @@ import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import com.example.sinitto.review.entity.Review;
 import com.example.sinitto.review.repository.ReviewRepository;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,7 @@ public class InitialData implements CommandLineRunner {
     private final TimeSlotRepository timeSlotRepository;
     private final HelloCallTimeLogRepository helloCallTimeLogRepository;
     private final TokenService tokenService;
+    private final HelloCallService helloCallService;
 
 
     public InitialData(MemberRepository memberRepository, SeniorRepository seniorRepository,
@@ -52,7 +54,7 @@ public class InitialData implements CommandLineRunner {
                        SinittoBankInfoRepository sinittoBankInfoRepository, PointLogRepository pointLogRepository,
                        ReviewRepository reviewRepository, GuardGuidelineRepository guardGuidelineRepository,
                        HelloCallRepository helloCallRepository, TimeSlotRepository timeSlotRepository,
-                       HelloCallTimeLogRepository helloCallTimeLogRepository, TokenService tokenService) {
+                       HelloCallTimeLogRepository helloCallTimeLogRepository, TokenService tokenService, HelloCallService helloCallService) {
         this.memberRepository = memberRepository;
         this.seniorRepository = seniorRepository;
         this.pointRepository = pointRepository;
@@ -65,6 +67,7 @@ public class InitialData implements CommandLineRunner {
         this.timeSlotRepository = timeSlotRepository;
         this.helloCallTimeLogRepository = helloCallTimeLogRepository;
         this.tokenService = tokenService;
+        this.helloCallService = helloCallService;
     }
 
     @Override
@@ -501,15 +504,28 @@ public class InitialData implements CommandLineRunner {
         timeSlotRepository.save(new TimeSlot("토", LocalTime.of(18, 30), LocalTime.of(20, 30), helloCall26));
         timeSlotRepository.save(new TimeSlot("일", LocalTime.of(18, 0), LocalTime.of(20, 0), helloCall26));
 
+        //시니또 안부전화 할당
+        helloCallService.acceptHelloCallBySinitto(memberSinitto1.getId(), helloCall1.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto1.getId(), helloCall2.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto2.getId(), helloCall3.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto2.getId(), helloCall4.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto3.getId(), helloCall5.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto4.getId(), helloCall6.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto4.getId(), helloCall7.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto5.getId(), helloCall8.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto5.getId(), helloCall9.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto2.getId(), helloCall10.getId());
+        helloCallService.acceptHelloCallBySinitto(memberSinitto3.getId(), helloCall11.getId());
+
         //안부전화 실시 타임로그
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 5, 18, 30), LocalDateTime.of(2024, 8, 5, 18, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 7, 18, 30), LocalDateTime.of(2024, 8, 7, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto3, LocalDateTime.of(2024, 8, 5, 18, 30), LocalDateTime.of(2024, 8, 5, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto3, LocalDateTime.of(2024, 8, 7, 18, 30), LocalDateTime.of(2024, 8, 7, 18, 40)));
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 9, 18, 30), LocalDateTime.of(2024, 8, 9, 18, 40)));
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 11, 18, 30), LocalDateTime.of(2024, 8, 11, 18, 40)));
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall1, memberSinitto1, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, memberSinitto1, LocalDateTime.of(2024, 8, 2, 10, 30), LocalDateTime.of(2024, 8, 2, 10, 40)));
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, memberSinitto2, LocalDateTime.of(2024, 8, 5, 11, 30), LocalDateTime.of(2024, 8, 5, 11, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall2, memberSinitto1, LocalDateTime.of(2024, 8, 5, 11, 30), LocalDateTime.of(2024, 8, 5, 11, 40)));
 
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, memberSinitto2, LocalDateTime.of(2024, 10, 8, 18, 30), LocalDateTime.of(2024, 10, 8, 18, 40)));
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall3, memberSinitto2, LocalDateTime.of(2024, 10, 10, 18, 30), LocalDateTime.of(2024, 10, 10, 18, 40)));
@@ -520,7 +536,7 @@ public class InitialData implements CommandLineRunner {
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, memberSinitto3, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall5, memberSinitto3, LocalDateTime.of(2024, 10, 13, 18, 30), LocalDateTime.of(2024, 10, 13, 18, 40)));
 
-        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, memberSinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
+        helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, memberSinitto3, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall6, memberSinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
 
         helloCallTimeLogRepository.save(new HelloCallTimeLog(helloCall7, memberSinitto4, LocalDateTime.of(2024, 8, 13, 18, 30), LocalDateTime.of(2024, 8, 13, 18, 40)));
