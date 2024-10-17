@@ -92,13 +92,13 @@ class HelloCallRepositoryTest {
                 LocalDate.of(2024, 1, 4), 15000, 90,
                 "요구사항2", senior2);
 
-        helloCall1.setMember(sinittoBankInfo1);
-        helloCall2.setMember(sinittoBankInfo1);
+        helloCall1.setMember(sinittoMember1);
+        helloCall2.setMember(sinittoMember1);
 
         helloCallRepository.save(helloCall1);
         helloCallRepository.save(helloCall2);
 
-        List<HelloCall> helloCalls = helloCallRepository.findAllBySinitto(sinittoBankInfo1);
+        List<HelloCall> helloCalls = helloCallRepository.findAllByMember(sinittoMember1);
 
         assertThat(helloCalls).hasSize(2);
         assertThat(helloCalls.get(0).getMember()).isEqualTo(sinittoBankInfo1);
@@ -136,14 +136,14 @@ class HelloCallRepositoryTest {
                 LocalDate.of(2024, 1, 2), 10000, 60,
                 "요구사항", senior);
 
-        helloCall.setMember(sinittoBankInfo1);
+        helloCall.setMember(sinittoMember1);
         helloCallRepository.save(helloCall);
 
         Optional<HelloCall> savedHelloCall = helloCallRepository.findById(helloCall.getId());
         assertThat(savedHelloCall).isPresent();
         assertThat(savedHelloCall.get().getMember()).isEqualTo(sinittoBankInfo1);
 
-        savedHelloCall.get().setMember(sinittoBankInfo2);
+        savedHelloCall.get().setMember(sinittoMember2);
         helloCallRepository.save(savedHelloCall.get());
 
         Optional<HelloCall> updatedHelloCall = helloCallRepository.findById(helloCall.getId());

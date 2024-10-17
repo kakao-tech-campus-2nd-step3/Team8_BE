@@ -91,15 +91,15 @@ public class InitialData implements CommandLineRunner {
     private void initial() {
         //시니또
         Member memberSinitto1 = memberRepository.save(new Member("김철수", "01012345678", "1chulsoo@example.com", true));
-        SinittoBankInfo sinittoBankInfo1 = sinittoBankInfoRepository.save(new SinittoBankInfo("신한은행", "123-23-444-422", memberSinitto1));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("신한은행", "123-23-444-422", memberSinitto1));
         Member memberSinitto2 = memberRepository.save(new Member("김유진", "01023456789", "2kim@example.com", true));
-        SinittoBankInfo sinittoBankInfo2 = sinittoBankInfoRepository.save(new SinittoBankInfo("대구은행", "446-5-11-2", memberSinitto2));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("대구은행", "446-5-11-2", memberSinitto2));
         Member memberSinitto3 = memberRepository.save(new Member("이민호", "01034567890", "3lee@example.com", true));
-        SinittoBankInfo sinittoBankInfo3 = sinittoBankInfoRepository.save(new SinittoBankInfo("IBK은행", "7-66-8-422", memberSinitto3));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("IBK은행", "7-66-8-422", memberSinitto3));
         Member memberSinitto4 = memberRepository.save(new Member("박소연", "01045678901", "4park@example.com", true));
-        SinittoBankInfo sinittoBankInfo4 = sinittoBankInfoRepository.save(new SinittoBankInfo("토스뱅크", "777-1-2-3", memberSinitto4));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("토스뱅크", "777-1-2-3", memberSinitto4));
         Member memberSinitto5 = memberRepository.save(new Member("최진우", "01056789012", "5choi@example.com", true));
-        SinittoBankInfo sinittoBankInfo5 = sinittoBankInfoRepository.save(new SinittoBankInfo("기업은행", "96-6-99-45", memberSinitto5));
+        sinittoBankInfoRepository.save(new SinittoBankInfo("기업은행", "96-6-99-45", memberSinitto5));
 
         //보호자
         Member guard1 = memberRepository.save(new Member("정예린", "01067890123", "6jeong@example.com", false));

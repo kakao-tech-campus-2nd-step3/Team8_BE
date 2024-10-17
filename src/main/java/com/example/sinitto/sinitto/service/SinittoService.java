@@ -7,7 +7,7 @@ import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.sinitto.dto.SinittoBankRequest;
 import com.example.sinitto.sinitto.dto.SinittoRequest;
 import com.example.sinitto.sinitto.dto.SinittoResponse;
-import com.example.sinitto.sinitto.exception.SinittoNotFoundException;
+import com.example.sinitto.sinitto.exception.SinittoBankInfoNotFoundException;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +41,7 @@ public class SinittoService {
                 () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
         SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(
-                () -> new SinittoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
+                () -> new SinittoBankInfoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
         );
         return new SinittoResponse(member.getName(), member.getPhoneNumber(), member.getEmail(), sinittoBankInfo.getAccountNumber(), sinittoBankInfo.getBankName());
     }
@@ -57,7 +57,7 @@ public class SinittoService {
     @Transactional
     public void updateSinittoBankInfo(Long memberId, SinittoBankRequest sinittoBankRequest) {
         SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(
-                () -> new SinittoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
+                () -> new SinittoBankInfoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
         );
         sinittoBankInfo.updateSinitto(sinittoBankRequest.bankName(), sinittoBankRequest.accountNumber());
     }
@@ -73,7 +73,7 @@ public class SinittoService {
     @Transactional
     public void deleteSinittoBankInfo(Long memberId) {
         SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(
-                () -> new SinittoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
+                () -> new SinittoBankInfoNotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
         );
         sinittoBankInfoRepository.delete(sinittoBankInfo);
     }

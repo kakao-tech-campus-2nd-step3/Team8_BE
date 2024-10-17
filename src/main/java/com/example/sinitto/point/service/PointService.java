@@ -13,6 +13,8 @@ import com.example.sinitto.point.exception.NotEnoughPointException;
 import com.example.sinitto.point.exception.PointNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.sinitto.exception.SinittoBankInfoNotFoundException;
+import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,11 +27,13 @@ public class PointService {
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
+    private final SinittoBankInfoRepository sinittoBankInfoRepository;
 
-    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository) {
+    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository, SinittoBankInfoRepository sinittoBankInfoRepository) {
         this.memberRepository = memberRepository;
         this.pointRepository = pointRepository;
         this.pointLogRepository = pointLogRepository;
+        this.sinittoBankInfoRepository = sinittoBankInfoRepository;
     }
 
     public PointResponse getPoint(Long memberId) {
@@ -74,7 +78,11 @@ public class PointService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("요청한 멤버를 찾을 수 없습니다"));
 
-        if(!member.isSinitto()){
+        if (!sinittoBankInfoRepository.existsByMemberId(memberId)) {
+            throw new SinittoBankInfoNotFoundException("시니또의 은행 계좌 정보가 없습니다. 계좌를 등록해야 합니다.");
+        }
+
+        if (!member.isSinitto()) {
             throw new NotSinittoException("출금 요청은 시니또만 가능합니다. 지금 요청은 시니또가 요청하지 않았습니다.");
         }
 
