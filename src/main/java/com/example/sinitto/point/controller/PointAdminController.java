@@ -1,15 +1,12 @@
 package com.example.sinitto.point.controller;
 
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.member.entity.Sinitto;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointLogWithBankInfo;
 import com.example.sinitto.point.dto.PointLogWithDepositMessage;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.service.PointAdminService;
-import com.example.sinitto.sinitto.exception.SinittoNotFoundException;
-import com.example.sinitto.sinitto.repository.SinittoRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +21,10 @@ public class PointAdminController {
 
     private final PointAdminService pointAdminService;
     private final MemberRepository memberRepository;
-    private final SinittoRepository sinittoRepository;
 
-    public PointAdminController(PointAdminService pointAdminService, MemberRepository memberRepository, SinittoRepository sinittoRepository) {
+    public PointAdminController(PointAdminService pointAdminService, MemberRepository memberRepository) {
         this.pointAdminService = pointAdminService;
         this.memberRepository = memberRepository;
-        this.sinittoRepository = sinittoRepository;
     }
 
     @GetMapping("/admin/point/charge")
@@ -81,24 +76,8 @@ public class PointAdminController {
     @GetMapping("/admin/point/withdraw")
     public String showAllWithdrawRequest(Model model) {
 
-        List<PointLog> pointLogs = pointAdminService.readAllPointWithdrawRequest();
-        List<PointLogWithBankInfo> logWithBankInfos = new ArrayList<>();
+        List<PointLogWithBankInfo> logWithBankInfos = pointAdminService.getPointLogWithBankInfo();
 
-        for (PointLog pointLog : pointLogs) {
-            Sinitto sinitto = sinittoRepository.findByMemberId(pointLog.getMember().getId())
-                    .orElseThrow(() -> new SinittoNotFoundException("시니또를 찾을 수 없습니다"));
-
-            PointLogWithBankInfo pointLogWithBankInfo = new PointLogWithBankInfo(
-                    pointLog.getId(),
-                    pointLog.getPrice(),
-                    pointLog.getPostTime(),
-                    pointLog.getStatus(),
-                    sinitto.getBankName(),
-                    sinitto.getAccountNumber()
-            );
-
-            logWithBankInfos.add(pointLogWithBankInfo);
-        }
         model.addAttribute("logWithBankInfos", logWithBankInfos);
 
         return "point/withdraw";
