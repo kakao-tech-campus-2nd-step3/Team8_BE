@@ -78,12 +78,12 @@ public class PointService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("요청한 멤버를 찾을 수 없습니다"));
 
-        if (!sinittoBankInfoRepository.existsByMemberId(memberId)) {
-            throw new SinittoBankInfoNotFoundException("시니또의 은행 계좌 정보가 없습니다. 계좌를 등록해야 합니다.");
-        }
-
         if (!member.isSinitto()) {
             throw new NotSinittoException("출금 요청은 시니또만 가능합니다. 지금 요청은 시니또가 요청하지 않았습니다.");
+        }
+
+        if (!sinittoBankInfoRepository.existsByMemberId(memberId)) {
+            throw new SinittoBankInfoNotFoundException("시니또의 은행 계좌 정보가 없습니다. 계좌를 등록해야 합니다.");
         }
 
         Point point = pointRepository.findByMember(member)
