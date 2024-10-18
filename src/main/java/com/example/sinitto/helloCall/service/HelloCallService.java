@@ -358,7 +358,7 @@ public class HelloCallService {
     }
 
     @Transactional
-    public void SendReportBySinitto(Long memberId, HelloCallReportRequest helloCallReportRequest) {
+    public void sendReportBySinitto(Long memberId, HelloCallReportRequest helloCallReportRequest) {
         HelloCall helloCall = helloCallRepository.findById(helloCallReportRequest.helloCallId())
                 .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
