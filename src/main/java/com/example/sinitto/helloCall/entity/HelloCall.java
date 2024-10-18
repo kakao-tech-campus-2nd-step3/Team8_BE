@@ -5,7 +5,6 @@ import com.example.sinitto.helloCall.exception.InvalidStatusException;
 import com.example.sinitto.helloCall.exception.TimeRuleException;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.entity.Sinitto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -44,8 +43,8 @@ public class HelloCall {
     @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
     private List<TimeSlot> timeSlots = new ArrayList<>();
     @ManyToOne
-    @JoinColumn(name = "sinitto_id")
-    private Sinitto sinitto;
+    @JoinColumn(name = "member_id")
+    private Member member;
     @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
     private List<HelloCallTimeLog> helloCallTimeLogs = new ArrayList<>();
 
@@ -102,12 +101,12 @@ public class HelloCall {
         return serviceTime;
     }
 
-    public Sinitto getSinitto() {
-        return sinitto;
+    public Member getMember() {
+        return member;
     }
 
-    public void setSinitto(Sinitto sinitto) {
-        this.sinitto = sinitto;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public String getReport() {
@@ -118,23 +117,13 @@ public class HelloCall {
         this.report = report;
     }
 
-    public String getSinittoName() {
-        return this.sinitto.getMember().getName();
-    }
-
-    public List<HelloCallTimeLog> getHelloCallTimeLogs() {
-        return helloCallTimeLogs;
+    public String getMemberName() {
+        return this.member.getName();
     }
 
     public void checkStatusIsWaiting() {
         if (status.canNotModifyOrDelete()) {
             throw new InvalidStatusException("안부전화 서비스가 수행 대기중일 때만 삭제가 가능합니다.");
-        }
-    }
-
-    public void checkSiniitoIsSame(Sinitto sinitto) {
-        if (!this.sinitto.equals(sinitto)) {
-            throw new UnauthorizedException("안부전화 서비스 리포트를 작성할 권한이 없습니다.");
         }
     }
 
@@ -150,6 +139,12 @@ public class HelloCall {
 
     public boolean checkReportIsNotNull() {
         return this.report != null;
+    }
+
+    public void checkMemberIsRightSinitto(Member member) {
+        if (this.member == null || !this.member.equals(member)) {
+            throw new UnauthorizedException("해당 안부전화를 수행하는 시니또가 아닙니다.");
+        }
     }
 
     public void changeStatusToInProgress() {

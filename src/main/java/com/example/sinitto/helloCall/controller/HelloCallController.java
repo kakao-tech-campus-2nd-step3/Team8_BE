@@ -132,7 +132,7 @@ public class HelloCallController {
     @PostMapping("/reports")
     public ResponseEntity<StringMessageResponse> createHelloCallReport(@MemberId Long memberId, @RequestBody HelloCallReportRequest request) {
 
-        helloCallService.SendReportBySinitto(memberId, request);
+        helloCallService.sendReportBySinitto(memberId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new StringMessageResponse("소통 보고서가 작성되었습니다."));
     }
