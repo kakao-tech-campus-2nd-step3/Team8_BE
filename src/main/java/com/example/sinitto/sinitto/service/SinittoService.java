@@ -1,12 +1,12 @@
 package com.example.sinitto.sinitto.service;
 
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.sinitto.dto.SinittoBankRequest;
 import com.example.sinitto.sinitto.dto.SinittoRequest;
 import com.example.sinitto.sinitto.dto.SinittoResponse;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.exception.SinittoBankInfoNotFoundException;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.stereotype.Service;
