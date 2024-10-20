@@ -1,8 +1,7 @@
 package com.example.sinitto.helloCall.entity;
 
-import com.example.sinitto.auth.exception.UnauthorizedException;
-import com.example.sinitto.helloCall.exception.InvalidStatusException;
-import com.example.sinitto.helloCall.exception.TimeRuleException;
+import com.example.sinitto.common.exception.BadRequestException;
+import com.example.sinitto.common.exception.UnauthorizedException;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import jakarta.persistence.*;
@@ -50,7 +49,7 @@ public class HelloCall {
 
     public HelloCall(LocalDate startDate, LocalDate endDate, int price, int serviceTime, String requirement, Senior senior) {
         if (startDate.isAfter(endDate)) {
-            throw new TimeRuleException("시작날짜가 종료날짜 이후일 수 없습니다.");
+            throw new BadRequestException("시작날짜가 종료날짜 이후일 수 없습니다.");
         }
         this.startDate = startDate;
         this.endDate = endDate;
@@ -123,7 +122,7 @@ public class HelloCall {
 
     public void checkStatusIsWaiting() {
         if (status.canNotModifyOrDelete()) {
-            throw new InvalidStatusException("안부전화 서비스가 수행 대기중일 때만 삭제가 가능합니다.");
+            throw new BadRequestException("안부전화 서비스가 수행 대기중일 때만 삭제가 가능합니다.");
         }
     }
 
@@ -149,38 +148,38 @@ public class HelloCall {
 
     public void changeStatusToInProgress() {
         if (status.canNotProgressStatus(Status.IN_PROGRESS)) {
-            throw new InvalidStatusException("안부전화 서비스가 수행 대기중일 때만 진행중 상태로 나아갈 수 있습니다. 현재 상태 : " + this.status);
+            throw new BadRequestException("안부전화 서비스가 수행 대기중일 때만 진행중 상태로 나아갈 수 있습니다. 현재 상태 : " + this.status);
         }
         this.status = Status.IN_PROGRESS;
     }
 
     public void changeStatusToWaiting() {
         if (status.canNotRollBackStatus()) {
-            throw new InvalidStatusException("안부전화 서비스가 수행중일 때만 진행중 상태로 돌아갈 수 있습니다. 현재 상태 : " + this.status);
+            throw new BadRequestException("안부전화 서비스가 수행중일 때만 진행중 상태로 돌아갈 수 있습니다. 현재 상태 : " + this.status);
         }
         this.status = Status.WAITING;
     }
 
     public void changeStatusToPendingComplete() {
         if (status.canNotProgressStatus(Status.PENDING_COMPLETE)) {
-            throw new InvalidStatusException("안부전화 서비스가 수행중일 때만 완료 대기 상태로 나아갈 수 있습니다. 현재 상태 : " + this.status);
+            throw new BadRequestException("안부전화 서비스가 수행중일 때만 완료 대기 상태로 나아갈 수 있습니다. 현재 상태 : " + this.status);
         }
         this.status = Status.PENDING_COMPLETE;
     }
 
     public void changeStatusToComplete() {
         if (status.canNotProgressStatus(Status.COMPLETE)) {
-            throw new InvalidStatusException("안부전화 서비스가 완료 대기 일때만 완료 상태로 변경할 수 있습니다. 현재 상태 : " + this.status);
+            throw new BadRequestException("안부전화 서비스가 완료 대기 일때만 완료 상태로 변경할 수 있습니다. 현재 상태 : " + this.status);
         }
         this.status = Status.COMPLETE;
     }
 
     public void updateHelloCall(LocalDate startDate, LocalDate endDate, int price, int serviceTime, String requirement) {
         if (status.canNotModifyOrDelete()) {
-            throw new InvalidStatusException("안부전화 서비스가 수행 대기중일 때만 수정이 가능합니다.");
+            throw new BadRequestException("안부전화 서비스가 수행 대기중일 때만 수정이 가능합니다.");
         }
         if (startDate.isAfter(endDate)) {
-            throw new TimeRuleException("시작날짜가 종료날짜 이후일 수 없습니다.");
+            throw new BadRequestException("시작날짜가 종료날짜 이후일 수 없습니다.");
         }
         this.startDate = startDate;
         this.endDate = endDate;
