@@ -1,8 +1,5 @@
 package com.example.sinitto.common.exception;
 
-import com.example.sinitto.callback.exception.ConflictException;
-import com.example.sinitto.callback.exception.ForbiddenException;
-import com.example.sinitto.callback.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
