@@ -20,4 +20,6 @@ jobs:
           distribution: 'temurin'
 
       - name: Run Tests
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: ./gradlew test
