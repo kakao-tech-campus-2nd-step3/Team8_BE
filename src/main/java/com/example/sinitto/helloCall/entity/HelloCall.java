@@ -35,17 +35,17 @@ public class HelloCall {
     @Enumerated(EnumType.STRING)
     private HelloCall.Status status;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "senior_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Senior senior;
-    @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "helloCall")
     private List<TimeSlot> timeSlots = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-    @OneToMany(mappedBy = "helloCall", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "helloCall")
     private List<HelloCallTimeLog> helloCallTimeLogs = new ArrayList<>();
 
     public HelloCall(LocalDate startDate, LocalDate endDate, int price, int serviceTime, String requirement, Senior senior) {
