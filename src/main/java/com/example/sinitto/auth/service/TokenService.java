@@ -1,8 +1,7 @@
 package com.example.sinitto.auth.service;
 
 import com.example.sinitto.auth.dto.TokenResponse;
-import com.example.sinitto.auth.exception.JWTExpirationException;
-import com.example.sinitto.auth.exception.UnauthorizedException;
+import com.example.sinitto.common.exception.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +59,7 @@ public class TokenService {
                 .getBody();
 
         if (claims.getExpiration().before(new Date())) {
-            throw new JWTExpirationException("토큰이 만료되었습니다. 재로그인이 필요합니다.");
+            throw new UnauthorizedException("토큰이 만료되었습니다. 재로그인이 필요합니다.");
         }
 
         return claims.getSubject();

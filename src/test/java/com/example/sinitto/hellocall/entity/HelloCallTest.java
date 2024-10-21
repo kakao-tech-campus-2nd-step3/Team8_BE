@@ -1,8 +1,7 @@
 package com.example.sinitto.hellocall.entity;
 
+import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.helloCall.entity.HelloCall;
-import com.example.sinitto.helloCall.exception.InvalidStatusException;
-import com.example.sinitto.helloCall.exception.TimeRuleException;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +47,7 @@ class HelloCallTest {
 
     @Test
     @DisplayName("시작날짜가 종료날짜 이후일 때 예외 발생 테스트")
-    void constructorThrowsTimeRuleException() {
+    void constructorThrowsBadRequestException() {
         assertThatThrownBy(() -> new HelloCall(
                 LocalDate.of(2024, 10, 11),
                 LocalDate.of(2024, 10, 10),
@@ -56,7 +55,7 @@ class HelloCallTest {
                 30,
                 "Invalid Requirement",
                 senior
-        )).isInstanceOf(TimeRuleException.class)
+        )).isInstanceOf(BadRequestException.class)
                 .hasMessage("시작날짜가 종료날짜 이후일 수 없습니다.");
     }
 
@@ -75,17 +74,17 @@ class HelloCallTest {
 
     @Test
     @DisplayName("상태 변경 예외 발생 테스트")
-    void changeStatusThrowsInvalidStatusException() {
+    void changeStatusThrowsBadRequestException() {
         helloCall.changeStatusToInProgress();
 
         assertThatThrownBy(() -> helloCall.changeStatusToInProgress())
-                .isInstanceOf(InvalidStatusException.class)
+                .isInstanceOf(BadRequestException.class)
                 .hasMessage("안부전화 서비스가 수행 대기중일 때만 진행중 상태로 나아갈 수 있습니다. 현재 상태 : " + HelloCall.Status.IN_PROGRESS);
 
         helloCall.changeStatusToPendingComplete();
 
         assertThatThrownBy(() -> helloCall.changeStatusToWaiting())
-                .isInstanceOf(InvalidStatusException.class)
+                .isInstanceOf(BadRequestException.class)
                 .hasMessage("안부전화 서비스가 수행중일 때만 진행중 상태로 돌아갈 수 있습니다. 현재 상태 : " + HelloCall.Status.PENDING_COMPLETE);
     }
 
@@ -109,7 +108,7 @@ class HelloCallTest {
 
     @Test
     @DisplayName("Update HelloCall 예외 발생 테스트")
-    void updateHelloCallThrowsInvalidStatusException() {
+    void updateHelloCallThrowsBadRequestException() {
         helloCall.changeStatusToInProgress();
 
         assertThatThrownBy(() -> helloCall.updateHelloCall(
@@ -118,7 +117,7 @@ class HelloCallTest {
                 12000,
                 45,
                 "Updated Requirement"
-        )).isInstanceOf(InvalidStatusException.class)
+        )).isInstanceOf(BadRequestException.class)
                 .hasMessage("안부전화 서비스가 수행 대기중일 때만 수정이 가능합니다.");
     }
 }

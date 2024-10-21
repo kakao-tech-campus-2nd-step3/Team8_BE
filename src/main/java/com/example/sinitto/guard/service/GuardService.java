@@ -1,14 +1,13 @@
 package com.example.sinitto.guard.service;
 
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.guard.dto.GuardRequest;
 import com.example.sinitto.guard.dto.GuardResponse;
 import com.example.sinitto.guard.dto.SeniorRequest;
 import com.example.sinitto.guard.dto.SeniorResponse;
-import com.example.sinitto.guard.exception.SeniorNotFoundException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,7 @@ public class GuardService {
     @Transactional
     public GuardResponse readGuard(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
 
         return new GuardResponse(member.getName(), member.getEmail(), member.getPhoneNumber());
@@ -37,7 +36,7 @@ public class GuardService {
     @Transactional
     public void updateGuard(Long memberId, GuardRequest guardRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
 
         member.updateMember(guardRequest.name(), guardRequest.email(), guardRequest.phoneNumber());
@@ -46,7 +45,7 @@ public class GuardService {
     @Transactional
     public void deleteGuard(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
 
         memberRepository.delete(member);
@@ -55,7 +54,7 @@ public class GuardService {
     @Transactional
     public void createSenior(Long memberId, SeniorRequest seniorRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
 
         Senior senior = new Senior(seniorRequest.seniorName(), seniorRequest.seniorPhoneNumber(), member);
@@ -73,7 +72,7 @@ public class GuardService {
     @Transactional
     public SeniorResponse readOneSenior(Long memberId, Long seniorId) {
         Senior senior = seniorRepository.findByIdAndMemberId(seniorId, memberId).orElseThrow(
-                () -> new SeniorNotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
 
         return new SeniorResponse(senior.getId(), senior.getName(), senior.getPhoneNumber());
@@ -82,7 +81,7 @@ public class GuardService {
     @Transactional
     public void updateSenior(Long memberId, Long seniorId, SeniorRequest seniorRequest) {
         Senior senior = seniorRepository.findByIdAndMemberId(seniorId, memberId).orElseThrow(
-                () -> new SeniorNotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
 
         senior.updateSenior(seniorRequest.seniorName(), seniorRequest.seniorPhoneNumber());
@@ -91,7 +90,7 @@ public class GuardService {
     @Transactional
     public void deleteSenior(Long memberId, Long seniorId) {
         Senior senior = seniorRepository.findByIdAndMemberId(seniorId, memberId).orElseThrow(
-                () -> new SeniorNotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
 
         seniorRepository.delete(senior);
