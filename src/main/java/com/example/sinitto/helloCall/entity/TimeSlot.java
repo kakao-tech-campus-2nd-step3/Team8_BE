@@ -3,6 +3,8 @@ package com.example.sinitto.helloCall.entity;
 import com.example.sinitto.helloCall.exception.TimeRuleException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalTime;
 
@@ -19,6 +21,7 @@ public class TimeSlot {
     @NotNull
     private LocalTime endTime;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "hellocall_id")
     private HelloCall helloCall;
 
