@@ -53,7 +53,7 @@ public class GuardGuidelineService {
         List<GuardGuideline> guardGuidelines = guardGuidelineRepository.findBySeniorIdAndType(seniorId, type);
 
         return guardGuidelines.stream()
-                .map(m -> new GuardGuidelineResponse(m.getType(), m.getTitle(), m.getContent()))
+                .map(m -> new GuardGuidelineResponse(m.getId(), m.getType(), m.getTitle(), m.getContent()))
                 .toList();
     }
 
@@ -84,7 +84,7 @@ public class GuardGuidelineService {
         }
         List<GuardGuideline> guardGuidelines = guardGuidelineRepository.findBySeniorId(seniorId);
         return guardGuidelines.stream()
-                .map(m -> new GuardGuidelineResponse(m.getType(), m.getTitle(), m.getContent()))
+                .map(m -> new GuardGuidelineResponse(m.getId(), m.getType(), m.getTitle(), m.getContent()))
                 .toList();
     }
 
@@ -101,6 +101,6 @@ public class GuardGuidelineService {
             throw new SeniorAndGuardGuidelineMismatchException("해당 Senior의 가이드라인이 아닙니다.");
         }
 
-        return new GuardGuidelineResponse(guardGuideline.getType(), guardGuideline.getTitle(), guardGuideline.getContent());
+        return new GuardGuidelineResponse(guardGuideline.getId(), guardGuideline.getType(), guardGuideline.getTitle(), guardGuideline.getContent());
     }
 }
