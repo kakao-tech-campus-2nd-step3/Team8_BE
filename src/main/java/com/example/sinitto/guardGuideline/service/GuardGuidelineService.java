@@ -14,14 +14,11 @@ import com.example.sinitto.guardGuideline.exception.GuardGuidelineNotFoundExcept
 import com.example.sinitto.guardGuideline.exception.SeniorAndGuardGuidelineMismatchException;
 import com.example.sinitto.guardGuideline.exception.SeniorAndGuardMemberMismatchException;
 import com.example.sinitto.guardGuideline.repository.GuardGuidelineRepository;
-import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Guard;
 import java.util.List;
 
 @Service
