@@ -373,6 +373,136 @@ public class InitialData implements CommandLineRunner {
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior5));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior5));
 
+        //가이드라인
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "피자 주문", "가게명: 청주피자 청주지점, 메뉴명: 슈퍼콤보 피자 (라지), 가격: 23000원, 보통 슈퍼콤보 피자를 시키십니다. 혹시 크러스트 추가 원하시면 치즈크러스트로 추가해주세요.", senior6));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 비하로 55 (비하병원). 병원에 갈 때는 보통 오전 10시에 출발하십니다. 결제는 현금으로 하실 예정입니다.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주역까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 팔봉로 54 (청주역). 오전 출발 예정이며, 어머니께서 직접 결제하실 예정입니다.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "치킨 주문", "가게명: 여수정통치킨 여수점, 메뉴명: 순살후라이드, 가격: 18000원, 주로 순살후라이드를 드시지만 양념이 필요하면 간장양념치킨으로 변경 부탁드립니다.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 마트까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 마트로 32 (비하동 마트). 장을 볼 때 자주 이용하시며, 결제는 항상 현금으로 하십니다.", senior7));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "충북대병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 상당구 중흥로 22 (충북대병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 현금으로 하실 예정입니다.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주공항까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 청원구 내수읍 오창대로 607 (청주국제공항). 항공편에 맞춰 오전에 출발할 예정입니다.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "족발 주문", "가게명: 청주족발전문점, 메뉴명: 앞다리 족발 (중), 가격: 29000원, 보통 앞다리 족발을 드시며, 추가 요청사항은 무조건 무김치를 함께 보내달라고 하십니다.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "한식당 배달 주문", "가게명: 청주미소한식당, 메뉴명: 된장찌개, 가격: 8000원, 된장찌개를 자주 드시며, 나물 반찬을 추가로 요청하시면 됩니다.", senior8));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 성안길시장까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 상당구 성안길 112 (성안길시장). 시장에 가실 때 보통 점심 직후에 출발하십니다. 결제는 어머니께서 현금으로 하실 예정입니다.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주문화재단까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 흥덕구 공단로 108 (청주문화재단). 문화 활동을 위해 자주 가십니다. 결제는 현금으로 하실 예정입니다.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "불고기 백반 주문", "가게명: 청주진가네한식당, 메뉴명: 불고기 백반, 가격: 12000원, 불고기 백반을 즐겨 드시고 반찬 추가는 김치와 나물로 요청하시면 됩니다.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "김밥 주문", "가게명: 청주광장김밥, 메뉴명: 참치김밥 2줄, 가격: 8000원, 참치김밥을 2줄 주문하십니다. 혹시 추가 요청사항이 있으면 단무지를 넉넉히 부탁드리세요.", senior9));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "서원구교회까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 성당길 12 (서원구교회). 주일 예배 참석을 위해 교회로 가십니다. 예배 시간 전에 미리 도착할 수 있도록 조정해주세요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 시립도서관까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 수곡로 108 (청주 시립도서관). 주로 설정한 출발지에서 출발하시지만 따로 요청하시면 변경부탁드릴게요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior10));
+
+        //가이드라인
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "피자 주문", "가게명: 청주피자 청주지점, 메뉴명: 슈퍼콤보 피자 (라지), 가격: 23000원, 보통 슈퍼콤보 피자를 시키십니다. 혹시 크러스트 추가 원하시면 치즈크러스트로 추가해주세요.", senior11));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 비하로 55 (비하병원). 병원에 갈 때는 보통 오전 10시에 출발하십니다. 결제는 현금으로 하실 예정입니다.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주역까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 팔봉로 54 (청주역). 오전 출발 예정이며, 어머니께서 직접 결제하실 예정입니다.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "치킨 주문", "가게명: 여수정통치킨 여수점, 메뉴명: 순살후라이드, 가격: 18000원, 주로 순살후라이드를 드시지만 양념이 필요하면 간장양념치킨으로 변경 부탁드립니다.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 마트까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 마트로 32 (비하동 마트). 장을 볼 때 자주 이용하시며, 결제는 항상 현금으로 하십니다.", senior12));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "충북대병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 상당구 중흥로 22 (충북대병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 현금으로 하실 예정입니다.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주공항까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 청원구 내수읍 오창대로 607 (청주국제공항). 항공편에 맞춰 오전에 출발할 예정입니다.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "족발 주문", "가게명: 청주족발전문점, 메뉴명: 앞다리 족발 (중), 가격: 29000원, 보통 앞다리 족발을 드시며, 추가 요청사항은 무조건 무김치를 함께 보내달라고 하십니다.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "한식당 배달 주문", "가게명: 청주미소한식당, 메뉴명: 된장찌개, 가격: 8000원, 된장찌개를 자주 드시며, 나물 반찬을 추가로 요청하시면 됩니다.", senior3));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 성안길시장까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 상당구 성안길 112 (성안길시장). 시장에 가실 때 보통 점심 직후에 출발하십니다. 결제는 어머니께서 현금으로 하실 예정입니다.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주문화재단까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 흥덕구 공단로 108 (청주문화재단). 문화 활동을 위해 자주 가십니다. 결제는 현금으로 하실 예정입니다.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "불고기 백반 주문", "가게명: 청주진가네한식당, 메뉴명: 불고기 백반, 가격: 12000원, 불고기 백반을 즐겨 드시고 반찬 추가는 김치와 나물로 요청하시면 됩니다.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "김밥 주문", "가게명: 청주광장김밥, 메뉴명: 참치김밥 2줄, 가격: 8000원, 참치김밥을 2줄 주문하십니다. 혹시 추가 요청사항이 있으면 단무지를 넉넉히 부탁드리세요.", senior14));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "서원구교회까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 성당길 12 (서원구교회). 주일 예배 참석을 위해 교회로 가십니다. 예배 시간 전에 미리 도착할 수 있도록 조정해주세요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 시립도서관까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 수곡로 108 (청주 시립도서관). 주로 설정한 출발지에서 출발하시지만 따로 요청하시면 변경부탁드릴게요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior15));
+
+        //가이드라인
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "피자 주문", "가게명: 청주피자 청주지점, 메뉴명: 슈퍼콤보 피자 (라지), 가격: 23000원, 보통 슈퍼콤보 피자를 시키십니다. 혹시 크러스트 추가 원하시면 치즈크러스트로 추가해주세요.", senior16));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 비하로 55 (비하병원). 병원에 갈 때는 보통 오전 10시에 출발하십니다. 결제는 현금으로 하실 예정입니다.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주역까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 팔봉로 54 (청주역). 오전 출발 예정이며, 어머니께서 직접 결제하실 예정입니다.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "치킨 주문", "가게명: 여수정통치킨 여수점, 메뉴명: 순살후라이드, 가격: 18000원, 주로 순살후라이드를 드시지만 양념이 필요하면 간장양념치킨으로 변경 부탁드립니다.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 마트까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 마트로 32 (비하동 마트). 장을 볼 때 자주 이용하시며, 결제는 항상 현금으로 하십니다.", senior17));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "충북대병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 상당구 중흥로 22 (충북대병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 현금으로 하실 예정입니다.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주공항까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 청원구 내수읍 오창대로 607 (청주국제공항). 항공편에 맞춰 오전에 출발할 예정입니다.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "족발 주문", "가게명: 청주족발전문점, 메뉴명: 앞다리 족발 (중), 가격: 29000원, 보통 앞다리 족발을 드시며, 추가 요청사항은 무조건 무김치를 함께 보내달라고 하십니다.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "한식당 배달 주문", "가게명: 청주미소한식당, 메뉴명: 된장찌개, 가격: 8000원, 된장찌개를 자주 드시며, 나물 반찬을 추가로 요청하시면 됩니다.", senior18));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 성안길시장까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 상당구 성안길 112 (성안길시장). 시장에 가실 때 보통 점심 직후에 출발하십니다. 결제는 어머니께서 현금으로 하실 예정입니다.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주문화재단까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 흥덕구 공단로 108 (청주문화재단). 문화 활동을 위해 자주 가십니다. 결제는 현금으로 하실 예정입니다.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "불고기 백반 주문", "가게명: 청주진가네한식당, 메뉴명: 불고기 백반, 가격: 12000원, 불고기 백반을 즐겨 드시고 반찬 추가는 김치와 나물로 요청하시면 됩니다.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "김밥 주문", "가게명: 청주광장김밥, 메뉴명: 참치김밥 2줄, 가격: 8000원, 참치김밥을 2줄 주문하십니다. 혹시 추가 요청사항이 있으면 단무지를 넉넉히 부탁드리세요.", senior19));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "서원구교회까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 성당길 12 (서원구교회). 주일 예배 참석을 위해 교회로 가십니다. 예배 시간 전에 미리 도착할 수 있도록 조정해주세요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 시립도서관까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 수곡로 108 (청주 시립도서관). 주로 설정한 출발지에서 출발하시지만 따로 요청하시면 변경부탁드릴게요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior20));
+
+        //가이드라인
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "피자 주문", "가게명: 청주피자 청주지점, 메뉴명: 슈퍼콤보 피자 (라지), 가격: 23000원, 보통 슈퍼콤보 피자를 시키십니다. 혹시 크러스트 추가 원하시면 치즈크러스트로 추가해주세요.", senior21));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 비하로 55 (비하병원). 병원에 갈 때는 보통 오전 10시에 출발하십니다. 결제는 현금으로 하실 예정입니다.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주역까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 팔봉로 54 (청주역). 오전 출발 예정이며, 어머니께서 직접 결제하실 예정입니다.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "치킨 주문", "가게명: 여수정통치킨 여수점, 메뉴명: 순살후라이드, 가격: 18000원, 주로 순살후라이드를 드시지만 양념이 필요하면 간장양념치킨으로 변경 부탁드립니다.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 마트까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 마트로 32 (비하동 마트). 장을 볼 때 자주 이용하시며, 결제는 항상 현금으로 하십니다.", senior22));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "충북대병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 상당구 중흥로 22 (충북대병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 현금으로 하실 예정입니다.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주공항까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 청원구 내수읍 오창대로 607 (청주국제공항). 항공편에 맞춰 오전에 출발할 예정입니다.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "족발 주문", "가게명: 청주족발전문점, 메뉴명: 앞다리 족발 (중), 가격: 29000원, 보통 앞다리 족발을 드시며, 추가 요청사항은 무조건 무김치를 함께 보내달라고 하십니다.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "한식당 배달 주문", "가게명: 청주미소한식당, 메뉴명: 된장찌개, 가격: 8000원, 된장찌개를 자주 드시며, 나물 반찬을 추가로 요청하시면 됩니다.", senior23));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 성안길시장까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 상당구 성안길 112 (성안길시장). 시장에 가실 때 보통 점심 직후에 출발하십니다. 결제는 어머니께서 현금으로 하실 예정입니다.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주문화재단까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 흥덕구 공단로 108 (청주문화재단). 문화 활동을 위해 자주 가십니다. 결제는 현금으로 하실 예정입니다.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "불고기 백반 주문", "가게명: 청주진가네한식당, 메뉴명: 불고기 백반, 가격: 12000원, 불고기 백반을 즐겨 드시고 반찬 추가는 김치와 나물로 요청하시면 됩니다.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "김밥 주문", "가게명: 청주광장김밥, 메뉴명: 참치김밥 2줄, 가격: 8000원, 참치김밥을 2줄 주문하십니다. 혹시 추가 요청사항이 있으면 단무지를 넉넉히 부탁드리세요.", senior24));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "서원구교회까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 성당길 12 (서원구교회). 주일 예배 참석을 위해 교회로 가십니다. 예배 시간 전에 미리 도착할 수 있도록 조정해주세요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 시립도서관까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 수곡로 108 (청주 시립도서관). 주로 설정한 출발지에서 출발하시지만 따로 요청하시면 변경부탁드릴게요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior25));
+
+        //가이드라인
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "피자 주문", "가게명: 청주피자 청주지점, 메뉴명: 슈퍼콤보 피자 (라지), 가격: 23000원, 보통 슈퍼콤보 피자를 시키십니다. 혹시 크러스트 추가 원하시면 치즈크러스트로 추가해주세요.", senior26));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 비하로 55 (비하병원). 병원에 갈 때는 보통 오전 10시에 출발하십니다. 결제는 현금으로 하실 예정입니다.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주역까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 팔봉로 54 (청주역). 오전 출발 예정이며, 어머니께서 직접 결제하실 예정입니다.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "치킨 주문", "가게명: 여수정통치킨 여수점, 메뉴명: 순살후라이드, 가격: 18000원, 주로 순살후라이드를 드시지만 양념이 필요하면 간장양념치킨으로 변경 부탁드립니다.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "동네 마트까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 비하동 123-4, 목적지: 충청북도 청주시 흥덕구 마트로 32 (비하동 마트). 장을 볼 때 자주 이용하시며, 결제는 항상 현금으로 하십니다.", senior27));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "충북대병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 상당구 중흥로 22 (충북대병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 현금으로 하실 예정입니다.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주공항까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 상당구 용암동 345-6, 목적지: 충청북도 청주시 청원구 내수읍 오창대로 607 (청주국제공항). 항공편에 맞춰 오전에 출발할 예정입니다.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "족발 주문", "가게명: 청주족발전문점, 메뉴명: 앞다리 족발 (중), 가격: 29000원, 보통 앞다리 족발을 드시며, 추가 요청사항은 무조건 무김치를 함께 보내달라고 하십니다.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "한식당 배달 주문", "가게명: 청주미소한식당, 메뉴명: 된장찌개, 가격: 8000원, 된장찌개를 자주 드시며, 나물 반찬을 추가로 요청하시면 됩니다.", senior28));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 성안길시장까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 상당구 성안길 112 (성안길시장). 시장에 가실 때 보통 점심 직후에 출발하십니다. 결제는 어머니께서 현금으로 하실 예정입니다.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주문화재단까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 78-3, 목적지: 충청북도 청주시 흥덕구 공단로 108 (청주문화재단). 문화 활동을 위해 자주 가십니다. 결제는 현금으로 하실 예정입니다.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "불고기 백반 주문", "가게명: 청주진가네한식당, 메뉴명: 불고기 백반, 가격: 12000원, 불고기 백반을 즐겨 드시고 반찬 추가는 김치와 나물로 요청하시면 됩니다.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "김밥 주문", "가게명: 청주광장김밥, 메뉴명: 참치김밥 2줄, 가격: 8000원, 참치김밥을 2줄 주문하십니다. 혹시 추가 요청사항이 있으면 단무지를 넉넉히 부탁드리세요.", senior29));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "서원구교회까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 성당길 12 (서원구교회). 주일 예배 참석을 위해 교회로 가십니다. 예배 시간 전에 미리 도착할 수 있도록 조정해주세요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 시립도서관까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 수곡로 108 (청주 시립도서관). 주로 설정한 출발지에서 출발하시지만 따로 요청하시면 변경부탁드릴게요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior30));
+
         //안부전화
         HelloCall helloCall1 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 8, 5), LocalDate.of(2024, 10, 1), 13000, 10, "어머님께서 매일 아침 등산을 하시는 걸 좋아하세요. 요즘 날씨가 추워졌는데, 건강하게 등산을 잘 다니시는지 여쭤봐 주세요. 등산 이야기를 하면 기분이 좋아지실 거예요.", senior1));
         HelloCall helloCall2 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 8, 2), LocalDate.of(2024, 10, 1), 14000, 10, "어머님께서 손주들 이야기를 굉장히 좋아하십니다. 최근에 손주들이 학교에서 무엇을 하고 있는지 말씀드리면 아주 즐거워하세요. 손주들과 관련된 이야기로 대화를 시작해 주세요.", senior2));
