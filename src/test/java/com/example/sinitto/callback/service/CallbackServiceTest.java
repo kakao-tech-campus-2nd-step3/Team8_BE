@@ -1,5 +1,6 @@
 package com.example.sinitto.callback.service;
 
+import com.example.sinitto.callback.dto.CallbackForSinittoResponse;
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
 import com.example.sinitto.callback.exception.GuardMismatchException;
@@ -404,5 +405,57 @@ class CallbackServiceTest {
         assertTrue(일월1일12시59분.isBefore(일월3일13시10분.minusDays(2)));
         assertTrue(일월1일13시00분.isBefore(일월3일13시10분.minusDays(2)));
         assertTrue(일월1일13시01분.isBefore(일월3일13시10분.minusDays(2)));
+    }
+
+    @Test
+    @DisplayName("시니또용 콜백 단건 조회 - api 호출한 시니또 본인이 할당된 콜백일 경우")
+    void getCallbackForSinitto() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+        Callback callback = mock(Callback.class);
+        Senior senior = mock(Senior.class);
+
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(1L);
+        when(callback.getId()).thenReturn(1L);
+        when(callback.getSeniorName()).thenReturn("SeniorName");
+        when(callback.getPostTime()).thenReturn(LocalDateTime.now());
+        when(callback.getStatus()).thenReturn(Callback.Status.WAITING.toString());
+        when(callback.getSeniorId()).thenReturn(1L);
+        when(callback.getSenior()).thenReturn(senior);
+        when(callback.getSenior().getPhoneNumber()).thenReturn("01012341234");
+
+        //when
+        CallbackForSinittoResponse result = callbackService.getCallbackForSinitto(memberId, callbackId);
+
+        //then
+        assertTrue(result.isAssignedToSelf());
+    }
+
+    @Test
+    @DisplayName("시니또용 콜백 단건 조회 - api 호출한 시니또 본인이 할당된 콜백이 아닌 경우")
+    void getCallbackForSinitto2() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+        Callback callback = mock(Callback.class);
+        Senior senior = mock(Senior.class);
+
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(999L); // 여기서 시니또 본인에게 할당된 콜백이 아닌걸 확인
+        when(callback.getId()).thenReturn(1L);
+        when(callback.getSeniorName()).thenReturn("SeniorName");
+        when(callback.getPostTime()).thenReturn(LocalDateTime.now());
+        when(callback.getStatus()).thenReturn(Callback.Status.WAITING.toString());
+        when(callback.getSeniorId()).thenReturn(1L);
+        when(callback.getSenior()).thenReturn(senior);
+        when(callback.getSenior().getPhoneNumber()).thenReturn("01012341234");
+
+        //when
+        CallbackForSinittoResponse result = callbackService.getCallbackForSinitto(memberId, callbackId);
+
+        //then
+        assertFalse(result.isAssignedToSelf());
     }
 }
