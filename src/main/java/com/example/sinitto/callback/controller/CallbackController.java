@@ -95,7 +95,7 @@ public class CallbackController {
     public ResponseEntity<CallbackForSinittoResponse> getCallback(@MemberId Long memberId,
                                                                   @PathVariable("callbackId") Long callbackId) {
 
-        return ResponseEntity.ok(callbackService.getCallback(memberId, callbackId));
+        return ResponseEntity.ok(callbackService.getCallbackForSinitto(memberId, callbackId));
     }
 
 }

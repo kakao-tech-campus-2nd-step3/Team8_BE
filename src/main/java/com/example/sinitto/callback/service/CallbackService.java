@@ -228,7 +228,7 @@ public class CallbackService {
                 .map(callback -> new CallbackUsageHistoryResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus()));
     }
 
-    public CallbackForSinittoResponse getCallback(Long memberId, Long callbackId) {
+    public CallbackForSinittoResponse getCallbackForSinitto(Long memberId, Long callbackId) {
 
         Callback callback = callbackRepository.findById(callbackId)
                 .orElseThrow(() -> new NotFoundException("해당 콜백 id에 해당하는 콜백이 없습니다."));
