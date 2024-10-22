@@ -1,0 +1,36 @@
+name: Run Tests on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - Weekly
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Run Tests
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: ./gradlew test
