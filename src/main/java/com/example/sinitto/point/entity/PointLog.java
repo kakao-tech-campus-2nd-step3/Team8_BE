@@ -1,7 +1,7 @@
 package com.example.sinitto.point.entity;
 
+import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.point.exception.InvalidPointLogStatusException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -90,7 +90,7 @@ public class PointLog {
     private void checkStatusChange(Status wantStatus) {
 
         if (this.status != wantStatus) {
-            throw new InvalidPointLogStatusException(String.format("현재 %s 상태입니다. 이 상태에서는 %s 로의 전환이 불가합니다.", this.status, wantStatus));
+            throw new ConflictException(String.format("현재 %s 상태입니다. 이 상태에서는 %s 로의 전환이 불가합니다.", this.status, wantStatus));
         }
     }
 

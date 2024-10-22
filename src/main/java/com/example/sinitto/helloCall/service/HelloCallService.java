@@ -17,7 +17,6 @@ import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
-import com.example.sinitto.point.exception.PointNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import org.springframework.data.domain.Page;
@@ -75,7 +74,7 @@ public class HelloCallService {
         }
 
         Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
-                .orElseThrow(() -> new PointNotFoundException("멤버에 연관된 포인트가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
 
         if (!point.isSufficientForDeduction(helloCall.getPrice())) {
             throw new BadRequestException("포인트가 부족합니다.");
