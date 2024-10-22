@@ -133,8 +133,8 @@ public class PointLog {
     }
 
     public enum Content {
-        COMPLETE_CALLBACK_AND_EARN("콜백 완료"),
-        COMPLETE_HELLO_CALL_AND_EARN("안부 전화 완료"),
+        COMPLETE_CALLBACK_AND_EARN("콜백 수행 완료"),
+        COMPLETE_HELLO_CALL_AND_EARN("안부전화 수행 완료"),
         SPEND_COMPLETE_CALLBACK("콜백 신청"),
         SPEND_COMPLETE_HELLO_CALL("안부전화 신청"),
         SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소"),
