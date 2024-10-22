@@ -133,11 +133,11 @@ public class PointLog {
     }
 
     public enum Content {
-        COMPLETE_CALLBACK_AND_EARN("콜백 완료로 인한 포인트 적립"),
-        COMPLETE_HELLO_CALL_AND_EARN("안부 전화 완료로 인한 포인트 적립"),
-        SPEND_COMPLETE_CALLBACK("콜백 신청으로 인한 포인트 차감"),
-        SPEND_COMPLETE_HELLO_CALL("안부전화 신청으로 인한 포인트 차감"),
-        SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소로 인한 포인트 환불"),
+        COMPLETE_CALLBACK_AND_EARN("콜백 완료"),
+        COMPLETE_HELLO_CALL_AND_EARN("안부 전화 완료"),
+        SPEND_COMPLETE_CALLBACK("콜백 신청"),
+        SPEND_COMPLETE_HELLO_CALL("안부전화 신청"),
+        SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소"),
         CHARGE_REQUEST("포인트 충전"),
         WITHDRAW_REQUEST("포인트 출금");
 
