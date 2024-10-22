@@ -49,4 +49,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 
+    @ExceptionHandler(MultiStatusException.class)
+    public ResponseEntity<ProblemDetail> handleMultiStatusException(MultiStatusException e) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.MULTI_STATUS, e.getMessage());
+        problemDetail.setTitle("Multi Status");
+        return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(problemDetail);
+    }
+
 }

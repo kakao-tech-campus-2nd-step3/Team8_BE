@@ -6,11 +6,11 @@ import com.example.sinitto.auth.dto.LoginResponse;
 import com.example.sinitto.auth.service.KakaoApiService;
 import com.example.sinitto.auth.service.KakaoTokenService;
 import com.example.sinitto.auth.service.TokenService;
+import com.example.sinitto.common.exception.MultiStatusException;
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.resolver.MemberIdProvider;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.member.exception.MemberNotFoundException;
-import com.example.sinitto.member.exception.NotUniqueException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.repository.PointRepository;
@@ -42,7 +42,7 @@ public class MemberService implements MemberIdProvider {
     public Long getMemberIdByToken(String token) {
         String email = tokenService.extractEmail(token);
         Member member = memberRepository.findByEmail(email).orElseThrow(
-                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
         return member.getId();
     }
@@ -71,7 +71,7 @@ public class MemberService implements MemberIdProvider {
     public RegisterResponse registerNewMember(String name, String phoneNumber, String email, boolean isSinitto) {
 
         if (memberRepository.existsByEmail(email)) {
-            throw new NotUniqueException("이미 존재하는 이메일입니다.");
+            throw new MultiStatusException("이미 존재하는 이메일입니다.");
         }
 
         Member newMember = new Member(name, phoneNumber, email, isSinitto);
@@ -87,7 +87,7 @@ public class MemberService implements MemberIdProvider {
 
     public void memberLogout(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
 
         String storedRefreshToken = redisTemplate.opsForValue().get(member.getEmail());
 
