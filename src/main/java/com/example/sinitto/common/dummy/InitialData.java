@@ -373,7 +373,6 @@ public class InitialData implements CommandLineRunner {
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior5));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior5));
 
-        //가이드라인
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior6));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior6));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior6));
@@ -399,7 +398,6 @@ public class InitialData implements CommandLineRunner {
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior10));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior10));
 
-        //가이드라인
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior11));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior11));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior11));
@@ -425,7 +423,6 @@ public class InitialData implements CommandLineRunner {
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior15));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior15));
 
-        //가이드라인
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior16));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior16));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior16));
@@ -451,7 +448,6 @@ public class InitialData implements CommandLineRunner {
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior20));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior20));
 
-        //가이드라인
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior21));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior21));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior21));
@@ -477,7 +473,6 @@ public class InitialData implements CommandLineRunner {
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior25));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior25));
 
-        //가이드라인
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "노인복지센터까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 상당구 대성로 172번길 21 (청주시노인종합복지관). 어머니께서 집에서 출발하십니다. 확인 후 택시 호출해주세요. 결제는 어머니께서 직접 현금으로 하십니다.", senior26));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주터미널로 가는 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 흥덕구 가로수로 120 (청주터미널). 어머니는 터미널로 가실 때 주로 오전 시간에 출발하십니다. 확인 후 택시 호출해주세요.", senior26));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주대학교 병원까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대1동 555-1, 목적지: 충청북도 청주시 서원구 청남로 135 (청주대학교 병원). 병원 예약 시간에 맞춰 오전에 출발합니다. 결제는 어머니께서 직접 하실 예정입니다.", senior26));
