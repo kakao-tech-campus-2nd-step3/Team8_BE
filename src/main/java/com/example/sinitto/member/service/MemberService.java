@@ -6,7 +6,7 @@ import com.example.sinitto.auth.dto.LoginResponse;
 import com.example.sinitto.auth.service.KakaoApiService;
 import com.example.sinitto.auth.service.KakaoTokenService;
 import com.example.sinitto.auth.service.TokenService;
-import com.example.sinitto.common.exception.MultiStatusException;
+import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.resolver.MemberIdProvider;
 import com.example.sinitto.member.dto.RegisterResponse;
@@ -71,7 +71,7 @@ public class MemberService implements MemberIdProvider {
     public RegisterResponse registerNewMember(String name, String phoneNumber, String email, boolean isSinitto) {
 
         if (memberRepository.existsByEmail(email)) {
-            throw new MultiStatusException("이미 존재하는 이메일입니다.");
+            throw new ConflictException("이미 존재하는 이메일입니다.");
         }
 
         Member newMember = new Member(name, phoneNumber, email, isSinitto);
