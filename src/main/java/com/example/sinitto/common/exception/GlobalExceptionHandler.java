@@ -1,6 +1,7 @@
 package com.example.sinitto.common.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,12 +50,28 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 
-    @ExceptionHandler(MultiStatusException.class)
-    public ResponseEntity<ProblemDetail> handleMultiStatusException(MultiStatusException e) {
+    @ExceptionHandler(ForceLogoutException.class)
+    public ResponseEntity<ProblemDetail> handleForceLogoutException(ForceLogoutException e) {
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.MULTI_STATUS, e.getMessage());
-        problemDetail.setTitle("Multi Status");
-        return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(problemDetail);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(460), e.getMessage());
+        problemDetail.setTitle("Force Logout");
+        return ResponseEntity.status(HttpStatusCode.valueOf(460)).body(problemDetail);
+    }
+
+    @ExceptionHandler(AccessTokenExpired.class)
+    public ResponseEntity<ProblemDetail> handleAccessTokenExpired(AccessTokenExpired e) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(461), e.getMessage());
+        problemDetail.setTitle("Access Token Expired");
+        return ResponseEntity.status(HttpStatusCode.valueOf(461)).body(problemDetail);
+    }
+
+    @ExceptionHandler(RefreshTokenStolen.class)
+    public ResponseEntity<ProblemDetail> handleRefreshTokenStolen(RefreshTokenStolen e) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(462), e.getMessage());
+        problemDetail.setTitle("Refresh Token Stolen");
+        return ResponseEntity.status(HttpStatusCode.valueOf(462)).body(problemDetail);
     }
 
 }
