@@ -15,7 +15,6 @@ import com.example.sinitto.guardGuideline.exception.SeniorAndGuardGuidelineMisma
 import com.example.sinitto.guardGuideline.exception.SeniorAndGuardMemberMismatchException;
 import com.example.sinitto.guardGuideline.repository.GuardGuidelineRepository;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +26,11 @@ public class GuardGuidelineService {
     private final GuardGuidelineRepository guardGuidelineRepository;
     private final SeniorRepository seniorRepository;
     private final CallbackRepository callbackRepository;
-    private final MemberRepository memberRepository;
 
-    public GuardGuidelineService(GuardGuidelineRepository guardGuidelineRepository, SeniorRepository seniorRepository, CallbackRepository callbackRepository, MemberRepository memberRepository) {
+    public GuardGuidelineService(GuardGuidelineRepository guardGuidelineRepository, SeniorRepository seniorRepository, CallbackRepository callbackRepository) {
         this.guardGuidelineRepository = guardGuidelineRepository;
         this.seniorRepository = seniorRepository;
         this.callbackRepository = callbackRepository;
-        this.memberRepository = memberRepository;
     }
 
     @Transactional
