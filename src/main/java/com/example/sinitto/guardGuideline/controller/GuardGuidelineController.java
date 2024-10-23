@@ -51,8 +51,8 @@ public class GuardGuidelineController {
     }
 
     @Operation(summary = "특정 가이드라인 조회", description = "보호자용 API입니다.")
-    @GetMapping("/{callbackId}/{guidelineId}")
-    public ResponseEntity<GuardGuidelineResponse> getGuardGuideline(@PathVariable Long callbackId, @PathVariable Long guidelineId) {
+    @GetMapping("/detail")
+    public ResponseEntity<GuardGuidelineResponse> getGuardGuideline(@RequestParam("callbackId") Long callbackId, @RequestParam("guidelineId") Long guidelineId) {
         return ResponseEntity.ok(guardGuidelineService.readGuardGuideline(callbackId, guidelineId));
     }
 
