@@ -11,7 +11,7 @@ public class GuardGuideline {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @NotNull
     @Enumerated(EnumType.STRING)
     private Type type;
@@ -43,7 +43,7 @@ public class GuardGuideline {
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public Type getType() {
