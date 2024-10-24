@@ -26,6 +26,7 @@ import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -71,6 +72,7 @@ public class InitialData implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) {
         initial();
         saveRefreshTokenToRedis();
@@ -298,23 +300,23 @@ public class InitialData implements CommandLineRunner {
         //콜백
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior1));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior1));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior1));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior1)).assignMember(1L);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior2));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior2));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior2));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior2)).assignMember(2L);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior3));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior3));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior3));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior3)).assignMember(3L);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior4));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior4));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior4));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior4)).assignMember(4L);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior5));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior5));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior5));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior5)).assignMember(5L);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior6));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior6));

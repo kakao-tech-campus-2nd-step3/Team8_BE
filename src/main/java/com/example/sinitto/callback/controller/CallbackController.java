@@ -1,5 +1,6 @@
 package com.example.sinitto.callback.controller;
 
+import com.example.sinitto.callback.dto.CallbackForSinittoResponse;
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.dto.CallbackUsageHistoryResponse;
 import com.example.sinitto.callback.service.CallbackService;
@@ -89,11 +90,12 @@ public class CallbackController {
         return ResponseEntity.ok(callbackService.getCallbackHistoryOfGuard(memberId, pageable));
     }
 
-    @Operation(summary = "콜백 단건 조회", description = "콜백 id 로 콜백을 단건 조회합니다.")
+    @Operation(summary = "콜백 단건 조회 (시니또용)", description = "콜백 id 로 콜백을 단건 조회합니다.")
     @GetMapping("/{callbackId}")
-    public ResponseEntity<CallbackResponse> getCallback(@PathVariable("callbackId") Long callbackId) {
+    public ResponseEntity<CallbackForSinittoResponse> getCallback(@MemberId Long memberId,
+                                                                  @PathVariable("callbackId") Long callbackId) {
 
-        return ResponseEntity.ok(callbackService.getCallback(callbackId));
+        return ResponseEntity.ok(callbackService.getCallbackForSinitto(memberId, callbackId));
     }
 
 }
