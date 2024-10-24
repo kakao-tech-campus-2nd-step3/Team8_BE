@@ -238,7 +238,7 @@ public class CallbackService {
             return new CallbackForSinittoResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId(), true, callback.getSenior().getPhoneNumber());
         }
 
-        return new CallbackForSinittoResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId(), false, callback.getSenior().getPhoneNumber());
+        return new CallbackForSinittoResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId(), false, "");
     }
 
 }
