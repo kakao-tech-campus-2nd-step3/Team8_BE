@@ -1,10 +1,7 @@
 package com.example.sinitto.callback.entity;
 
-import com.example.sinitto.callback.exception.AlreadyCompleteException;
-import com.example.sinitto.callback.exception.AlreadyInProgressException;
-import com.example.sinitto.callback.exception.AlreadyPendingCompleteException;
-import com.example.sinitto.callback.exception.AlreadyWaitingException;
 import com.example.sinitto.callback.repository.CallbackRepository;
+import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
@@ -63,7 +60,7 @@ class CallbackTest {
         testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.changeStatusToInProgress());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToInProgress());
     }
 
     @Test
@@ -73,7 +70,7 @@ class CallbackTest {
         testCallback.changeStatusToInProgress();
 
         //when then
-        assertThrows(AlreadyInProgressException.class, () -> testCallback.changeStatusToInProgress());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToInProgress());
     }
 
     @Test
@@ -93,7 +90,7 @@ class CallbackTest {
     @DisplayName("Waiting -> Pending Complete - 예외 발생")
     void changeStatusToPendingComplete_fail1() {
         //when then
-        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToPendingComplete());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToPendingComplete());
     }
 
     @Test
@@ -104,7 +101,7 @@ class CallbackTest {
         testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.changeStatusToPendingComplete());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToPendingComplete());
     }
 
     @Test
@@ -124,7 +121,7 @@ class CallbackTest {
     @DisplayName("Waiting -> Waiting - 예외 발생")
     void changeStatusToWaiting_fain1() {
         //when then
-        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToWaiting());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToWaiting());
     }
 
     @Test
@@ -135,7 +132,7 @@ class CallbackTest {
         testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.changeStatusToWaiting());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToWaiting());
     }
 
     @Test
@@ -158,7 +155,7 @@ class CallbackTest {
         testCallback.changeStatusToInProgress();
 
         //when then
-        assertThrows(AlreadyInProgressException.class, () -> testCallback.assignMember(3L));
+        assertThrows(ConflictException.class, () -> testCallback.assignMember(3L));
     }
 
     @Test
@@ -169,7 +166,7 @@ class CallbackTest {
         testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.assignMember(3L));
+        assertThrows(ConflictException.class, () -> testCallback.assignMember(3L));
     }
 
     @Test
@@ -181,7 +178,7 @@ class CallbackTest {
         testCallback.changeStatusToComplete();
 
         //when then
-        assertThrows(AlreadyCompleteException.class, () -> testCallback.assignMember(3L));
+        assertThrows(ConflictException.class, () -> testCallback.assignMember(3L));
     }
 
     @Test
@@ -207,14 +204,14 @@ class CallbackTest {
         testCallback.changeStatusToPendingComplete();
 
         //when then
-        assertThrows(AlreadyPendingCompleteException.class, () -> testCallback.cancelAssignment());
+        assertThrows(ConflictException.class, () -> testCallback.cancelAssignment());
     }
 
     @Test
     @DisplayName("Waiting 상태에서 할당 취소 - 예외 발생")
     void cancelAssignment_fail2() {
         //when then
-        assertThrows(AlreadyWaitingException.class, () -> testCallback.cancelAssignment());
+        assertThrows(ConflictException.class, () -> testCallback.cancelAssignment());
     }
 
     @Test
@@ -226,7 +223,7 @@ class CallbackTest {
         testCallback.changeStatusToComplete();
 
         //when then
-        assertThrows(AlreadyCompleteException.class, () -> testCallback.cancelAssignment());
+        assertThrows(ConflictException.class, () -> testCallback.cancelAssignment());
     }
 
     @Test
@@ -250,14 +247,14 @@ class CallbackTest {
         testCallback.changeStatusToComplete();
 
         //then
-        assertThrows(AlreadyCompleteException.class, () -> testCallback.changeStatusToComplete());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToComplete());
     }
 
     @Test
     @DisplayName("Waiting -> Complete - 예외 발생")
     void changeStatusToComplete_fail1() {
         //when then
-        assertThrows(AlreadyWaitingException.class, () -> testCallback.changeStatusToComplete());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToComplete());
     }
 
     @Test
@@ -267,7 +264,7 @@ class CallbackTest {
         testCallback.changeStatusToInProgress();
 
         //when then
-        assertThrows(AlreadyInProgressException.class, () -> testCallback.changeStatusToComplete());
+        assertThrows(ConflictException.class, () -> testCallback.changeStatusToComplete());
     }
 
     @Test

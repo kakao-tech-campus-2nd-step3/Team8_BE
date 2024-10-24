@@ -1,7 +1,7 @@
 package com.example.sinitto.point.controller;
 
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointLogWithBankInfo;
 import com.example.sinitto.point.dto.PointLogWithDepositMessage;
@@ -35,7 +35,7 @@ public class PointAdminController {
 
         for (PointLog pointLog : pointLogs) {
             Member member = memberRepository.findById(pointLog.getMember().getId())
-                    .orElseThrow(() -> new MemberNotFoundException("멤버를 찾을 수 없습니다"));
+                    .orElseThrow(() -> new NotFoundException("멤버를 찾을 수 없습니다"));
 
             PointLogWithDepositMessage pointLogWithDepositMessage = new PointLogWithDepositMessage(
                     pointLog.getId(),
