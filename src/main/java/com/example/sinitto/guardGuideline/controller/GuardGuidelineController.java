@@ -57,7 +57,7 @@ public class GuardGuidelineController {
     }
 
     @Operation(summary = "특정 가이드라인 삭제", description = "보호자용 API입니다.")
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteGuardGuideline(@MemberId Long memberId, @RequestParam("guidelineId") Long guidelineId) {
         guardGuidelineService.deleteGuardGuideline(memberId, guidelineId);
         return ResponseEntity.ok("가이드라인이 삭제되었습니다.");
