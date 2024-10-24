@@ -438,7 +438,6 @@ class CallbackServiceTest {
         Long memberId = 1L;
         Long callbackId = 1L;
         Callback callback = mock(Callback.class);
-        Senior senior = mock(Senior.class);
 
         when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
         when(callback.getAssignedMemberId()).thenReturn(999L); // 여기서 시니또 본인에게 할당된 콜백이 아닌걸 확인
@@ -447,8 +446,6 @@ class CallbackServiceTest {
         when(callback.getPostTime()).thenReturn(LocalDateTime.now());
         when(callback.getStatus()).thenReturn(Callback.Status.WAITING.toString());
         when(callback.getSeniorId()).thenReturn(1L);
-        when(callback.getSenior()).thenReturn(senior);
-        when(callback.getSenior().getPhoneNumber()).thenReturn("01012341234");
 
         //when
         CallbackForSinittoResponse result = callbackService.getCallbackForSinitto(memberId, callbackId);
