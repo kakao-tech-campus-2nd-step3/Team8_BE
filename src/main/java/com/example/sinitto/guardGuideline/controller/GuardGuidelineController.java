@@ -19,7 +19,9 @@ public class GuardGuidelineController {
 
     private final GuardGuidelineService guardGuidelineService;
 
-    public GuardGuidelineController(GuardGuidelineService guardGuidelineService) {this.guardGuidelineService = guardGuidelineService;}
+    public GuardGuidelineController(GuardGuidelineService guardGuidelineService) {
+        this.guardGuidelineService = guardGuidelineService;
+    }
 
     @Operation(summary = "가이드라인 추가", description = "보호자가 시니어별 가이드라인을 추가합니다.")
     @PostMapping
@@ -43,15 +45,15 @@ public class GuardGuidelineController {
 
     @Operation(summary = "모든 가이드라인 조회(시니어별로)", description = "보호자가 가이드라인 수정을 위해 시니어별로 모든 가이드라인을 요청할 때 필요합니다.")
     @GetMapping("/{seniorId}")
-    public ResponseEntity<List<GuardGuidelineResponse>> getAllGuardGuidelinesBySenior(@PathVariable Long seniorId) {
+    public ResponseEntity<List<GuardGuidelineResponse>> getAllGuardGuidelinesBySenior(@MemberId Long memberId, @PathVariable Long seniorId) {
 
-        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesBySenior(seniorId));
+        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesBySenior(memberId, seniorId));
     }
 
     @Operation(summary = "특정 가이드라인 조회", description = "보호자용 API입니다.")
-    @GetMapping("/{guidelineId}")
-    public ResponseEntity<GuardGuidelineResponse> getGuardGuideline(@PathVariable Long guidelineId) {
-        return ResponseEntity.ok(guardGuidelineService.readGuardGuideline(guidelineId));
+    @GetMapping("/detail")
+    public ResponseEntity<GuardGuidelineResponse> getGuardGuideline(@RequestParam("callbackId") Long callbackId, @RequestParam("guidelineId") Long guidelineId) {
+        return ResponseEntity.ok(guardGuidelineService.readGuardGuideline(callbackId, guidelineId));
     }
 
 }

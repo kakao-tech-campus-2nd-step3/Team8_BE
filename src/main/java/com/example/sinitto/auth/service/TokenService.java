@@ -1,8 +1,10 @@
 package com.example.sinitto.auth.service;
 
 import com.example.sinitto.auth.dto.TokenResponse;
-import com.example.sinitto.auth.exception.JWTExpirationException;
-import com.example.sinitto.auth.exception.UnauthorizedException;
+import com.example.sinitto.common.exception.AccessTokenExpiredException;
+import com.example.sinitto.common.exception.InvalidJwtException;
+import com.example.sinitto.common.exception.RefreshTokenStolenException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,14 +55,19 @@ public class TokenService {
 
 
     public String extractEmail(String token) {
-        var claims = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims;
+        try {
+            claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            throw new InvalidJwtException(e.getMessage());
+        }
 
         if (claims.getExpiration().before(new Date())) {
-            throw new JWTExpirationException("토큰이 만료되었습니다. 재로그인이 필요합니다.");
+            throw new AccessTokenExpiredException("액세스 토큰이 만료되었습니다. 리프레시 토큰으로 다시 액세스 토큰을 발급받으세요.");
         }
 
         return claims.getSubject();
@@ -70,8 +77,13 @@ public class TokenService {
         String email = extractEmail(refreshToken);
 
         String storedRefreshToken = redisTemplate.opsForValue().get(email);
-        if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
-            throw new UnauthorizedException("만료되거나 이미 한번 사용된 리프레쉬 토큰입니다. 재로그인이 필요합니다.");
+
+        if (storedRefreshToken == null) {
+            throw new InvalidJwtException("토큰이 만료되었습니다. 재로그인이 필요합니다.");
+        }
+
+        if (!storedRefreshToken.equals(refreshToken)) {
+            throw new RefreshTokenStolenException("이미 한번 사용된 리프레시 토큰입니다. 리프레시 토큰이 탈취되었을 가능성이 있습니다.");
         }
 
         redisTemplate.delete(email);

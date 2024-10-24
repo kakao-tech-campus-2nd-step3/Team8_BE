@@ -1,4 +1,4 @@
-package com.example.sinitto.callback.exception;
+package com.example.sinitto.common.exception;
 
 public class ConflictException extends RuntimeException {
 

@@ -1,9 +1,6 @@
 package com.example.sinitto.callback.entity;
 
-import com.example.sinitto.callback.exception.AlreadyCompleteException;
-import com.example.sinitto.callback.exception.AlreadyInProgressException;
-import com.example.sinitto.callback.exception.AlreadyPendingCompleteException;
-import com.example.sinitto.callback.exception.AlreadyWaitingException;
+import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.member.entity.Senior;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -100,16 +97,16 @@ public class Callback {
     private void throwStatusException(String message) {
 
         if (this.status == Status.PENDING_COMPLETE) {
-            throw new AlreadyPendingCompleteException("완료 대기 상태의 콜백 입니다. " + message);
+            throw new ConflictException("완료 대기 상태의 콜백 입니다. " + message);
         }
         if (this.status == Status.COMPLETE) {
-            throw new AlreadyCompleteException("완료 상태의 콜백 입니다. " + message);
+            throw new ConflictException("완료 상태의 콜백 입니다. " + message);
         }
         if (this.status == Status.WAITING) {
-            throw new AlreadyWaitingException("대기 상태의 콜백 입니다. " + message);
+            throw new ConflictException("대기 상태의 콜백 입니다. " + message);
         }
         if (this.status == Status.IN_PROGRESS) {
-            throw new AlreadyInProgressException("진행 상태의 콜백 입니다. " + message);
+            throw new ConflictException("진행 상태의 콜백 입니다. " + message);
         }
     }
 

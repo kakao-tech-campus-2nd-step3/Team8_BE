@@ -3,12 +3,10 @@ package com.example.sinitto.callback.service;
 import com.example.sinitto.callback.dto.CallbackForSinittoResponse;
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
-import com.example.sinitto.callback.exception.GuardMismatchException;
-import com.example.sinitto.callback.exception.NotExistCallbackException;
-import com.example.sinitto.callback.exception.NotMemberException;
-import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.callback.util.TwilioHelper;
+import com.example.sinitto.common.exception.ForbiddenException;
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
@@ -88,7 +86,7 @@ class CallbackServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         //when then
-        assertThrows(NotMemberException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
+        assertThrows(NotFoundException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Test
@@ -103,7 +101,7 @@ class CallbackServiceTest {
         when(member.isSinitto()).thenReturn(false);
 
         //when then
-        assertThrows(NotSinittoException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
+        assertThrows(ForbiddenException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Test
@@ -308,7 +306,7 @@ class CallbackServiceTest {
         when(senior.getMember().getId()).thenReturn(1L);
 
         //when then
-        assertThrows(GuardMismatchException.class, () -> callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId));
+        assertThrows(ForbiddenException.class, () -> callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId));
     }
 
     @Test
@@ -343,7 +341,7 @@ class CallbackServiceTest {
         when(callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)).thenReturn(Optional.empty());
 
         //when then
-        assertThrows(NotExistCallbackException.class, () -> callbackService.getAcceptedCallback(memberId));
+        assertThrows(NotFoundException.class, () -> callbackService.getAcceptedCallback(memberId));
     }
 
     @Test
