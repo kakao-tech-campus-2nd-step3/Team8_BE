@@ -50,24 +50,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 
-    @ExceptionHandler(ForceLogoutException.class)
-    public ResponseEntity<ProblemDetail> handleForceLogoutException(ForceLogoutException e) {
+    @ExceptionHandler(InvalidJwtException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidJwtException(InvalidJwtException e) {
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(460), e.getMessage());
-        problemDetail.setTitle("Force Logout");
+        problemDetail.setTitle("Invalid Jwt");
         return ResponseEntity.status(HttpStatusCode.valueOf(460)).body(problemDetail);
     }
 
-    @ExceptionHandler(AccessTokenExpired.class)
-    public ResponseEntity<ProblemDetail> handleAccessTokenExpired(AccessTokenExpired e) {
+    @ExceptionHandler(AccessTokenExpiredException.class)
+    public ResponseEntity<ProblemDetail> handleAccessTokenExpiredException(AccessTokenExpiredException e) {
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(461), e.getMessage());
         problemDetail.setTitle("Access Token Expired");
         return ResponseEntity.status(HttpStatusCode.valueOf(461)).body(problemDetail);
     }
 
-    @ExceptionHandler(RefreshTokenStolen.class)
-    public ResponseEntity<ProblemDetail> handleRefreshTokenStolen(RefreshTokenStolen e) {
+    @ExceptionHandler(RefreshTokenStolenException.class)
+    public ResponseEntity<ProblemDetail> handleRefreshTokenStolenException(RefreshTokenStolenException e) {
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(462), e.getMessage());
         problemDetail.setTitle("Refresh Token Stolen");
