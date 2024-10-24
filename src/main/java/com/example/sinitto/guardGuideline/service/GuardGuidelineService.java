@@ -68,6 +68,17 @@ public class GuardGuidelineService {
         guardGuideline.updateGuardGuideline(guardGuidelineRequest.type(), guardGuidelineRequest.title(), guardGuidelineRequest.content());
     }
 
+    @Transactional
+    public void deleteGuardGuideline(Long memberId, Long guidelineId) {
+        GuardGuideline guardGuideline = guardGuidelineRepository.findById(guidelineId).orElseThrow(
+                () -> new NotFoundException("해당 가이드라인이 존재하지 않습니다.")
+        );
+        if (guardGuideline.getSenior().isNotGuard(memberId)) {
+            throw new BadRequestException("해당 Guard의 Senior가 아닙니다.");
+        }
+        guardGuidelineRepository.delete(guardGuideline);
+    }
+
     @Transactional(readOnly = true)
     public List<GuardGuidelineResponse> readAllGuardGuidelinesBySenior(Long memberId, Long seniorId) {
         Senior senior = seniorRepository.findById(seniorId).orElseThrow(

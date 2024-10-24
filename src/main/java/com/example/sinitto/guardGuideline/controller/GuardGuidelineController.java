@@ -56,4 +56,12 @@ public class GuardGuidelineController {
         return ResponseEntity.ok(guardGuidelineService.readGuardGuideline(callbackId, guidelineId));
     }
 
+    @Operation(summary = "특정 가이드라인 삭제", description = "보호자용 API입니다.")
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteGuardGuideline(@MemberId Long memberId, @RequestParam("guidelineId") Long guidelineId) {
+        guardGuidelineService.deleteGuardGuideline(memberId, guidelineId);
+        return ResponseEntity.ok("가이드라인이 삭제되었습니다.");
+    }
+
+
 }
