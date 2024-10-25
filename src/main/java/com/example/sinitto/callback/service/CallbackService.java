@@ -3,16 +3,17 @@ package com.example.sinitto.callback.service;
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.dto.CallbackUsageHistoryResponse;
 import com.example.sinitto.callback.entity.Callback;
-import com.example.sinitto.callback.exception.*;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.callback.util.TwilioHelper;
+import com.example.sinitto.common.exception.ConflictException;
+import com.example.sinitto.common.exception.ForbiddenException;
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
-import com.example.sinitto.point.exception.PointNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import org.springframework.data.domain.Page;
@@ -62,7 +63,7 @@ public class CallbackService {
         checkAuthorization(memberId);
 
         if (callbackRepository.existsByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)) {
-            throw new MemberHasInProgressCallbackException("이 요청을 한 시니또는 이미 진행중인 콜백이 있습니다.");
+            throw new ConflictException("이 요청을 한 시니또는 이미 진행중인 콜백이 있습니다.");
         }
 
         Callback callback = getCallbackOrThrow(callbackId);
@@ -93,7 +94,7 @@ public class CallbackService {
         Long guardId = senior.getMember().getId();
 
         if (!guardId.equals(memberId)) {
-            throw new GuardMismatchException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
+            throw new ForbiddenException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
         }
 
         earnPointForSinitto(callback.getAssignedMemberId());
@@ -103,7 +104,7 @@ public class CallbackService {
     private void earnPointForSinitto(Long sinittoMemberId) {
 
         Point sinittoPoint = pointRepository.findByMemberId(sinittoMemberId)
-                .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
+                .orElseThrow(() -> new NotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
 
         sinittoPoint.earn(CALLBACK_PRICE);
 
@@ -186,7 +187,7 @@ public class CallbackService {
         checkAuthorization(memberId);
 
         Callback callback = callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)
-                .orElseThrow(() -> new NotExistCallbackException("요청한 시니또에 할당된 콜백이 없습니다"));
+                .orElseThrow(() -> new NotFoundException("요청한 시니또에 할당된 콜백이 없습니다"));
 
         return new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId());
     }
@@ -194,23 +195,23 @@ public class CallbackService {
     private void checkAuthorization(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotMemberException("멤버가 아닙니다"));
+                .orElseThrow(() -> new NotFoundException("멤버가 아닙니다"));
 
         if (!member.isSinitto()) {
-            throw new NotSinittoException("시니또가 아닙니다");
+            throw new ForbiddenException("시니또가 아닙니다");
         }
     }
 
     private Callback getCallbackOrThrow(Long callbackId) {
 
         return callbackRepository.findById(callbackId)
-                .orElseThrow(() -> new NotExistCallbackException("존재하지 않는 콜백입니다"));
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 콜백입니다"));
     }
 
     private void checkAssignment(Long memberId, Long assignedMemberId) {
 
         if (!assignedMemberId.equals(memberId)) {
-            throw new NotAssignedException("이 콜백에 할당된 시니또가 아닙니다");
+            throw new ForbiddenException("이 콜백에 할당된 시니또가 아닙니다");
         }
     }
 
@@ -218,7 +219,7 @@ public class CallbackService {
     public Page<CallbackUsageHistoryResponse> getCallbackHistoryOfGuard(Long memberId, Pageable pageable) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotMemberException("멤버가 아닙니다"));
+                .orElseThrow(() -> new NotFoundException("멤버가 아닙니다"));
 
         List<Senior> seniors = seniorRepository.findAllByMember(member);
 
@@ -230,7 +231,7 @@ public class CallbackService {
     public CallbackResponse getCallback(Long callbackId) {
 
         Callback callback = callbackRepository.findById(callbackId)
-                .orElseThrow(() -> new NotExistCallbackException("해당 콜백 id에 해당하는 콜백이 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 콜백 id에 해당하는 콜백이 없습니다."));
 
         return new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId());
     }

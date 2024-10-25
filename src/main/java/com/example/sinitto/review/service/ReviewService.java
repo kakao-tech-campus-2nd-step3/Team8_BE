@@ -1,7 +1,7 @@
 package com.example.sinitto.review.service;
 
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.review.dto.ReviewRequest;
 import com.example.sinitto.review.dto.ReviewResponse;
@@ -32,7 +32,7 @@ public class ReviewService {
     @Transactional
     public void createReview(Long memberId, ReviewRequest reviewRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
+                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
         Review review = new Review(reviewRequest.starCountForRequest(),
                 reviewRequest.starCountForService(),

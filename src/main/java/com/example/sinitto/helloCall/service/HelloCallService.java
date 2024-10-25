@@ -1,27 +1,22 @@
 package com.example.sinitto.helloCall.service;
 
-import com.example.sinitto.auth.exception.UnauthorizedException;
-import com.example.sinitto.guard.exception.SeniorNotFoundException;
+import com.example.sinitto.common.exception.BadRequestException;
+import com.example.sinitto.common.exception.ConflictException;
+import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.common.exception.UnauthorizedException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.helloCall.dto.*;
 import com.example.sinitto.helloCall.entity.HelloCall;
 import com.example.sinitto.helloCall.entity.HelloCallTimeLog;
 import com.example.sinitto.helloCall.entity.TimeSlot;
-import com.example.sinitto.helloCall.exception.CompletionConditionNotFulfilledException;
-import com.example.sinitto.helloCall.exception.HelloCallAlreadyExistsException;
-import com.example.sinitto.helloCall.exception.HelloCallNotFoundException;
-import com.example.sinitto.helloCall.exception.TimeLogSequenceException;
 import com.example.sinitto.helloCall.repository.HelloCallRepository;
 import com.example.sinitto.helloCall.repository.HelloCallTimeLogRepository;
 import com.example.sinitto.helloCall.repository.TimeSlotRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
-import com.example.sinitto.member.exception.MemberNotFoundException;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
-import com.example.sinitto.point.exception.NotEnoughPointException;
-import com.example.sinitto.point.exception.PointNotFoundException;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import org.springframework.data.domain.Page;
@@ -62,10 +57,10 @@ public class HelloCallService {
     @Transactional
     public void createHelloCallByGuard(Long memberId, HelloCallRequest helloCallRequest) {
         Senior senior = seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)
-                .orElseThrow(() -> new SeniorNotFoundException("보호자님과 연관된 시니어가 아니거나, 시니어를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("보호자님과 연관된 시니어가 아니거나, 시니어를 찾을 수 없습니다."));
 
         if (helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))) {
-            throw new HelloCallAlreadyExistsException("이미 해당 시니어에게 할당되어 대기중 또는 진행중인 안부 전화 서비스가 존재합니다.");
+            throw new ConflictException("이미 해당 시니어에게 할당되어 대기중 또는 진행중인 안부 전화 서비스가 존재합니다.");
         }
 
         HelloCall helloCall = new HelloCall(helloCallRequest.startDate(), helloCallRequest.endDate(),
@@ -79,10 +74,10 @@ public class HelloCallService {
         }
 
         Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
-                .orElseThrow(() -> new PointNotFoundException("멤버에 연관된 포인트가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
 
         if (!point.isSufficientForDeduction(helloCall.getPrice())) {
-            throw new NotEnoughPointException("포인트가 부족합니다.");
+            throw new BadRequestException("포인트가 부족합니다.");
         }
 
         point.deduct(helloCall.getPrice());
@@ -135,7 +130,7 @@ public class HelloCallService {
     @Transactional(readOnly = true)
     public HelloCallDetailResponse readHelloCallDetail(Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         List<HelloCallDetailResponse.TimeSlot> timeSlots = helloCall.getTimeSlots().stream()
                 .map(timeSlot -> new HelloCallDetailResponse.TimeSlot(
@@ -149,10 +144,10 @@ public class HelloCallService {
     @Transactional
     public void updateHelloCallByGuard(Long memberId, Long helloCallId, HelloCallDetailUpdateRequest helloCallDetailUpdateRequest) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         helloCall.checkGuardIsCorrect(member);
 
@@ -176,15 +171,15 @@ public class HelloCallService {
     @Transactional
     public void deleteHellCallByGuard(Long memberId, Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         helloCall.checkGuardIsCorrect(member);
 
         Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
-                .orElseThrow(() -> new PointNotFoundException("멤버에 연관된 포인트가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
 
         point.earn(helloCall.getPrice());
 
@@ -203,10 +198,10 @@ public class HelloCallService {
     @Transactional(readOnly = true)
     public List<HelloCallTimeLogResponse> readHelloCallTimeLogByGuard(Long memberId, Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         helloCall.checkGuardIsCorrect(member);
 
@@ -226,15 +221,15 @@ public class HelloCallService {
     @Transactional(readOnly = true)
     public HelloCallReportResponse readHelloCallReportByGuard(Long memberId, Long helloCallId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         helloCall.checkGuardIsCorrect(member);
 
         if (!helloCall.checkReportIsNotNull()) {
-            throw new CompletionConditionNotFulfilledException("아직 안부전화 서비스가 완료되지 않았습니다.");
+            throw new BadRequestException("아직 안부전화 서비스가 완료되지 않았습니다.");
         }
 
         return new HelloCallReportResponse(helloCall.getStartDate(),
@@ -244,17 +239,17 @@ public class HelloCallService {
     @Transactional
     public void makeCompleteHelloCallByGuard(Long memberId, Long helloCallId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         helloCall.checkGuardIsCorrect(member);
 
         helloCall.changeStatusToComplete();
 
         Point sinittoPoint = pointRepository.findByMember(helloCall.getMember())
-                .orElseThrow(() -> new PointNotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
+                .orElseThrow(() -> new NotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
 
         sinittoPoint.earn(helloCall.getPrice());
 
@@ -286,10 +281,10 @@ public class HelloCallService {
     @Transactional
     public void acceptHelloCallBySinitto(Long memberId, Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
 
         if (!member.isSinitto()) {
             throw new UnauthorizedException("시니또가 아닙니다.");
@@ -302,10 +297,10 @@ public class HelloCallService {
     @Transactional
     public void writeHelloCallStartTimeBySinitto(Long memberId, Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         helloCall.checkMemberIsRightSinitto(member);
 
@@ -313,7 +308,7 @@ public class HelloCallService {
                 .findTopByMemberAndHelloCallOrderByStartDateAndTimeDesc(member, helloCall);
 
         if (recentLog.isPresent() && recentLog.get().getEndDateAndTime() == null) {
-            throw new TimeLogSequenceException("이미 시작된 안부전화가 있습니다. 종료를 먼저 완료해주세요.");
+            throw new BadRequestException("이미 시작된 안부전화가 있습니다. 종료를 먼저 완료해주세요.");
         }
 
         HelloCallTimeLog helloCallTimeLog = new HelloCallTimeLog(helloCall, member);
@@ -325,19 +320,19 @@ public class HelloCallService {
     @Transactional
     public void writeHelloCallEndTimeBySinitto(Long memberId, Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         helloCall.checkMemberIsRightSinitto(member);
 
         HelloCallTimeLog helloCallTimeLog = helloCallTimeLogRepository
                 .findTopByMemberAndHelloCallOrderByStartDateAndTimeDesc(member, helloCall)
-                .orElseThrow(() -> new HelloCallNotFoundException("안부전화 로그를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("안부전화 로그를 찾을 수 없습니다."));
 
         if (helloCallTimeLog.getEndDateAndTime() != null) {
-            throw new TimeLogSequenceException("이미 종료된 안부전화입니다.");
+            throw new BadRequestException("이미 종료된 안부전화입니다.");
         }
 
         helloCallTimeLog.setEndDateAndTime(LocalDateTime.now());
@@ -346,10 +341,10 @@ public class HelloCallService {
     @Transactional
     public void cancelHelloCallBySinitto(Long memberId, Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         helloCall.checkMemberIsRightSinitto(member);
 
@@ -360,15 +355,15 @@ public class HelloCallService {
     @Transactional
     public void sendReportBySinitto(Long memberId, HelloCallReportRequest helloCallReportRequest) {
         HelloCall helloCall = helloCallRepository.findById(helloCallReportRequest.helloCallId())
-                .orElseThrow(() -> new HelloCallNotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         helloCall.checkMemberIsRightSinitto(member);
 
         if (helloCall.checkIsNotAfterEndDate()) {
-            throw new CompletionConditionNotFulfilledException("서비스 종료 날짜보다 이른 날짜에 종료할 수 없습니다.");
+            throw new BadRequestException("서비스 종료 날짜보다 이른 날짜에 종료할 수 없습니다.");
         }
 
         helloCall.setReport(helloCallReportRequest.report());
@@ -378,7 +373,7 @@ public class HelloCallService {
     @Transactional(readOnly = true)
     public List<HelloCallResponse> readOwnHelloCallBySinitto(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         List<HelloCall> helloCalls = helloCallRepository.findAllByMember(member);
 

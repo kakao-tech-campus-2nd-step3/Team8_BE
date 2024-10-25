@@ -1,5 +1,6 @@
 package com.example.sinitto.helloCall.service;
 
+import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.helloCall.dto.HelloCallPriceRequest;
 import com.example.sinitto.helloCall.dto.HelloCallPriceResponse;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class HelloCallPriceService {
             case "금" -> DayOfWeek.FRIDAY;
             case "토" -> DayOfWeek.SATURDAY;
             case "일" -> DayOfWeek.SUNDAY;
-            default -> throw new IllegalArgumentException("잘못된 dayName 입니다 : " + dayName);
+            default -> throw new BadRequestException("잘못된 dayName 입니다 : " + dayName);
         };
     }
 

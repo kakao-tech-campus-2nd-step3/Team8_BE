@@ -1,8 +1,10 @@
 package com.example.sinitto.helloCall.entity;
 
-import com.example.sinitto.helloCall.exception.TimeRuleException;
+import com.example.sinitto.common.exception.BadRequestException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalTime;
 
@@ -19,12 +21,13 @@ public class TimeSlot {
     @NotNull
     private LocalTime endTime;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "hellocall_id")
     private HelloCall helloCall;
 
     public TimeSlot(String dayName, LocalTime startTime, LocalTime endTime, HelloCall helloCall) {
         if (startTime.isAfter(endTime)) {
-            throw new TimeRuleException("시작시간이 종료시간 이후일 수 없습니다.");
+            throw new BadRequestException("시작시간이 종료시간 이후일 수 없습니다.");
         }
         this.dayName = dayName;
         this.startTime = startTime;
@@ -54,7 +57,7 @@ public class TimeSlot {
 
     public void updateTimeSlot(LocalTime startTime, LocalTime endTime) {
         if (startTime.isAfter(endTime)) {
-            throw new TimeRuleException("시작시간이 종료시간 이후일 수 없습니다.");
+            throw new BadRequestException("시작시간이 종료시간 이후일 수 없습니다.");
         }
         this.startTime = startTime;
         this.endTime = endTime;

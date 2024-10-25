@@ -1,7 +1,7 @@
 package com.example.sinitto.point.entity;
 
+import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.member.entity.Member;
-import com.example.sinitto.point.exception.InvalidPointLogStatusException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +37,7 @@ class PointLogTest {
         PointLog pointLog = new PointLog("content", member, 1000, status);
 
         //when then
-        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToChargeWaiting);
+        assertThrows(ConflictException.class, pointLog::changeStatusToChargeWaiting);
     }
 
     @Test
@@ -62,7 +62,7 @@ class PointLogTest {
         PointLog pointLog = new PointLog("content", member, 1000, status);
 
         //when then
-        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToChargeComplete);
+        assertThrows(ConflictException.class, pointLog::changeStatusToChargeComplete);
     }
 
     @Test
@@ -79,7 +79,7 @@ class PointLogTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"EARN", "SPEND_COMPLETE", "SPEND_CANCEL", "WITHDRAW_REQUEST", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE","WITHDRAW_FAIL_AND_RESTORE_POINT", "CHARGE_REQUEST", "CHARGE_COMPLETE","CHARGE_FAIL"})
+    @ValueSource(strings = {"EARN", "SPEND_COMPLETE", "SPEND_CANCEL", "WITHDRAW_REQUEST", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE", "WITHDRAW_FAIL_AND_RESTORE_POINT", "CHARGE_REQUEST", "CHARGE_COMPLETE", "CHARGE_FAIL"})
     @DisplayName("포인트 로그 ChargeFail 상태로 전환 실패")
     void changeStatusToChargeFail_fail(String initialStatus) {
         //given
@@ -87,7 +87,7 @@ class PointLogTest {
         PointLog pointLog = new PointLog("content", member, 1000, status);
 
         //when then
-        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToChargeFail);
+        assertThrows(ConflictException.class, pointLog::changeStatusToChargeFail);
     }
 
     @Test
@@ -104,7 +104,7 @@ class PointLogTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"EARN", "SPEND_COMPLETE", "SPEND_CANCEL", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE", "WITHDRAW_FAIL_AND_RESTORE_POINT", "CHARGE_REQUEST", "CHARGE_COMPLETE", "CHARGE_FAIL","CHARGE_WAITING"})
+    @ValueSource(strings = {"EARN", "SPEND_COMPLETE", "SPEND_CANCEL", "WITHDRAW_WAITING", "WITHDRAW_COMPLETE", "WITHDRAW_FAIL_AND_RESTORE_POINT", "CHARGE_REQUEST", "CHARGE_COMPLETE", "CHARGE_FAIL", "CHARGE_WAITING"})
     @DisplayName("포인트 로그 WithdrawWaiting 상태로 전환 실패")
     void changeStatusToWithdrawWaiting_fail(String initialStatus) {
         //given
@@ -112,7 +112,7 @@ class PointLogTest {
         PointLog pointLog = new PointLog("content", member, 1000, status);
 
         //when then
-        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToWithdrawWaiting);
+        assertThrows(ConflictException.class, pointLog::changeStatusToWithdrawWaiting);
     }
 
     @Test
@@ -137,7 +137,7 @@ class PointLogTest {
         PointLog pointLog = new PointLog("content", member, 1000, status);
 
         //when then
-        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToWithdrawComplete);
+        assertThrows(ConflictException.class, pointLog::changeStatusToWithdrawComplete);
     }
 
     @Test
@@ -162,6 +162,6 @@ class PointLogTest {
         PointLog pointLog = new PointLog("content", member, 1000, status);
 
         //when then
-        assertThrows(InvalidPointLogStatusException.class, pointLog::changeStatusToWithdrawFail);
+        assertThrows(ConflictException.class, pointLog::changeStatusToWithdrawFail);
     }
 }

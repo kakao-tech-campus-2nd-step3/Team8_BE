@@ -1,7 +1,7 @@
 package com.example.sinitto.common.resolver;
 
-import com.example.sinitto.auth.exception.UnauthorizedException;
 import com.example.sinitto.common.annotation.MemberId;
+import com.example.sinitto.common.exception.UnauthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
