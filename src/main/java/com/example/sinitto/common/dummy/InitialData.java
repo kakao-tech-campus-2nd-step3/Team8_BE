@@ -300,23 +300,30 @@ public class InitialData implements CommandLineRunner {
         //콜백
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior1));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior1));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior1)).assignMember(1L);
+        Callback callback1 = callbackRepository.save(new Callback(Callback.Status.WAITING, senior1));
+        callback1.assignMember(1L);
+        callback1.changeStatusToInProgress();
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior2));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior2));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior2)).assignMember(2L);
+        Callback callback2 = callbackRepository.save(new Callback(Callback.Status.WAITING, senior2));
+        callback2.assignMember(2L);
+        callback2.changeStatusToInProgress();
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior3));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior3));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior3)).assignMember(3L);
+        Callback callback3 = callbackRepository.save(new Callback(Callback.Status.WAITING, senior3));
+        callback3.assignMember(3L);
+        callback3.changeStatusToInProgress();
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior4));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior4));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior4)).assignMember(4L);
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior4));
+
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior5));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior5));
-        callbackRepository.save(new Callback(Callback.Status.WAITING, senior5)).assignMember(5L);
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior5));
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior6));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior6));
