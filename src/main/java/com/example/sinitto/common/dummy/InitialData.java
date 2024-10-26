@@ -26,6 +26,7 @@ import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -72,13 +73,13 @@ public class InitialData implements CommandLineRunner {
     }
 
     @Override
-    @Transactional
     public void run(String... args) {
         initial();
         saveRefreshTokenToRedis();
     }
 
-    private void saveRefreshTokenToRedis() {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    protected void saveRefreshTokenToRedis() {
         System.out.println("---------------[더미데이터] 멤버별 RefreshToken---------------");
         System.out.printf("시니또1 김철수(MemberId : 1)의 refreshToken : %s%n", tokenService.generateRefreshToken("1chulsoo@example.com"));
         System.out.printf("시니또2 김유진(MemberId : 2)의 refreshToken : %s%n", tokenService.generateRefreshToken("2kim@example.com"));
@@ -93,7 +94,8 @@ public class InitialData implements CommandLineRunner {
         System.out.println("----------------------------------------------------------");
     }
 
-    private void initial() {
+    @Transactional
+    protected void initial() {
         //시니또
         Member memberSinitto1 = memberRepository.save(new Member("김철수", "01012345678", "1chulsoo@example.com", true));
         sinittoBankInfoRepository.save(new SinittoBankInfo("신한은행", "123-23-444-422", memberSinitto1));
