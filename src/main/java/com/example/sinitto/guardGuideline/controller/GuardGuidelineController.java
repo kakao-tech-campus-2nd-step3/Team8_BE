@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/guardguidelines")
-@Tag(name = "보호자용 가이드라인", description = "보호자가 입력하는 시니어별 가이드라인 관련 API")
+@Tag(name = "가이드라인", description = "가이드라인 관련 API")
 public class GuardGuidelineController {
 
     private final GuardGuidelineService guardGuidelineService;
