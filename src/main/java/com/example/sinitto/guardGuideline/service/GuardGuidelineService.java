@@ -43,7 +43,29 @@ public class GuardGuidelineService {
     }
 
     @Transactional(readOnly = true)
-    public List<GuardGuidelineResponse> readAllGuardGuidelinesByCategory(Long seniorId, Type type) {
+    public List<GuardGuidelineResponse> readAllGuardGuidelinesByCategoryAndSenior(Long memberId, Long seniorId, Type type) {
+        List<GuardGuideline> guardGuidelines = guardGuidelineRepository.findBySeniorIdAndType(seniorId, type);
+        Senior senior = seniorRepository.findById(seniorId).orElseThrow(
+                () -> new NotFoundException("시니어를 찾을 수 없습니다.")
+        );
+        if (senior.isNotGuard(memberId)) {
+            throw new BadRequestException("해당 Guard의 Senior가 아닙니다.");
+        }
+        return guardGuidelines.stream()
+                .map(m -> new GuardGuidelineResponse(m.getId(), m.getType(), m.getTitle(), m.getContent()))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<GuardGuidelineResponse> readAllGuardGuidelinesByCategoryAndCallback(Long callbackId, Type type) {
+        Callback callback = callbackRepository.findById(callbackId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 콜백입니다"));
+
+        if (callback.getStatus() != Callback.Status.WAITING.name()) {
+            throw new BadRequestException("해당 콜백은 대기 상태가 아닙니다.");
+        }
+        ;
+        Long seniorId = callback.getSeniorId();
         List<GuardGuideline> guardGuidelines = guardGuidelineRepository.findBySeniorIdAndType(seniorId, type);
 
         return guardGuidelines.stream()
@@ -91,22 +113,5 @@ public class GuardGuidelineService {
         return guardGuidelines.stream()
                 .map(m -> new GuardGuidelineResponse(m.getId(), m.getType(), m.getTitle(), m.getContent()))
                 .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public GuardGuidelineResponse readGuardGuideline(Long callbackId, Long guidelineId) {
-
-        Callback callback = callbackRepository.findById(callbackId)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 콜백입니다"));
-
-        GuardGuideline guardGuideline = guardGuidelineRepository.findById(guidelineId).orElseThrow(
-                () -> new NotFoundException("해당 가이드라인이 존재하지 않습니다.")
-        );
-
-        if (!callback.getSenior().equals(guardGuideline.getSenior())) {
-            throw new BadRequestException("해당 Senior의 가이드라인이 아닙니다.");
-        }
-
-        return new GuardGuidelineResponse(guardGuideline.getId(), guardGuideline.getType(), guardGuideline.getTitle(), guardGuideline.getContent());
     }
 }
