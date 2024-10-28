@@ -95,7 +95,7 @@ public class CallbackService {
         Long guardId = senior.getMember().getId();
 
         if (!guardId.equals(memberId)) {
-            throw new ForbiddenException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
+            throw new ForbiddenException("이 API 를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
         }
 
         earnPointForSinitto(callback.getAssignedMemberId());
@@ -145,12 +145,16 @@ public class CallbackService {
 
         String phoneNumber = TwilioHelper.trimPhoneNumber(fromNumber);
 
-        Senior senior = findSeniorByPhoneNumber(phoneNumber);
+        Senior senior = seniorRepository.findByPhoneNumber(phoneNumber)
+                .orElse(null);
+
         if (senior == null) {
             return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENROLLED);
         }
 
-        Point point = findPointWithWriteLock(senior.getMember().getId());
+        Point point = pointRepository.findByMemberIdWithWriteLock(senior.getMember().getId())
+                .orElse(null);
+
         if (point == null || !point.isSufficientForDeduction(CALLBACK_PRICE)) {
             return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENOUGH_POINT);
         }
@@ -171,16 +175,6 @@ public class CallbackService {
         callbackRepository.save(new Callback(Callback.Status.WAITING, senior));
 
         return TwilioHelper.convertMessageToTwiML(SUCCESS_MESSAGE);
-    }
-
-    private Senior findSeniorByPhoneNumber(String phoneNumber) {
-        return seniorRepository.findByPhoneNumber(phoneNumber)
-                .orElse(null);
-    }
-
-    private Point findPointWithWriteLock(Long memberId) {
-        return pointRepository.findByMemberIdWithWriteLock(memberId)
-                .orElse(null);
     }
 
     public CallbackResponse getAcceptedCallback(Long memberId) {
