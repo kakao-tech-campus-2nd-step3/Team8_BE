@@ -1,5 +1,6 @@
 package com.example.sinitto.guard.repository;
 
+import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ public interface SeniorRepository extends JpaRepository<Senior, Long> {
     Optional<Senior> findByIdAndMemberId(Long Id, Long memberId);
 
     Optional<Senior> findByPhoneNumber(String phoneNumber);
+
+    List<Senior> findAllByMember(Member member);
 }

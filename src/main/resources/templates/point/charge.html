@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/point.css" rel="stylesheet">
+    <title>충전 페이지</title>
+</head>
+<body>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>요청 시간</th>
+            <th>요청된 포인트</th>
+            <th>입금 메세지</th>
+            <th>상태</th>
+            <th>상태전환</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="logWithDepositMessage : ${logWithDepositMessages}">
+            <td th:text="${logWithDepositMessage.postTime}">요청 시간</td>
+            <td th:text="${logWithDepositMessage.price}">요청된 포인트</td>
+            <td th:text="${logWithDepositMessage.depositMessage}">입금 메세지</td>
+            <td th:text="${logWithDepositMessage.status().toString()}">상태</td>
+
+            <td>
+                <!-- 상태가 CHARGE_REQUEST일 때 -->
+                <form method="post"
+                      th:action="@{/admin/point/charge/waiting/{pointLogId}(pointLogId=${logWithDepositMessage.pointLogId})}"
+                      th:if="${logWithDepositMessage.status.toString()} == 'CHARGE_REQUEST'">
+                    <button type="submit">대기 상태로 변경</button>
+                </form>
+
+                <!-- 상태가 CHARGE_WAITING일 때 -->
+                <form method="post"
+                      th:action="@{/admin/point/charge/complete/{pointLogId}(pointLogId=${logWithDepositMessage.pointLogId})}"
+                      th:if="${logWithDepositMessage.status.toString()} == 'CHARGE_WAITING'">
+                    <button type="submit">포인트 지급 & 완료 상태로 변경</button>
+                </form>
+
+                <!-- 상태가 CHARGE_WAITING일 때 -->
+                <form method="post"
+                      th:action="@{/admin/point/charge/fail/{pointLogId}(pointLogId=${logWithDepositMessage.pointLogId})}"
+                      th:if="${logWithDepositMessage.status.toString()} == 'CHARGE_WAITING'">
+                    <button type="submit">실패 상태로 변경</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

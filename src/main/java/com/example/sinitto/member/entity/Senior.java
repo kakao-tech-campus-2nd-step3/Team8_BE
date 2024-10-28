@@ -31,6 +31,10 @@ public class Senior {
     protected Senior() {
     }
 
+    public boolean isNotGuard(Long memberId) {
+        return !this.member.getId().equals(memberId);
+    }
+
     public void updateSenior(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;

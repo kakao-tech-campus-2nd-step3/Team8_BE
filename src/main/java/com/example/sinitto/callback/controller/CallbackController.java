@@ -1,6 +1,7 @@
 package com.example.sinitto.callback.controller;
 
 import com.example.sinitto.callback.dto.CallbackResponse;
+import com.example.sinitto.callback.dto.CallbackUsageHistoryResponse;
 import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.annotation.MemberId;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,10 +26,10 @@ public class CallbackController {
 
     @Operation(summary = "콜백 전화 리스트 보기(페이지)", description = "시니어가 요청한 콜백전화를 페이징으로 보여줍니다.")
     @GetMapping
-    public ResponseEntity<Page<CallbackResponse>> getCallbackList(@MemberId Long memberId,
-                                                                  @PageableDefault(sort = "postTime", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Page<CallbackResponse>> getWaitingCallbackList(@MemberId Long memberId,
+                                                                         @PageableDefault(sort = "postTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        return ResponseEntity.ok(callbackService.getCallbacks(memberId, pageable));
+        return ResponseEntity.ok(callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Operation(summary = "진행 상태인 콜백을 완료 대기 상태로 전환(시니또가)", description = "시니또가 수락한 콜백 수행을 완료했을때 이 api 호출하면 완료 대기 상태로 변합니다.")
@@ -36,7 +37,7 @@ public class CallbackController {
     public ResponseEntity<Void> pendingCompleteCallback(@MemberId Long memberId,
                                                         @PathVariable Long callbackId) {
 
-        callbackService.pendingComplete(memberId, callbackId);
+        callbackService.changeCallbackStatusToPendingCompleteBySinitto(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 
@@ -45,7 +46,7 @@ public class CallbackController {
     public ResponseEntity<Void> completeCallback(@MemberId Long memberId,
                                                  @PathVariable Long callbackId) {
 
-        callbackService.complete(memberId, callbackId);
+        callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 
@@ -54,7 +55,7 @@ public class CallbackController {
     public ResponseEntity<Void> acceptCallback(@MemberId Long memberId,
                                                @PathVariable Long callbackId) {
 
-        callbackService.accept(memberId, callbackId);
+        callbackService.acceptCallbackBySinitto(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 
@@ -63,14 +64,14 @@ public class CallbackController {
     public ResponseEntity<Void> cancelCallback(@MemberId Long memberId,
                                                @PathVariable Long callbackId) {
 
-        callbackService.cancel(memberId, callbackId);
+        callbackService.cancelCallbackAssignmentBySinitto(memberId, callbackId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/twilio")
     public ResponseEntity<String> addCallCheck(@RequestParam("From") String fromNumber) {
 
-        return ResponseEntity.ok(callbackService.add(fromNumber));
+        return ResponseEntity.ok(callbackService.createCallbackByCall(fromNumber));
     }
 
     @Operation(summary = "시니또에게 현재 할당된 콜백 조회", description = "현재 시니또 본인에게 할당된 콜백을 조회합니다.")
@@ -79,4 +80,20 @@ public class CallbackController {
 
         return ResponseEntity.ok(callbackService.getAcceptedCallback(memberId));
     }
+
+    @Operation(summary = "보호자의 콜백 이용 내역 조회", description = "보호자에게 연관된 모든 콜백 내역을 조회합니다. 기본적으로 최신 내역 부터 조회됩니다.")
+    @GetMapping("/guard/requested")
+    public ResponseEntity<Page<CallbackUsageHistoryResponse>> getAcceptedCallback(@MemberId Long memberId,
+                                                                                  @PageableDefault(sort = "postTime", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return ResponseEntity.ok(callbackService.getCallbackHistoryOfGuard(memberId, pageable));
+    }
+
+    @Operation(summary = "콜백 단건 조회", description = "콜백 id 로 콜백을 단건 조회합니다.")
+    @GetMapping("/{callbackId}")
+    public ResponseEntity<CallbackResponse> getCallback(@PathVariable("callbackId") Long callbackId) {
+
+        return ResponseEntity.ok(callbackService.getCallback(callbackId));
+    }
+
 }

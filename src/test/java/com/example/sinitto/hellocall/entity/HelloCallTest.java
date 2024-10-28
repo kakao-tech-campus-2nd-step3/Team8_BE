@@ -80,13 +80,13 @@ class HelloCallTest {
 
         assertThatThrownBy(() -> helloCall.changeStatusToInProgress())
                 .isInstanceOf(InvalidStatusException.class)
-                .hasMessage("안부전화 서비스가 수행 대기중일 때만 진행중 상태로 변경할 수 있습니다. 현재 상태 : " + HelloCall.Status.IN_PROGRESS);
+                .hasMessage("안부전화 서비스가 수행 대기중일 때만 진행중 상태로 나아갈 수 있습니다. 현재 상태 : " + HelloCall.Status.IN_PROGRESS);
 
         helloCall.changeStatusToPendingComplete();
 
         assertThatThrownBy(() -> helloCall.changeStatusToWaiting())
                 .isInstanceOf(InvalidStatusException.class)
-                .hasMessage("안부전화 서비스가 수행중일 때만 진행중 상태로 변경할 수 있습니다. 현재 상태 : " + HelloCall.Status.PENDING_COMPLETE);
+                .hasMessage("안부전화 서비스가 수행중일 때만 진행중 상태로 돌아갈 수 있습니다. 현재 상태 : " + HelloCall.Status.PENDING_COMPLETE);
     }
 
     @Test
