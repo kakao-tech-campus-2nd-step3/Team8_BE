@@ -305,18 +305,21 @@ public class InitialData implements CommandLineRunner {
         Callback callback1 = callbackRepository.save(new Callback(Callback.Status.WAITING, senior1));
         callback1.assignMember(1L);
         callback1.changeStatusToInProgress();
+        callbackRepository.save(callback1);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior2));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior2));
         Callback callback2 = callbackRepository.save(new Callback(Callback.Status.WAITING, senior2));
         callback2.assignMember(2L);
         callback2.changeStatusToInProgress();
+        callbackRepository.save(callback2);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior3));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior3));
         Callback callback3 = callbackRepository.save(new Callback(Callback.Status.WAITING, senior3));
         callback3.assignMember(3L);
         callback3.changeStatusToInProgress();
+        callbackRepository.save(callback3);
 
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior4));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior4));
