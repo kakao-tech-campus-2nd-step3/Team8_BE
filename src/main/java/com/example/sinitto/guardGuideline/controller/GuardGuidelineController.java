@@ -38,8 +38,8 @@ public class GuardGuidelineController {
 
     @Operation(summary = "카테고리에 해당하는 모든 가이드라인 조회(시니또용)", description = "시니또용 앱에서 카테고리에 해당하는 모든 가이드라인들을 요청할 때 필요합니다.")
     @GetMapping("/sinitto/{callbackId}/{type}")
-    public ResponseEntity<List<GuardGuidelineResponse>> getGuardGuidelinesByCategoryAndCallback(@PathVariable Long callbackId, @PathVariable GuardGuideline.Type type) {
-        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesByCategoryAndCallback(callbackId, type));
+    public ResponseEntity<List<GuardGuidelineResponse>> getGuardGuidelinesByCategoryAndCallback(@MemberId Long memberId, @PathVariable Long callbackId, @PathVariable GuardGuideline.Type type) {
+        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesByCategoryAndCallback(memberId, callbackId, type));
     }
 
     @Operation(summary = "가이드라인 수정", description = "보호자가 특정 가이드라인을 수정할 때 필요합니다.")
