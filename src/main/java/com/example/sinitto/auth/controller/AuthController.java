@@ -9,6 +9,7 @@ import com.example.sinitto.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +42,8 @@ public class AuthController {
 
     @Operation(summary = "Oauth 카카오 인증페이지 리다이렉트", description = "카카오 로그인 화면으로 이동한다.", security = @SecurityRequirement(name = "JWT제외"))
     @GetMapping("/oauth/kakao")
-    public ResponseEntity<Void> redirectToKakaoAuth() {
-        String url = kakaoApiService.getAuthorizationUrl();
+    public ResponseEntity<Void> redirectToKakaoAuth(HttpServletRequest httpServletRequest) {
+        String url = kakaoApiService.getAuthorizationUrl(httpServletRequest);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(url));
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
@@ -50,8 +51,8 @@ public class AuthController {
 
     @Operation(summary = "Oauth 카카오 로그인 콜백", description = "카카오 로그인 이후 발생하는 인가코드를 통해 AccessToken과 RefreshToken을 발급한다.", security = @SecurityRequirement(name = "JWT제외"))
     @GetMapping("/oauth/kakao/callback")
-    public ResponseEntity<LoginResponse> kakaoCallback(@RequestParam("code") String code) {
-        LoginResponse loginResponse = memberService.kakaoLogin(code);
+    public ResponseEntity<LoginResponse> kakaoCallback(@RequestParam("code") String code, HttpServletRequest httpServletRequest) {
+        LoginResponse loginResponse = memberService.kakaoLogin(code, httpServletRequest);
         return ResponseEntity.ok().body(loginResponse);
     }
 
