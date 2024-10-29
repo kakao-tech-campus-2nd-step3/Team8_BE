@@ -113,7 +113,6 @@ public class CallbackService {
     }
 
     @Scheduled(cron = "0 */10 * * * *")
-    @Transactional
     public void changeOldPendingCompleteToCompleteByPolicy() {
 
         LocalDateTime referenceDateTimeForComplete = LocalDateTime.now().minusDays(DAYS_FOR_AUTO_COMPLETE);
@@ -121,10 +120,16 @@ public class CallbackService {
         List<Callback> callbacks = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, referenceDateTimeForComplete);
 
         for (Callback callback : callbacks) {
-
-            earnPointForSinitto(callback.getAssignedMemberId());
-            callback.changeStatusToComplete();
+            completeCallbackIndividually(callback);
         }
+    }
+
+    @Transactional
+    public void completeCallbackIndividually(Callback callback) {
+
+        earnPointForSinitto(callback.getAssignedMemberId());
+        callback.changeStatusToComplete();
+
     }
 
     @Transactional
