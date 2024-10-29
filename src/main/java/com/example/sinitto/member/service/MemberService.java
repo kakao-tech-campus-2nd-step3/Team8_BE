@@ -14,6 +14,7 @@ import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.repository.PointRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,8 @@ public class MemberService implements MemberIdProvider {
         return member.getId();
     }
 
-    public LoginResponse kakaoLogin(String authorizationCode) {
-        KakaoTokenResponse kakaoTokenResponse = kakaoApiService.getAccessToken(authorizationCode);
+    public LoginResponse kakaoLogin(String authorizationCode, HttpServletRequest httpServletRequest) {
+        KakaoTokenResponse kakaoTokenResponse = kakaoApiService.getAccessToken(authorizationCode, httpServletRequest);
         KakaoUserResponse kakaoUserResponse = kakaoApiService.getUserInfo(kakaoTokenResponse.accessToken());
 
         String email = kakaoUserResponse.kakaoAccount().email();
