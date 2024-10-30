@@ -31,7 +31,7 @@ public class SinittoController {
     }
 
     @Operation(summary = "시니또 계좌 정보 조회", description = "시니또의 계좌 정보를 요청한다.")
-    @GetMapping
+    @GetMapping("/bank")
     public ResponseEntity<SinittoBankResponse> getSinittoBankInfo(@MemberId Long memberId) {
         return ResponseEntity.ok(sinittoService.readSinittoBankInfo(memberId));
     }
