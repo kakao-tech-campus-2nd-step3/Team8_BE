@@ -40,8 +40,7 @@ public class SinittoService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
-
-        return new SinittoResponse(member.getName(), member.getPhoneNumber(), member.getEmail(), sinittoBankInfo.getAccountNumber(), sinittoBankInfo.getBankName());
+        return new SinittoResponse(member.getName(), member.getPhoneNumber(), member.getEmail());
     }
 
     @Transactional(readOnly = true)
