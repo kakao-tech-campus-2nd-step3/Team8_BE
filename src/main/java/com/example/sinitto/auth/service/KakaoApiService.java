@@ -29,6 +29,9 @@ public class KakaoApiService {
 
     public String getAuthorizationUrl(HttpServletRequest httpServletRequest) {
         String requestUrl = httpServletRequest.getHeader("Referer");
+        if (requestUrl == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
         String redirectUri;
 
         if (requestUrl.contains("localhost:5173")) {
@@ -49,6 +52,9 @@ public class KakaoApiService {
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
 
         String requestUrl = httpServletRequest.getHeader("Origin");
+        if (requestUrl == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
         String redirectUri;
 
         if (requestUrl.contains("localhost:5173")) {
