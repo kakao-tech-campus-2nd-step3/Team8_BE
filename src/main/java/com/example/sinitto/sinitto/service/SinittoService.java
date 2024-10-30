@@ -75,12 +75,5 @@ public class SinittoService {
         memberRepository.delete(member);
     }
 
-    @Transactional
-    public void deleteSinittoBankInfo(Long memberId) {
-        SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(
-                () -> new NotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
-        );
-        sinittoBankInfoRepository.delete(sinittoBankInfo);
-    }
 
 }
