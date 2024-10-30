@@ -4,6 +4,7 @@ import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.sinitto.dto.SinittoBankRequest;
+import com.example.sinitto.sinitto.dto.SinittoBankResponse;
 import com.example.sinitto.sinitto.dto.SinittoRequest;
 import com.example.sinitto.sinitto.dto.SinittoResponse;
 import com.example.sinitto.sinitto.entity.SinittoBankInfo;
@@ -43,6 +44,14 @@ public class SinittoService {
                 () -> new NotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
         );
         return new SinittoResponse(member.getName(), member.getPhoneNumber(), member.getEmail(), sinittoBankInfo.getAccountNumber(), sinittoBankInfo.getBankName());
+    }
+
+    @Transactional(readOnly = true)
+    public SinittoBankResponse readSinittoBankInfo(Long memberId) {
+        SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(
+                () -> new NotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
+        );
+        return new SinittoBankResponse(sinittoBankInfo.getAccountNumber(), sinittoBankInfo.getBankName());
     }
 
     @Transactional
