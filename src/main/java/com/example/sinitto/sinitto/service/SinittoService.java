@@ -12,8 +12,6 @@ import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class SinittoService {
 
@@ -46,7 +44,7 @@ public class SinittoService {
     @Transactional(readOnly = true)
     public SinittoBankResponse readSinittoBankInfo(Long memberId) {
         SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElse(null);
-        if(sinittoBankInfo == null){
+        if (sinittoBankInfo == null) {
             return new SinittoBankResponse(null, null);
         }
         return new SinittoBankResponse(sinittoBankInfo.getAccountNumber(), sinittoBankInfo.getBankName());
