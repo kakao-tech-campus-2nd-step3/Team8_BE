@@ -64,9 +64,4 @@ public class SinittoController {
         return ResponseEntity.ok("시니또 계좌정보가 삭제되었습니다.");
     }
 
-    @Operation(summary = "모든 시니또 조회", description = "관리자용")
-    @GetMapping("/all")
-    public ResponseEntity<List<SinittoResponse>> getAllSinittos() {
-        return ResponseEntity.ok(sinittoService.readAllSinitto());
-    }
 }

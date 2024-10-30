@@ -40,9 +40,7 @@ public class SinittoService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
-        SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(
-                () -> new NotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
-        );
+
         return new SinittoResponse(member.getName(), member.getPhoneNumber(), member.getEmail(), sinittoBankInfo.getAccountNumber(), sinittoBankInfo.getBankName());
     }
 
@@ -84,15 +82,6 @@ public class SinittoService {
                 () -> new NotFoundException("이메일에 해당하는 멤버의 계좌정보를 찾을 수 없습니다.")
         );
         sinittoBankInfoRepository.delete(sinittoBankInfo);
-    }
-
-    @Transactional
-    public List<SinittoResponse> readAllSinitto() {
-        List<SinittoBankInfo> sinittoBankInfos = sinittoBankInfoRepository.findAll();
-
-        return sinittoBankInfos.stream()
-                .map(m -> new SinittoResponse(m.getMember().getName(), m.getMember().getPhoneNumber(), m.getMember().getEmail(), m.getAccountNumber(), m.getBankName()))
-                .toList();
     }
 
 }
