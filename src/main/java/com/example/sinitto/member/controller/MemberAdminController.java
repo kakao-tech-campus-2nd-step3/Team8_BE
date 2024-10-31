@@ -2,6 +2,7 @@ package com.example.sinitto.member.controller;
 
 import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.common.properties.DummyProperties;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,12 @@ public class MemberAdminController {
 
     private final MemberRepository memberRepository;
     private final TokenService tokenService;
+    private final DummyProperties dummyProperties;
 
-    public MemberAdminController(MemberRepository memberRepository, TokenService tokenService) {
+    public MemberAdminController(MemberRepository memberRepository, TokenService tokenService, DummyProperties dummyProperties) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
+        this.dummyProperties = dummyProperties;
     }
 
     @GetMapping
@@ -34,8 +37,9 @@ public class MemberAdminController {
 
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
+        boolean isSinitto = member.isSinitto();
 
-        String frontendRedirectUrl = "http://localhost:5173/dummy.html";
-        return "redirect:" + frontendRedirectUrl + "?accessToken=" + accessToken + "&refreshToken=" + refreshToken;
+        String frontendRedirectUrl = dummyProperties.devRedirectUri();
+        return "redirect:" + frontendRedirectUrl + "?accessToken=" + accessToken + "&refreshToken=" + refreshToken + "&isSinitto=" + isSinitto;
     }
 }
