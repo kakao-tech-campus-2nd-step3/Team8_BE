@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class MemberRepositoryTest {
@@ -65,6 +67,22 @@ public class MemberRepositoryTest {
         boolean exists = memberRepository.existsByEmail(NotSavedEmail);
 
         assertThat(exists).isFalse();
+    }
+
+    @Test
+    @DisplayName("이메일 목록을 이용한 멤버 조회 테스트")
+    void findAllByEmailInTest() {
+        Member member1 = new Member("test1", "01011112222", "test1@test.com", true);
+        Member member2 = new Member("test2", "01022223333", "test2@test.com", false);
+        Member member3 = new Member("test3", "01033334444", "test3@test.com", true);
+        memberRepository.saveAll(Arrays.asList(member1, member2, member3));
+
+        List<String> emails = Arrays.asList("test1@test.com", "test3@test.com");
+
+        List<Member> members = memberRepository.findAllByEmailIn(emails);
+
+        assertThat(members).hasSize(2);
+        assertThat(members).extracting("email").containsExactlyInAnyOrder("test1@test.com", "test3@test.com");
     }
 
 }
