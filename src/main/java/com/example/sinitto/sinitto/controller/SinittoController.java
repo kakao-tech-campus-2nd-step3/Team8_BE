@@ -54,13 +54,4 @@ public class SinittoController {
         sinittoService.updateSinittoBankInfo(memberId, sinittoBankRequest);
         return ResponseEntity.ok("시니또 정보가 수정되었습니다.");
     }
-
-    @Operation(summary = "시니또 삭제", description = "관리자용")
-    @DeleteMapping
-    public ResponseEntity<String> deleteSinitto(@MemberId Long memberId) {
-        sinittoService.deleteSinitto(memberId);
-        return ResponseEntity.ok("시니또가 삭제되었습니다.");
-    }
-
-
 }
