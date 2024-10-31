@@ -55,7 +55,7 @@ public class GuardServiceTest {
     @DisplayName("updateGuard 메소드 테스트")
     void updateGuardTest(){
         //given
-        Member member = new Member("testName", "01012345678", "test@mail.com", false);
+        Member member = mock(Member.class);
         Long memberId = 1L;
         Optional<Member> memberOptional = Optional.of(member);
         GuardRequest guardRequest = new GuardRequest("newTestName", "01087654321");
@@ -63,11 +63,10 @@ public class GuardServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(memberOptional);
 
         //when
-        Member updatedMember = guardService.updateGuard(memberId, guardRequest);
+        guardService.updateGuard(memberId, guardRequest);
 
         //then
-        assertEquals(updatedMember.getName(), guardRequest.name());
-        assertEquals(updatedMember.getPhoneNumber(), guardRequest.phoneNumber());
+        verify(member,times(1)).updateMember(guardRequest.name(), guardRequest.phoneNumber());
     }
 
     @Test
@@ -96,12 +95,10 @@ public class GuardServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(seniorRepository.save(any(Senior.class))).thenReturn(senior);
         // When
-        Senior result = guardService.createSenior(memberId, seniorRequest);
+         guardService.createSenior(memberId, seniorRequest);
 
         // Then
-        assertEquals(senior.getName(), result.getName());
-        assertEquals(senior.getPhoneNumber(), result.getPhoneNumber());
-        assertEquals(senior.getMember(), result.getMember());
+        verify(seniorRepository, times(1)).save(any(Senior.class));
     }
 
     @Test
@@ -169,16 +166,15 @@ public class GuardServiceTest {
         Long memberId = 1L;
         Long seniorId = 2L;
         Member member = new Member("testName", "01012345678", "test@mail.com", true);
-        Senior senior = new Senior("testSeniorName", "01000000000", member);
+        Senior senior = mock(Senior.class);
         SeniorRequest request = new SeniorRequest("newSeniorName", "01011111111");
 
         when(seniorRepository.findByIdAndMemberId(seniorId, memberId)).thenReturn(Optional.of(senior));
         //when
-        Senior result = guardService.updateSenior(memberId, seniorId, request);
+        guardService.updateSenior(memberId, seniorId, request);
 
         //then
-        assertEquals(result.getName(), request.seniorName());
-        assertEquals(result.getPhoneNumber(), request.seniorPhoneNumber());
+        verify(senior, times(1)).updateSenior(request.seniorName(), request.seniorPhoneNumber());
     }
 
     @Test
