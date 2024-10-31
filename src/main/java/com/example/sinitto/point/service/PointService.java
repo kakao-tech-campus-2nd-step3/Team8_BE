@@ -97,4 +97,64 @@ public class PointService {
 
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, adjustedPrice, PointLog.Status.WITHDRAW_REQUEST));
     }
+
+    @Transactional
+    public void earnPoint(Long memberId, int price, PointLog.Content contentForPointLog) {
+
+        Point point = pointRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        point.earn(price);
+
+        pointLogRepository.save(
+                new PointLog(
+                        contentForPointLog.getMessage(),
+                        point.getMember(),
+                        price,
+                        PointLog.Status.EARN)
+        );
+    }
+
+    @Transactional
+    public void deductPoint(Long memberId, int price, PointLog.Content contentForPointLog) {
+
+        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        if (!point.isSufficientForDeduction(price)) {
+            throw new BadRequestException("포인트가 부족합니다.");
+        }
+
+        point.deduct(price);
+
+        pointLogRepository.save(
+                new PointLog(
+                        contentForPointLog.getMessage(),
+                        point.getMember(),
+                        price,
+                        PointLog.Status.SPEND_COMPLETE
+                ));
+    }
+
+    @Transactional
+    public void refundPointByDelete(Long memberId, int price, PointLog.Content contentForPointLog) {
+
+        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        if (!point.isSufficientForDeduction(price)) {
+            throw new BadRequestException("포인트가 부족합니다.");
+        }
+
+        point.deduct(price);
+
+        pointLogRepository.save(
+                new PointLog(
+                        contentForPointLog.getMessage(),
+                        point.getMember(),
+                        price,
+                        PointLog.Status.SPEND_CANCEL
+                ));
+    }
+
 }
