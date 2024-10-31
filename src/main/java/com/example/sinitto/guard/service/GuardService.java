@@ -35,12 +35,13 @@ public class GuardService {
     }
 
     @Transactional
-    public void updateGuard(Long memberId, GuardRequest guardRequest) {
+    public Member updateGuard(Long memberId, GuardRequest guardRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
 
         member.updateMember(guardRequest.name(), guardRequest.phoneNumber());
+        return member;
     }
 
     @Transactional
@@ -53,7 +54,7 @@ public class GuardService {
     }
 
     @Transactional
-    public void createSenior(Long memberId, SeniorRequest seniorRequest) {
+    public Senior createSenior(Long memberId, SeniorRequest seniorRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
@@ -61,7 +62,7 @@ public class GuardService {
 
         Senior senior = new Senior(seniorRequest.seniorName(), seniorRequest.seniorPhoneNumber(), member);
 
-        seniorRepository.save(senior);
+        return seniorRepository.save(senior);
     }
 
     @Transactional
@@ -81,12 +82,13 @@ public class GuardService {
     }
 
     @Transactional
-    public void updateSenior(Long memberId, Long seniorId, SeniorRequest seniorRequest) {
+    public Senior updateSenior(Long memberId, Long seniorId, SeniorRequest seniorRequest) {
         Senior senior = seniorRepository.findByIdAndMemberId(seniorId, memberId).orElseThrow(
                 () -> new NotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
 
         senior.updateSenior(seniorRequest.seniorName(), seniorRequest.seniorPhoneNumber());
+        return senior;
     }
 
     @Transactional
