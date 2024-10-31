@@ -38,6 +38,8 @@ input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+    box-sizing: border-box;
+    appearance: none;
 }
 
 .button-container {
