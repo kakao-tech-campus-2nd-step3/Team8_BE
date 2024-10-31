@@ -1,7 +1,6 @@
 package com.example.sinitto.member.controller;
 
 import com.example.sinitto.auth.service.TokenService;
-import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.properties.DummyProperties;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
