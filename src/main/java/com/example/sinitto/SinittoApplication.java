@@ -1,5 +1,6 @@
 package com.example.sinitto;
 
+import com.example.sinitto.common.properties.DummyProperties;
 import com.example.sinitto.common.properties.KakaoProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@EnableConfigurationProperties(KakaoProperties.class)
+@EnableConfigurationProperties({KakaoProperties.class, DummyProperties.class})
 @EnableScheduling
 public class SinittoApplication {
 
