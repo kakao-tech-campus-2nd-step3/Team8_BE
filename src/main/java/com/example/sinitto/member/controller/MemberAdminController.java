@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 @RequestMapping("/dummy")
 public class MemberAdminController {
@@ -19,6 +22,11 @@ public class MemberAdminController {
     private final TokenService tokenService;
     private final DummyProperties dummyProperties;
 
+    private final List<String> dummyEmails = Arrays.asList(
+            "1chulsoo@example.com", "2kim@example.com", "3lee@example.com", "4park@example.com", "5choi@example.com",
+            "6jeong@example.com", "7han@example.com", "8oh@example.com", "9lim@example.com", "10song@example.com"
+    );
+
     public MemberAdminController(MemberRepository memberRepository, TokenService tokenService, DummyProperties dummyProperties) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
@@ -26,7 +34,9 @@ public class MemberAdminController {
     }
 
     @GetMapping
-    public String showDummyLoginPage() {
+    public String showDummyLoginPage(Model model) {
+        List<Member> dummyMembers = memberRepository.findAllByEmailIn(dummyEmails);
+        model.addAttribute("members", dummyMembers);
         return "dummy/login";
     }
 
@@ -37,6 +47,9 @@ public class MemberAdminController {
             @RequestParam("env") String env,
             Model model
     ) {
+        List<Member> dummyMembers = memberRepository.findAllByEmailIn(dummyEmails);
+        model.addAttribute("members", dummyMembers);
+
         if (!password.equals(dummyProperties.password())) {
             model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
             return "dummy/login";
