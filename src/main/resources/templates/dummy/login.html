@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>더미데이터 유저 로그인</title>
+    <link href="/css/dummy.css" rel="stylesheet">
 </head>
 <body>
 <h2>더미데이터 유저 로그인</h2>
@@ -23,8 +24,10 @@
     <label for="password">비밀번호:</label>
     <input type="password" id="password" name="password" required/><br><br>
 
-    <button type="submit" name="env" value="dev">개발 환경으로 로그인</button>
-    <button type="submit" name="env" value="prod">배포 서버로 로그인</button>
+    <div class="button-container">
+        <button type="submit" name="env" value="dev">개발 환경으로 로그인</button>
+        <button type="submit" name="env" value="prod">배포 서버로 로그인</button>
+    </div>
 </form>
 </body>
 </html>
