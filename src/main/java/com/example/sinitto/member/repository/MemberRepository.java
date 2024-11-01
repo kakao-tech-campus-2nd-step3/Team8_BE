@@ -15,4 +15,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByEmail(String email);
 
     List<Member> findByIsSinitto(boolean isSinitto);
+
+    List<Member> findAllByEmailIn(List<String> emails);
+
 }

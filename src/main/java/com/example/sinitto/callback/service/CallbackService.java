@@ -1,5 +1,6 @@
 package com.example.sinitto.callback.service;
 
+import com.example.sinitto.callback.dto.CallbackForSinittoResponse;
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.dto.CallbackUsageHistoryResponse;
 import com.example.sinitto.callback.entity.Callback;
@@ -228,12 +229,19 @@ public class CallbackService {
                 .map(callback -> new CallbackUsageHistoryResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus()));
     }
 
-    public CallbackResponse getCallback(Long callbackId) {
+    public CallbackForSinittoResponse getCallbackForSinitto(Long memberId, Long callbackId) {
 
         Callback callback = callbackRepository.findById(callbackId)
                 .orElseThrow(() -> new NotFoundException("해당 콜백 id에 해당하는 콜백이 없습니다."));
 
-        return new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId());
+        if (!callback.getStatus().equals(Callback.Status.WAITING.toString())) {
+            if (callback.getAssignedMemberId() != null && callback.getAssignedMemberId().equals(memberId)) {
+                return new CallbackForSinittoResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId(), true, callback.getSenior().getPhoneNumber());
+            }
+            throw new ForbiddenException("대기중인 콜백이 아닌경우 오직 할당받은 시니또만이 콜백을 조회할 수 있습니다.");
+        }
+
+        return new CallbackForSinittoResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId(), false, "");
     }
 
 }

@@ -2,10 +2,10 @@ package com.example.sinitto.common.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "kakao")
-public record KakaoProperties(
-        String clientId,
+@ConfigurationProperties(prefix = "dummy")
+public record DummyProperties(
+        String devRedirectUri,
         String redirectUri,
-        String devRedirectUri
+        String password
 ) {
 }
