@@ -39,7 +39,7 @@ public class GuardService {
                 () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
 
-        member.updateMember(guardRequest.name(), guardRequest.email(), guardRequest.phoneNumber());
+        member.updateMember(guardRequest.name(), guardRequest.phoneNumber());
     }
 
     @Transactional
