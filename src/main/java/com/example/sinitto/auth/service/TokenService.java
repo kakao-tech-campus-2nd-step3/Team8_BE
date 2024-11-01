@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class TokenService {
 
-    private static final long ACCESS_TEN_HOURS = 1000 * 60 * 60 * 10;
+    private static final long ACCESS_TEN_HOURS = 1000 * 60 * 10;
     private static final long REFRESH_SEVEN_DAYS = 1000 * 60 * 60 * 24 * 7;
 
     private final Key secretKey;
