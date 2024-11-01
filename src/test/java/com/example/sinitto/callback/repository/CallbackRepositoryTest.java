@@ -173,7 +173,7 @@ class CallbackRepositoryTest {
 
 
     @Test
-    @DisplayName("findAllByStatusAndPendingCompleteTimeBefore 이용해서 2일이 지난 PendingComplete 콜백 조회 - 성공")
+    @DisplayName("findAllByStatusAndPendingCompleteTimeBetween 이용해서 2일이 지난 PendingComplete 콜백 조회 - 성공")
     void findAllByStatusAndPendingCompleteTimeBefore_success() {
         // given
         LocalDateTime beforeTime = LocalDateTime.of(2024, 1, 5, 13, 00).minusDays(2);
@@ -191,29 +191,29 @@ class CallbackRepositoryTest {
         callback5.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 02));
 
         // when
-        List<Callback> result = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, beforeTime);
+        List<Callback> result = callbackRepository.findAllByStatusAndPendingCompleteTimeBetween(Callback.Status.PENDING_COMPLETE, beforeTime.minusMinutes(5), beforeTime.plusMinutes(5));
 
         // then
-        assertEquals(3, result.size());
+        assertEquals(5, result.size());
         assertTrue(result.contains(callback1));
         assertTrue(result.contains(callback2));
         assertTrue(result.contains(callback3));
     }
 
     @Test
-    @DisplayName("findAllByStatusAndPendingCompleteTimeBefore 이용해서 2일이 지난 PendingComplete 콜백 조회 - 만약 아무것도 조건에 해당 안될 경우 테스트")
+    @DisplayName("findAllByStatusAndPendingCompleteTimeBetween 이용해서 2일이 지난 PendingComplete 콜백 조회 - 만약 아무것도 조건에 해당 안될 경우 테스트")
     void findAllByStatusAndPendingCompleteTimeBefore_success_zeroList() {
         // given
         LocalDateTime beforeTime = LocalDateTime.of(2024, 1, 5, 13, 00).minusDays(2);
         Senior testSenior = seniorRepository.save(new Senior("senior", "01012341234", testMember));
 
         Callback callback1 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
-        callback1.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 01));
+        callback1.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 06));
         Callback callback2 = callbackRepository.save(new Callback(Callback.Status.PENDING_COMPLETE, testSenior));
-        callback2.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 13, 02));
+        callback2.setPendingCompleteTime(LocalDateTime.of(2024, 1, 3, 12, 54));
 
         // when
-        List<Callback> result = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, beforeTime);
+        List<Callback> result = callbackRepository.findAllByStatusAndPendingCompleteTimeBetween(Callback.Status.PENDING_COMPLETE, beforeTime.minusMinutes(5), beforeTime.plusMinutes(5));
 
         // then
         assertNotNull(result);

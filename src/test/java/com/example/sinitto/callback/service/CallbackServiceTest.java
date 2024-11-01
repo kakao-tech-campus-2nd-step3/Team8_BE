@@ -368,7 +368,7 @@ class CallbackServiceTest {
 
             when(callback1.getAssignedMemberId()).thenReturn(1L);
 
-            when(callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(eq(Callback.Status.PENDING_COMPLETE), any(LocalDateTime.class)))
+            when(callbackRepository.findAllByStatusAndPendingCompleteTimeBetween(eq(Callback.Status.PENDING_COMPLETE), any(LocalDateTime.class), any(LocalDateTime.class)))
                     .thenReturn(List.of(callback1));
 
             // When
@@ -383,7 +383,7 @@ class CallbackServiceTest {
         @DisplayName("조건에 맞는 콜백이 없는경우 pointService 는 절대 사용이 안된다")
         void changeOldPendingCompleteToCompleteByPolicy_Success_zeroList() {
             // Given
-            when(callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(eq(Callback.Status.PENDING_COMPLETE), any(LocalDateTime.class)))
+            when(callbackRepository.findAllByStatusAndPendingCompleteTimeBetween(eq(Callback.Status.PENDING_COMPLETE), any(LocalDateTime.class), any(LocalDateTime.class)))
                     .thenReturn(List.of());
 
             // When

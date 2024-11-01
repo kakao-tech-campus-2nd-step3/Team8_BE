@@ -103,7 +103,7 @@ public class CallbackService {
 
         LocalDateTime referenceDateTimeForComplete = LocalDateTime.now().minusDays(DAYS_FOR_AUTO_COMPLETE);
 
-        List<Callback> callbacks = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, referenceDateTimeForComplete);
+        List<Callback> callbacks = callbackRepository.findAllByStatusAndPendingCompleteTimeBetween(Callback.Status.PENDING_COMPLETE, referenceDateTimeForComplete.minusMinutes(5), referenceDateTimeForComplete.plusMinutes(5));
 
         for (Callback callback : callbacks) {
             completeCallbackIndividually(callback);
