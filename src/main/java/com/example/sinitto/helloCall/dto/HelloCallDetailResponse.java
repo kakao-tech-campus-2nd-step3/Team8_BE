@@ -31,7 +31,8 @@ import java.util.List;
                    "requirement": "어머님께서 매일 아침 등산을 하시는 걸 좋아하세요. 요즘 날씨가 추워졌는데, 건강하게 등산을 잘 다니시는지 여쭤봐 주세요. 등산 이야기를 하면 기분이 좋아지실 거예요.",
                    "seniorName": "권지민",
                    "seniorPhoneNumber": "01013572468",
-                   "price": 13000
+                   "price": 13000,
+                   "serviceTime": 10
                  }
         """)
 public record HelloCallDetailResponse(
@@ -41,7 +42,8 @@ public record HelloCallDetailResponse(
         String requirement,
         String seniorName,
         String seniorPhoneNumber,
-        int price
+        int price,
+        int serviceTime
 ) {
     public record TimeSlot(
             String dayName,

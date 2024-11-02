@@ -138,7 +138,7 @@ public class HelloCallService {
 
         return new HelloCallDetailResponse(helloCall.getStartDate(), helloCall.getEndDate(),
                 timeSlots, helloCall.getRequirement(), helloCall.getSenior().getName(),
-                helloCall.getSenior().getPhoneNumber(), helloCall.getPrice());
+                helloCall.getSenior().getPhoneNumber(), helloCall.getPrice(), helloCall.getServiceTime());
     }
 
     @Transactional
