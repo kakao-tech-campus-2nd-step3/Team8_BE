@@ -131,7 +131,7 @@ public class PointAdminService {
 
             PointLogWithBankInfo pointLogWithBankInfo = new PointLogWithBankInfo(
                     pointLog.getId(),
-                    pointLog.getPrice(),
+                    pointLog.getPointPriceAfterFee(),
                     pointLog.getPostTime(),
                     pointLog.getStatus(),
                     sinittoBankInfo.getBankName(),
