@@ -14,6 +14,7 @@ import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class PointAdminService {
             PointLogWithDepositMessage pointLogWithDepositMessage = new PointLogWithDepositMessage(
                     pointLog.getId(),
                     pointLog.getPrice(),
-                    pointLog.getPostTime(),
+                    pointLog.getPostTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")),
                     pointLog.getStatus(),
                     member.getDepositMessage()
             );
@@ -132,7 +133,7 @@ public class PointAdminService {
             PointLogWithBankInfo pointLogWithBankInfo = new PointLogWithBankInfo(
                     pointLog.getId(),
                     pointLog.getPointPriceAfterFee(),
-                    pointLog.getPostTime(),
+                    pointLog.getPostTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")),
                     pointLog.getStatus(),
                     sinittoBankInfo.getBankName(),
                     sinittoBankInfo.getAccountNumber()
