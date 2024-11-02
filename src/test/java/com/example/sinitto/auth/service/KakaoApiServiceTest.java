@@ -25,7 +25,7 @@ public class KakaoApiServiceTest {
     @Value("kakao.clientId")
     private String clientId;
 
-    @Value("kakako.devRedirectUri")
+    @Value("kakao.devRedirectUri")
     private String devRedirectUri;
 
     @Value("kakao.redirectUri")
