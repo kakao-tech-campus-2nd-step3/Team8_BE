@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class TokenService {
 
     private static final long ACCESS_FIVE_MINUTES = 1000 * 60 * 5;
+
     private static final long REFRESH_SEVEN_DAYS = 1000 * 60 * 60 * 24 * 7;
 
     private final Key secretKey;
