@@ -36,7 +36,7 @@ public class KakaoApiServiceTest {
 
     @Test
     @DisplayName("getAuthorizationUrl 메소드 테스트 - devUri 포홤 시")
-    void getAuthorizationUrlTestWithDevUri(){
+    void getAuthorizationUrlTestWithDevUri() {
         //given
         when(httpServletRequest.getHeader("Referer")).thenReturn("http://localhost:5173");
         when(kakaoProperties.devRedirectUri()).thenReturn(devRedirectUri);
@@ -55,7 +55,7 @@ public class KakaoApiServiceTest {
 
     @Test
     @DisplayName("getAuthorizationUrl 메소드 테스트 - 배포 uri 포홤 시")
-    void getAuthorizationUrlTestWithAwsUri(){
+    void getAuthorizationUrlTestWithAwsUri() {
         //given
         when(httpServletRequest.getHeader("Referer")).thenReturn("http://sinitto.s3-website.ap-northeast-2.amazonaws.com");
         when(kakaoProperties.redirectUri()).thenReturn(redirectUri);
@@ -74,7 +74,7 @@ public class KakaoApiServiceTest {
 
     @Test
     @DisplayName("getAuthorizationUrl 메소드 테스트 - 이외의 주소 포함 시 실패")
-    void getAuthorizationUrlTestWithAnotherUri(){
+    void getAuthorizationUrlTestWithAnotherUri() {
         //given
         when(httpServletRequest.getHeader("Referer")).thenReturn("http://test-uri.com");
 
@@ -84,7 +84,7 @@ public class KakaoApiServiceTest {
 
     @Test
     @DisplayName("getAuthorizationUrl 메소드 테스트 - 주소가 null일 시 실패")
-    void getAuthorizationUrlTestWithNullUri(){
+    void getAuthorizationUrlTestWithNullUri() {
         //given
         when(httpServletRequest.getHeader("Referer")).thenReturn(null);
 

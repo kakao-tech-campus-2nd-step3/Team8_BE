@@ -31,7 +31,7 @@ public class SinittoServiceTest {
 
     @Test
     @DisplayName("createSinittoBankInfo 메소드 테스트")
-    void createSinittoBankInfoTest(){
+    void createSinittoBankInfoTest() {
         //given
         Member member = new Member("testName", "01012345678", "test@mail.com", false);
         Long memberId = 1L;
@@ -42,12 +42,12 @@ public class SinittoServiceTest {
         sinittoService.createSinittoBankInfo(memberId, sinittoBankRequest);
 
         //then
-        verify(sinittoBankInfoRepository,times(1)).save(any(SinittoBankInfo.class));
+        verify(sinittoBankInfoRepository, times(1)).save(any(SinittoBankInfo.class));
     }
 
     @Test
     @DisplayName("readSinitto 메소드 테스트")
-    void readSinittoTest(){
+    void readSinittoTest() {
         //given
         Member member = new Member("testName", "01012345678", "test@mail.com", false);
         Long memberId = 1L;
@@ -65,7 +65,7 @@ public class SinittoServiceTest {
 
     @Test
     @DisplayName("readSinittoBankInfo 메소드 테스트")
-    void readSinittoBankInfoTest(){
+    void readSinittoBankInfoTest() {
         //given
         Member member = new Member("testName", "01012345678", "test@mail.com", false);
         Long memberId = 1L;
@@ -83,7 +83,7 @@ public class SinittoServiceTest {
 
     @Test
     @DisplayName("readSinittoBankInfo 메소드 테스트 - sinittoBankInfo에 참조된 Member가 없을 때")
-    void readSinittoBankInfoTestWithNull(){
+    void readSinittoBankInfoTestWithNull() {
         //given
         Member member = new Member("testName", "01012345678", "test@mail.com", false);
         Long memberId = 1L;
@@ -100,7 +100,7 @@ public class SinittoServiceTest {
 
     @Test
     @DisplayName("updateSinitto 메소드 테스트")
-    void updateSinittoTest(){
+    void updateSinittoTest() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -111,12 +111,12 @@ public class SinittoServiceTest {
         sinittoService.updateSinitto(memberId, sinittoRequest);
 
         //then
-        verify(member,times(1)).updateMember(sinittoRequest.name(), sinittoRequest.phoneNumber());
+        verify(member, times(1)).updateMember(sinittoRequest.name(), sinittoRequest.phoneNumber());
     }
 
     @Test
     @DisplayName("updateSinittoBankInfo 메소드 테스트")
-    void updateSinittoBankInfo(){
+    void updateSinittoBankInfo() {
         //given
         Long memberId = 1L;
         SinittoBankInfo sinittoBankInfo = mock(SinittoBankInfo.class);
@@ -128,6 +128,6 @@ public class SinittoServiceTest {
         sinittoService.updateSinittoBankInfo(memberId, sinittoBankRequest);
 
         //then
-        verify(sinittoBankInfo,times(1)).updateSinitto(sinittoBankRequest.bankName(), sinittoBankRequest.accountNumber());
+        verify(sinittoBankInfo, times(1)).updateSinitto(sinittoBankRequest.bankName(), sinittoBankRequest.accountNumber());
     }
 }

@@ -36,7 +36,7 @@ public class GuardGuildelineServiceTest {
 
     @Test
     @DisplayName("addGuardGuideline 메소드 테스트")
-    void addGuardGuidelineTest(){
+    void addGuardGuidelineTest() {
         //given
         Member member = new Member("testName", "01000000000", "test@mail.com", false);
         Long memberId = 1L;
@@ -56,7 +56,7 @@ public class GuardGuildelineServiceTest {
 
     @Test
     @DisplayName("readAllGuardGuidelinesByCategoryAndSenior 메소드 테스트")
-    void readAllGuardGuidelinesByCategoryAndSeniorTest(){
+    void readAllGuardGuidelinesByCategoryAndSeniorTest() {
         //given
         Long memberId = 1L;
         Senior senior = mock(Senior.class);
@@ -80,7 +80,7 @@ public class GuardGuildelineServiceTest {
 
     @Test
     @DisplayName("readAllGuardGuidelinesByCategoryAndCallback 메소드 테스트")
-    void readAllGuardGuidelinesByCategoryAndCallbackTest(){
+    void readAllGuardGuidelinesByCategoryAndCallbackTest() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -109,7 +109,7 @@ public class GuardGuildelineServiceTest {
 
     @Test
     @DisplayName("updateGuardGuideline 메소드 테스트")
-    void updateGuardGuidelineTest(){
+    void updateGuardGuidelineTest() {
         //given
         Long memberId = 1L;
         Senior senior = mock(Senior.class);
@@ -129,7 +129,7 @@ public class GuardGuildelineServiceTest {
 
     @Test
     @DisplayName("deleteGuardGuideline 메소드 테스트")
-    void deleteGuardGuidelineTest(){
+    void deleteGuardGuidelineTest() {
         //given
         Senior senior = mock(Senior.class);
         Long memberId = 1L;
@@ -147,7 +147,7 @@ public class GuardGuildelineServiceTest {
 
     @Test
     @DisplayName("readAllGuardGuidelinesBySenior 메소드 테스트")
-    void readAllGuardGuidelinesBySeniorTest(){
+    void readAllGuardGuidelinesBySeniorTest() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;

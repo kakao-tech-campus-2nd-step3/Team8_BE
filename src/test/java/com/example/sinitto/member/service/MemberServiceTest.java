@@ -45,7 +45,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("getMemberIdByToken 메소드 테스트")
-    void getMemberIdByTokenTest(){
+    void getMemberIdByTokenTest() {
         //given
         String token = "testtoken";
         String email = "test@email.com";
@@ -63,7 +63,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("getMemberIdByToken 메소드 테스트 - memberRepository에 없을 경우")
-    void getMemberIdByTokenTestWhenNotInMemberRepository(){
+    void getMemberIdByTokenTestWhenNotInMemberRepository() {
         //given
         String token = "testtoken";
         String email = "test@email.com";
@@ -78,7 +78,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("registerNewMember 메소드 테스트")
-    void registerNewMemberTest(){
+    void registerNewMemberTest() {
         //given
         String name = "testName";
         String phoneNumber = "01000000000";
@@ -98,7 +98,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("registerNewMember 메소드 테스트 - 이미 이메일이 있는 경우")
-    void registerNewMemberTestWhenExists(){
+    void registerNewMemberTestWhenExists() {
         //given
         String name = "testName";
         String phoneNumber = "01000000000";
@@ -113,7 +113,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("memberLogout 메소드 테스트")
-    void memberLogoutTest(){
+    void memberLogoutTest() {
         //given
         Long memberId = 1L;
         Member member = mock(Member.class);
@@ -131,7 +131,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("memberLogout 메소드 테스트 - member를 찾을 수 없는 경우")
-    void memberLogoutTestWhenMemberIsNull(){
+    void memberLogoutTestWhenMemberIsNull() {
         //given
         Long memberId = 1L;
         Member member = mock(Member.class);

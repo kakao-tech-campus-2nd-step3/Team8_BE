@@ -26,7 +26,7 @@ public class KakaoTokenServiceTest {
 
     @Test
     @DisplayName("saveKakaoToken 메소드 테스트")
-    void saveKakaoTokenTestInRepository(){
+    void saveKakaoTokenTestInRepository() {
         //given
         String email = "test@email.com";
         KakaoTokenResponse kakaoTokenResponse = mock(KakaoTokenResponse.class);
@@ -43,25 +43,25 @@ public class KakaoTokenServiceTest {
         verify(kakaoTokenRepository, times(1)).save(any(KakaoToken.class));
     }
 
-   @Test
-   @DisplayName("getValidAccessTokenInServer 메소드 테스트 - accessToken 만료 전")
-   void getValidAccessTokenInServerTestWhenAccessTokenIsNotExpired(){
-       //given
-       String email = "test@email.com";
-       KakaoToken kakaoToken = mock(KakaoToken.class);
+    @Test
+    @DisplayName("getValidAccessTokenInServer 메소드 테스트 - accessToken 만료 전")
+    void getValidAccessTokenInServerTestWhenAccessTokenIsNotExpired() {
+        //given
+        String email = "test@email.com";
+        KakaoToken kakaoToken = mock(KakaoToken.class);
 
-       when(kakaoTokenRepository.findByMemberEmail(email)).thenReturn(Optional.of(kakaoToken));
-       when(kakaoToken.isAccessTokenExpired()).thenReturn(false);
-       //when
+        when(kakaoTokenRepository.findByMemberEmail(email)).thenReturn(Optional.of(kakaoToken));
+        when(kakaoToken.isAccessTokenExpired()).thenReturn(false);
+        //when
         String result = kakaoTokenService.getValidAccessTokenInServer(email);
 
-       //then
-       assertEquals(kakaoToken.getAccessToken(), result);
-   }
+        //then
+        assertEquals(kakaoToken.getAccessToken(), result);
+    }
 
     @Test
     @DisplayName("getValidAccessTokenInServer 메소드 테스트 - accessToken 및 refreshToken 만료 후")
-    void getValidAccessTokenInServerTestWhenAccessTokenAndRefreshTokenIsExpired(){
+    void getValidAccessTokenInServerTestWhenAccessTokenAndRefreshTokenIsExpired() {
         //given
         String email = "test@email.com";
         KakaoToken kakaoToken = mock(KakaoToken.class);

@@ -59,7 +59,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("createHelloCallByGuard 메소드 테스트")
-    void createHelloCallByGuard(){
+    void createHelloCallByGuard() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -68,14 +68,14 @@ public class HelloCallServiceTest {
         DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
         String dayName = "";
 
-        switch (dayOfWeek){
-            case DayOfWeek.MONDAY -> dayName="월";
-            case DayOfWeek.TUESDAY -> dayName="화";
-            case DayOfWeek.WEDNESDAY -> dayName="수";
-            case DayOfWeek.THURSDAY -> dayName="목";
-            case DayOfWeek.FRIDAY -> dayName="금";
-            case DayOfWeek.SATURDAY -> dayName="토";
-            case DayOfWeek.SUNDAY -> dayName="일";
+        switch (dayOfWeek) {
+            case DayOfWeek.MONDAY -> dayName = "월";
+            case DayOfWeek.TUESDAY -> dayName = "화";
+            case DayOfWeek.WEDNESDAY -> dayName = "수";
+            case DayOfWeek.THURSDAY -> dayName = "목";
+            case DayOfWeek.FRIDAY -> dayName = "금";
+            case DayOfWeek.SATURDAY -> dayName = "토";
+            case DayOfWeek.SUNDAY -> dayName = "일";
         }
         timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now().plusHours(1), LocalTime.now().plusHours(1)));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(10), timeSlots, 1000, 10, "testRequirement");
@@ -96,7 +96,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("createHelloCallByGuard 메소드 테스트 - 시니어를 찾을 수 없을 때")
-    void createHelloCallByGuardWhenSeniorIsNull(){
+    void createHelloCallByGuardWhenSeniorIsNull() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -113,7 +113,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("createHelloCallByGuard 메소드 테스트 - 안부 전화 서비스가 존재할 때")
-    void createHelloCallByGuardWhenHelloCallAlreadyExists(){
+    void createHelloCallByGuardWhenHelloCallAlreadyExists() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -132,7 +132,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("createHelloCallByGuard 메소드 테스트 - 포인트 조회 실패할 때")
-    void createHelloCallByGuardWhenPointIsNotExist(){
+    void createHelloCallByGuardWhenPointIsNotExist() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -142,14 +142,14 @@ public class HelloCallServiceTest {
         DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
         String dayName = "";
 
-        switch (dayOfWeek){
-            case DayOfWeek.MONDAY -> dayName="월";
-            case DayOfWeek.TUESDAY -> dayName="화";
-            case DayOfWeek.WEDNESDAY -> dayName="수";
-            case DayOfWeek.THURSDAY -> dayName="목";
-            case DayOfWeek.FRIDAY -> dayName="금";
-            case DayOfWeek.SATURDAY -> dayName="토";
-            case DayOfWeek.SUNDAY -> dayName="일";
+        switch (dayOfWeek) {
+            case DayOfWeek.MONDAY -> dayName = "월";
+            case DayOfWeek.TUESDAY -> dayName = "화";
+            case DayOfWeek.WEDNESDAY -> dayName = "수";
+            case DayOfWeek.THURSDAY -> dayName = "목";
+            case DayOfWeek.FRIDAY -> dayName = "금";
+            case DayOfWeek.SATURDAY -> dayName = "토";
+            case DayOfWeek.SUNDAY -> dayName = "일";
         }
 
         timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now().plusHours(2), LocalTime.now().plusHours(4)));
@@ -165,7 +165,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("createHelloCallByGuard 메소드 테스트 - 포인트 부족할 때")
-    void createHelloCallByGuardWhenPointIsLessThanPrice(){
+    void createHelloCallByGuardWhenPointIsLessThanPrice() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -174,14 +174,14 @@ public class HelloCallServiceTest {
         DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
         String dayName = "";
 
-        switch (dayOfWeek){
-            case DayOfWeek.MONDAY -> dayName="월";
-            case DayOfWeek.TUESDAY -> dayName="화";
-            case DayOfWeek.WEDNESDAY -> dayName="수";
-            case DayOfWeek.THURSDAY -> dayName="목";
-            case DayOfWeek.FRIDAY -> dayName="금";
-            case DayOfWeek.SATURDAY -> dayName="토";
-            case DayOfWeek.SUNDAY -> dayName="일";
+        switch (dayOfWeek) {
+            case DayOfWeek.MONDAY -> dayName = "월";
+            case DayOfWeek.TUESDAY -> dayName = "화";
+            case DayOfWeek.WEDNESDAY -> dayName = "수";
+            case DayOfWeek.THURSDAY -> dayName = "목";
+            case DayOfWeek.FRIDAY -> dayName = "금";
+            case DayOfWeek.SATURDAY -> dayName = "토";
+            case DayOfWeek.SUNDAY -> dayName = "일";
         }
         timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now(), LocalTime.now().plusHours(2)));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
@@ -197,7 +197,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readAllHelloCallsByGuard 메소드 테스트")
-    void readAllHelloCallsByGuardTest(){
+    void readAllHelloCallsByGuardTest() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -218,7 +218,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readAllWaitingHelloCallsBySinitto 메소드 테스트")
-    void readAllWaitingHelloCallsBySinitto(){
+    void readAllWaitingHelloCallsBySinitto() {
         //given
         Pageable pageable = PageRequest.of(0, 10);
         Senior senior = mock(Senior.class);
@@ -237,7 +237,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallDetail 메소드 테스트")
-    void readHelloCallDetail(){
+    void readHelloCallDetail() {
         //given
         Senior senior = mock(Senior.class);
         Long helloCallId = 1L;
@@ -259,7 +259,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallDetail 메소드 테스트 - HelloCall을 찾을 수 없을 때")
-    void readHelloCallDetailWhenHelloCallIsNotExist(){
+    void readHelloCallDetailWhenHelloCallIsNotExist() {
         //given
         Long helloCallId = 1L;
 
@@ -271,13 +271,13 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("updateHelloCallByGuard 메소드 테스트 - HelloCall이 없을 때")
-    void updateHelloCallByGuardTestWhenHelloCallIsNotExist(){
+    void updateHelloCallByGuardTestWhenHelloCallIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
         List<HelloCallDetailUpdateRequest.TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new HelloCallDetailUpdateRequest.TimeSlot("월", LocalTime.now(), LocalTime.now().plusHours(2)));
-        HelloCallDetailUpdateRequest helloCallDetailUpdateRequest = new HelloCallDetailUpdateRequest( LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
+        HelloCallDetailUpdateRequest helloCallDetailUpdateRequest = new HelloCallDetailUpdateRequest(LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
 
         when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.empty());
 
@@ -287,7 +287,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("updateHelloCallByGuard 메소드 테스트 - member가 없을 때")
-    void updateHelloCallByGuardTestWhenMemberIsNotExist(){
+    void updateHelloCallByGuardTestWhenMemberIsNotExist() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -295,7 +295,7 @@ public class HelloCallServiceTest {
         Long helloCallId = 2L;
         List<HelloCallDetailUpdateRequest.TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new HelloCallDetailUpdateRequest.TimeSlot("월", LocalTime.now(), LocalTime.now().plusHours(2)));
-        HelloCallDetailUpdateRequest helloCallDetailUpdateRequest = new HelloCallDetailUpdateRequest( LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
+        HelloCallDetailUpdateRequest helloCallDetailUpdateRequest = new HelloCallDetailUpdateRequest(LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
         HelloCall helloCall = new HelloCall(LocalDate.now(), LocalDate.now().plusDays(7), 500, 10, "testRequirement", senior);
 
         when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.of(helloCall));
@@ -307,7 +307,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("deleteHellCallByGuard 메소드 테스트")
-    void deleteHellCallByGuardTest(){
+    void deleteHellCallByGuardTest() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -330,7 +330,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("deleteHellCallByGuard 메소드 테스트 - HelloCall을 조회할 수 없을 때")
-    void deleteHellCallByGuardTestWhenHelloCallIsNotExist(){
+    void deleteHellCallByGuardTestWhenHelloCallIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
@@ -343,7 +343,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("deleteHellCallByGuard 메소드 테스트 - 멤버를 조회할 수 없을 때")
-    void deleteHellCallByGuardTestWhenMemberIsNotExist(){
+    void deleteHellCallByGuardTestWhenMemberIsNotExist() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -360,7 +360,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("deleteHellCallByGuard 메소드 테스트 - 포인트를 조회할 수 없을 때")
-    void deleteHellCallByGuardTestWhenPointIsNotExist(){
+    void deleteHellCallByGuardTestWhenPointIsNotExist() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -378,7 +378,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallTimeLogByGuard 메소드 테스트")
-    void readHelloCallTimeLogByGuardTest(){
+    void readHelloCallTimeLogByGuardTest() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -402,7 +402,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallTimeLogByGuard 메소드 테스트 - HelloCall을 찾을 수 없을 때")
-    void readHelloCallTimeLogByGuardTestWhenHelloCallIsNotExist(){
+    void readHelloCallTimeLogByGuardTestWhenHelloCallIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
@@ -415,7 +415,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallTimeLogByGuard 메소드 테스트 - Member를 찾을 수 없을 때")
-    void readHelloCallTimeLogByGuardTestWhenMemberIsNotExist(){
+    void readHelloCallTimeLogByGuardTestWhenMemberIsNotExist() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -432,7 +432,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallReportByGuard 메소드 테스트")
-    void readHelloCallReportByGuardTest(){
+    void readHelloCallReportByGuardTest() {
         //given
         Member member = mock(Member.class);
         Member sinitto = mock(Member.class);
@@ -458,7 +458,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallReportByGuard 메소드 테스트 - Member가 없는 경우")
-    void readHelloCallReportByGuardTestWhenMemberIsNotExist(){
+    void readHelloCallReportByGuardTestWhenMemberIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
@@ -471,7 +471,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallReportByGuard 메소드 테스트 - HelloCall이 없는 경우")
-    void readHelloCallReportByGuardTestWhenHelloCallIsNotExist(){
+    void readHelloCallReportByGuardTestWhenHelloCallIsNotExist() {
         //given
         Member member = mock(Member.class);
         Member sinitto = mock(Member.class);
@@ -491,7 +491,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readHelloCallReportByGuard 메소드 테스트 - report가 없는 경우")
-    void readHelloCallReportByGuardTestWhenReportIsNotExist(){
+    void readHelloCallReportByGuardTestWhenReportIsNotExist() {
         //given
         Member member = mock(Member.class);
         Member sinitto = mock(Member.class);
@@ -511,7 +511,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("makeCompleteHelloCallByGuard 메소드 테스트")
-    void makeCompleteHelloCallByGuardTest(){
+    void makeCompleteHelloCallByGuardTest() {
         Member member = mock(Member.class);
         Member sinitto = mock(Member.class);
         Long memberId = 1L;
@@ -536,7 +536,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("makeCompleteHelloCallByGuard 메소드 테스트 - Member가 없을 때")
-    void makeCompleteHelloCallByGuardTestWhenMemberIsNotWaiting(){
+    void makeCompleteHelloCallByGuardTestWhenMemberIsNotWaiting() {
         Long memberId = 1L;
         Long helloCallId = 2L;
 
@@ -548,7 +548,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("makeCompleteHelloCallByGuard 메소드 테스트 - HelloCall이 없을 때")
-    void makeCompleteHelloCallByGuardTestWhenHelloCallIsNotWaiting(){
+    void makeCompleteHelloCallByGuardTestWhenHelloCallIsNotWaiting() {
         Member member = mock(Member.class);
         Member sinitto = mock(Member.class);
         Long memberId = 1L;
@@ -566,7 +566,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("makeCompleteHelloCallByGuard 메소드 테스트 - 상태가 완료 대기가 아닐 때")
-    void makeCompleteHelloCallByGuardTestWhenStatusIsNotWaiting(){
+    void makeCompleteHelloCallByGuardTestWhenStatusIsNotWaiting() {
         Member member = mock(Member.class);
         Member sinitto = mock(Member.class);
         Long memberId = 1L;
@@ -584,7 +584,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readAllHelloCallReportByAdmin 메소드 테스트")
-    void readAllHelloCallReportByAdminTest(){
+    void readAllHelloCallReportByAdminTest() {
         Senior senior = mock(Senior.class);
         Member sinitto = mock(Member.class);
         List<HelloCall> helloCalls = new ArrayList<>();
@@ -608,7 +608,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("acceptHelloCallBySinitto 메소드 테스트 - HelloCall이 없을 때")
-    void acceptHelloCallBySinittoTestWhenHelloCallIsNotExist(){
+    void acceptHelloCallBySinittoTestWhenHelloCallIsNotExist() {
         Long memberId = 1L;
         Long helloCallId = 2L;
 
@@ -620,7 +620,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("acceptHelloCallBySinitto 메소드 테스트 - Member가 없을 때")
-    void acceptHelloCallBySinittoTestWhenMemberIsNotExist(){
+    void acceptHelloCallBySinittoTestWhenMemberIsNotExist() {
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Long memberId = 1L;
         Senior senior = new Senior("testSeniorName", "01012345678", member);
@@ -636,7 +636,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("acceptHelloCallBySinitto 메소드 테스트 - 시니또가 아닐 때")
-    void acceptHelloCallBySinittoTestWhenMemberIsNotSinitto(){
+    void acceptHelloCallBySinittoTestWhenMemberIsNotSinitto() {
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Long memberId = 1L;
         Senior senior = new Senior("testSeniorName", "01012345678", member);
@@ -652,7 +652,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallStartTimeBySinitto 메소드 테스트")
-    void writeHelloCallStartTimeBySinittoTest(){
+    void writeHelloCallStartTimeBySinittoTest() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -676,7 +676,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallStartTimeBySinitto 메소드 테스트 - 이미 진행중인 안부전화가 있을 때")
-    void writeHelloCallStartTimeBySinittoTestWhenHelloCallAlreadyExists(){
+    void writeHelloCallStartTimeBySinittoTestWhenHelloCallAlreadyExists() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -697,7 +697,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallStartTimeBySinitto 메소드 테스트 - HelloCall이 없을 때")
-    void writeHelloCallStartTimeBySinittoTestWhenHelloCallIsNotExist(){
+    void writeHelloCallStartTimeBySinittoTestWhenHelloCallIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
@@ -710,7 +710,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallStartTimeBySinitto 메소드 테스트 - Member가 없을 때")
-    void writeHelloCallStartTimeBySinittoTestWhenMemberIsNotExist(){
+    void writeHelloCallStartTimeBySinittoTestWhenMemberIsNotExist() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -730,7 +730,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallEndTimeBySinitto 메소드 테스트")
-    void writeHelloCallEndTimeBySinittoTest(){
+    void writeHelloCallEndTimeBySinittoTest() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -755,7 +755,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallEndTimeBySinitto 메소드 테스트 - HelloCall이 없을 때")
-    void writeHelloCallEndTimeBySinittoTestWhenHelloCallIsNotExist(){
+    void writeHelloCallEndTimeBySinittoTestWhenHelloCallIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
@@ -768,7 +768,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallEndTimeBySinitto 메소드 테스트 - Member가 없을 때")
-    void writeHelloCallEndTimeBySinittoTestWhenMemberIsNotExist(){
+    void writeHelloCallEndTimeBySinittoTestWhenMemberIsNotExist() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Long memberId = 1L;
@@ -785,7 +785,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallEndTimeBySinitto 메소드 테스트 - 안부전화 로그를 찾을 수 없을 때")
-    void writeHelloCallEndTimeBySinittoTestWhenHelloCallTimeLogIsNotExist(){
+    void writeHelloCallEndTimeBySinittoTestWhenHelloCallTimeLogIsNotExist() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -805,7 +805,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("writeHelloCallEndTimeBySinitto 메소드 테스트 - 이미 종료된 안부전화일 때")
-    void writeHelloCallEndTimeBySinittoTestWhenHelloCallAlreadyEnd(){
+    void writeHelloCallEndTimeBySinittoTestWhenHelloCallAlreadyEnd() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -826,7 +826,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("cancelHelloCallBySinitto 메소드 테스트")
-    void cancelHelloCallBySinittoTest(){
+    void cancelHelloCallBySinittoTest() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -850,7 +850,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("cancelHelloCallBySinitto 메소드 테스트 - HelloCall이 없을 때")
-    void cancelHelloCallBySinittoTestWhenHelloCallIsNotExist(){
+    void cancelHelloCallBySinittoTestWhenHelloCallIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
@@ -863,7 +863,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("cancelHelloCallBySinitto 메소드 테스트 - Member가 없을 때")
-    void cancelHelloCallBySinittoTestWhenMemberIsNotExist(){
+    void cancelHelloCallBySinittoTestWhenMemberIsNotExist() {
         //given
         Member member = new Member("testName", "01000000000", "test@email.com", false);
         Member sinitto = mock(Member.class);
@@ -883,7 +883,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("sendReportBySinitto 메소드 테스트")
-    void sendReportBySinittoTest(){
+    void sendReportBySinittoTest() {
         //given
 
         Member member = new Member("testName", "01000000000", "test@email.com", false);
@@ -908,7 +908,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("sendReportBySinitto 메소드 테스트 - HelloCall이 없을 때")
-    void sendReportBySinittoTestWhenHelloCallIsNotExist(){
+    void sendReportBySinittoTestWhenHelloCallIsNotExist() {
         //given
         Long memberId = 1L;
         Long helloCallId = 2L;
@@ -922,7 +922,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("sendReportBySinitto 메소드 테스트 - Member가 없을 때")
-    void sendReportBySinittoTestWhenMemberIsNotExist(){
+    void sendReportBySinittoTestWhenMemberIsNotExist() {
         //given
 
         Member member = new Member("testName", "01000000000", "test@email.com", false);
@@ -944,7 +944,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("sendReportBySinitto 메소드 테스트 - 종료 일자보다 빠르게 종료하려 할 때")
-    void sendReportBySinittoTestWhenEndDateIsInvalid(){
+    void sendReportBySinittoTestWhenEndDateIsInvalid() {
         //given
 
         Member member = new Member("testName", "01000000000", "test@email.com", false);
@@ -966,7 +966,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readOwnHelloCallBySinitto 메소드 테스트")
-    void readOwnHelloCallBySinittoTest(){
+    void readOwnHelloCallBySinittoTest() {
         //given
         Long memberId = 1L;
         Member member = mock(Member.class);
@@ -992,7 +992,7 @@ public class HelloCallServiceTest {
 
     @Test
     @DisplayName("readOwnHelloCallBySinitto 메소드 테스트 - Member가 없을 때")
-    void readOwnHelloCallBySinittoTestWhenMemberIsNotExist(){
+    void readOwnHelloCallBySinittoTestWhenMemberIsNotExist() {
         //given
         Long memberId = 1L;
 

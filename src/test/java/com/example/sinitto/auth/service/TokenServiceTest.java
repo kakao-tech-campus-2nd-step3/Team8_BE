@@ -1,4 +1,5 @@
 package com.example.sinitto.auth.service;
+
 import com.example.sinitto.common.exception.InvalidJwtException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +56,7 @@ public class TokenServiceTest {
 
     @Test
     @DisplayName("generateRefreshToken 메소드 테스트 - extractEmail 메소드도 함께 사용")
-    void generateRefreshTokenTest(){
+    void generateRefreshTokenTest() {
         //given
         String email = "test@email.com";
 

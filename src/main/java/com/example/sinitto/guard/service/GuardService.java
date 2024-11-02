@@ -57,7 +57,7 @@ public class GuardService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );
-        if(member.isSinitto()) throw new BadRequestException("보호자만 이용할 수 있습니다.");
+        if (member.isSinitto()) throw new BadRequestException("보호자만 이용할 수 있습니다.");
 
         Senior senior = new Senior(seniorRequest.seniorName(), seniorRequest.seniorPhoneNumber(), member);
 

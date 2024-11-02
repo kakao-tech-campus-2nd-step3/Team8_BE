@@ -34,7 +34,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("readGuide 메소드 테스트")
-    void readGuardTest(){
+    void readGuardTest() {
         //given
         Member member = new Member("testName", "01012345678", "test@mail.com", false);
         Long memberId = 1L;
@@ -53,7 +53,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("updateGuard 메소드 테스트")
-    void updateGuardTest(){
+    void updateGuardTest() {
         //given
         Member member = mock(Member.class);
         Long memberId = 1L;
@@ -66,12 +66,12 @@ public class GuardServiceTest {
         guardService.updateGuard(memberId, guardRequest);
 
         //then
-        verify(member,times(1)).updateMember(guardRequest.name(), guardRequest.phoneNumber());
+        verify(member, times(1)).updateMember(guardRequest.name(), guardRequest.phoneNumber());
     }
 
     @Test
     @DisplayName("deleteGuard 메소드 테스트")
-    void deleteGuardTest(){
+    void deleteGuardTest() {
         // Given
         Long memberId = 1L;
         Member member = new Member("testName", "01012345678", "test@mail.com", false);
@@ -86,7 +86,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("createSenior 메소드 테스트")
-    void createSeniorTest(){
+    void createSeniorTest() {
         // Given
         Long memberId = 1L;
         Member member = new Member("testName", "01012345678", "test@mail.com", false);
@@ -95,7 +95,7 @@ public class GuardServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(seniorRepository.save(any(Senior.class))).thenReturn(senior);
         // When
-         guardService.createSenior(memberId, seniorRequest);
+        guardService.createSenior(memberId, seniorRequest);
 
         // Then
         verify(seniorRepository, times(1)).save(any(Senior.class));
@@ -103,7 +103,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("createSenior 테스트 - 시니또일 경우 BadRequestException 발생")
-    void createSeniorTestWhenSinittoDoThis(){
+    void createSeniorTestWhenSinittoDoThis() {
         // Given
         Long memberId = 1L;
         Member member = new Member("testName", "01012345678", "test@mail.com", true);
@@ -117,7 +117,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("readSeniors 메소드 테스트")
-    void readSeniorsTest(){
+    void readSeniorsTest() {
         //given
         Long memberId = 1L;
         Member member = new Member("testName", "01012345678", "test@mail.com", true);
@@ -143,7 +143,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("readOneSenior 메소드 테스트")
-    void readOneSeniorTest(){
+    void readOneSeniorTest() {
         //given
         Long memberId = 1L;
         Long seniorId = 2L;
@@ -161,7 +161,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("updateSenior 메소드 테스트")
-    void updateSeniorTest(){
+    void updateSeniorTest() {
         //given
         Long memberId = 1L;
         Long seniorId = 2L;
@@ -179,7 +179,7 @@ public class GuardServiceTest {
 
     @Test
     @DisplayName("deleteSenior 메소드 테스트")
-    void deleteSeniorTest(){
+    void deleteSeniorTest() {
         //given
         Long memberId = 1L;
         Long seniorId = 2L;
