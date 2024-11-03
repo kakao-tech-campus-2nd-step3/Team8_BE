@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +53,7 @@ class PointAdminServiceTest {
             Member member = mock(Member.class);
             when(pointLogRepository.findAllByStatusInOrderByPostTimeDesc(anyList())).thenReturn(List.of(pointLog));
             when(pointLog.getMember()).thenReturn(member);
+            when(pointLog.getPostTime()).thenReturn(LocalDateTime.now());
             when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
             when(member.getDepositMessage()).thenReturn("DepositMessage");
 
@@ -173,7 +175,8 @@ class PointAdminServiceTest {
             when(sinittoBankInfoRepository.findByMemberId(anyLong())).thenReturn(Optional.of(sinittoBankInfo));
 
             when(pointLog.getMember()).thenReturn(mock(Member.class));
-            when(pointLog.getPrice()).thenReturn(5050);
+            when(pointLog.getPointPriceAfterFee()).thenReturn(5050);
+            when(pointLog.getPostTime()).thenReturn(LocalDateTime.now());
             when(sinittoBankInfo.getBankName()).thenReturn("BankName");
             when(sinittoBankInfo.getAccountNumber()).thenReturn("AccountNumber");
 
