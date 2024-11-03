@@ -33,10 +33,6 @@ public class MemberServiceTest {
     @Mock
     TokenService tokenService;
     @Mock
-    KakaoApiService kakaoApiService;
-    @Mock
-    KakaoTokenService kakaoTokenService;
-    @Mock
     RedisTemplate<String, String> redisTemplate;
     @Mock
     private ValueOperations<String, String> valueOperations;
