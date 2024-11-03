@@ -1,7 +1,10 @@
 package com.example.sinitto.point.service;
 
 import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.member.entity.Member;
+import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointLogWithBankInfo;
+import com.example.sinitto.point.dto.PointLogWithDepositMessage;
 import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.repository.PointLogRepository;
@@ -11,6 +14,7 @@ import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +24,36 @@ public class PointAdminService {
     private final PointLogRepository pointLogRepository;
     private final PointRepository pointRepository;
     private final SinittoBankInfoRepository sinittoBankInfoRepository;
+    private final MemberRepository memberRepository;
 
-    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository, SinittoBankInfoRepository sinittoBankInfoRepository) {
+    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository, SinittoBankInfoRepository sinittoBankInfoRepository, MemberRepository memberRepository) {
         this.pointLogRepository = pointLogRepository;
         this.pointRepository = pointRepository;
         this.sinittoBankInfoRepository = sinittoBankInfoRepository;
+        this.memberRepository = memberRepository;
     }
 
-    public List<PointLog> readAllNotCompletedPointChargeRequest() {
+    @Transactional(readOnly = true)
+    public List<PointLogWithDepositMessage> getPointLogWithDepositMessage() {
 
-        return pointLogRepository.findAllByStatusInOrderByPostTimeDesc(List.of(PointLog.Status.CHARGE_WAITING, PointLog.Status.CHARGE_REQUEST, PointLog.Status.CHARGE_COMPLETE, PointLog.Status.CHARGE_FAIL));
+        List<PointLog> pointLogs = pointLogRepository.findAllByStatusInOrderByPostTimeDesc(List.of(PointLog.Status.CHARGE_WAITING, PointLog.Status.CHARGE_REQUEST, PointLog.Status.CHARGE_COMPLETE, PointLog.Status.CHARGE_FAIL));
+        List<PointLogWithDepositMessage> logWithDepositMessages = new ArrayList<>();
+
+        for (PointLog pointLog : pointLogs) {
+            Member member = memberRepository.findById(pointLog.getMember().getId())
+                    .orElse(new Member("미등록 유저", "미등록 유저", "미등록 유저", false));
+
+            PointLogWithDepositMessage pointLogWithDepositMessage = new PointLogWithDepositMessage(
+                    pointLog.getId(),
+                    pointLog.getPrice(),
+                    pointLog.getPostTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")),
+                    pointLog.getStatus(),
+                    member.getDepositMessage()
+            );
+
+            logWithDepositMessages.add(pointLogWithDepositMessage);
+        }
+        return logWithDepositMessages;
     }
 
     @Transactional
@@ -108,8 +132,8 @@ public class PointAdminService {
 
             PointLogWithBankInfo pointLogWithBankInfo = new PointLogWithBankInfo(
                     pointLog.getId(),
-                    pointLog.getPrice(),
-                    pointLog.getPostTime(),
+                    pointLog.getPointPriceAfterFee(),
+                    pointLog.getPostTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")),
                     pointLog.getStatus(),
                     sinittoBankInfo.getBankName(),
                     sinittoBankInfo.getAccountNumber()
