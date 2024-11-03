@@ -102,7 +102,7 @@ public class SinittoServiceTest {
     @DisplayName("updateSinitto 메소드 테스트")
     void updateSinittoTest() {
         //given
-        Member member = mock(Member.class);
+        Member member = new Member("testName", "01000000000", "test@email.com", true);
         Long memberId = 1L;
         SinittoRequest sinittoRequest = new SinittoRequest("newTestName", "01011111111");
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
@@ -111,15 +111,17 @@ public class SinittoServiceTest {
         sinittoService.updateSinitto(memberId, sinittoRequest);
 
         //then
-        verify(member, times(1)).updateMember(sinittoRequest.name(), sinittoRequest.phoneNumber());
+        assertEquals(member.getName(), sinittoRequest.name());
+        assertEquals(member.getPhoneNumber(), sinittoRequest.phoneNumber());
     }
 
     @Test
     @DisplayName("updateSinittoBankInfo 메소드 테스트")
     void updateSinittoBankInfo() {
         //given
+        Member member = mock(Member.class);
         Long memberId = 1L;
-        SinittoBankInfo sinittoBankInfo = mock(SinittoBankInfo.class);
+        SinittoBankInfo sinittoBankInfo = new SinittoBankInfo("testBankName", "12345678", member);
         SinittoBankRequest sinittoBankRequest = new SinittoBankRequest("987654321", "newTestBankName");
 
         when(sinittoBankInfoRepository.findByMemberId(memberId)).thenReturn(Optional.of(sinittoBankInfo));
@@ -128,6 +130,7 @@ public class SinittoServiceTest {
         sinittoService.updateSinittoBankInfo(memberId, sinittoBankRequest);
 
         //then
-        verify(sinittoBankInfo, times(1)).updateSinitto(sinittoBankRequest.bankName(), sinittoBankRequest.accountNumber());
+        assertEquals(sinittoBankInfo.getBankName(), sinittoBankRequest.bankName());
+        assertEquals(sinittoBankInfo.getAccountNumber(), sinittoBankRequest.accountNumber());
     }
 }
