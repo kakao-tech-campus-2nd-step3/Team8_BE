@@ -43,7 +43,7 @@
                 <form method="post"
                       th:action="@{/admin/point/withdraw/complete/{pointLogId}(pointLogId=${logWithBankInfo.pointLogId()})}"
                       th:if="${logWithBankInfo.status().toString()} == 'WITHDRAW_WAITING'">
-                    <button type="submit">입금 완료 & 완료 상태로 변경</button>
+                    <button type="submit">완료 상태로 변경</button>
                 </form>
 
                 <!-- 상태가 CHARGE_WAITING일 때 -->
