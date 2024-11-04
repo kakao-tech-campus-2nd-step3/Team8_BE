@@ -2,6 +2,7 @@ package com.example.sinitto.auth.service;
 
 import com.example.sinitto.auth.dto.TokenResponse;
 import com.example.sinitto.common.exception.AccessTokenExpiredException;
+import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.common.exception.InvalidJwtException;
 import com.example.sinitto.common.exception.RefreshTokenStolenException;
 import io.jsonwebtoken.Claims;
@@ -36,6 +37,7 @@ public class TokenService {
     public String generateAccessToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("tokenType", "access")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_FIVE_MINUTES))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -45,6 +47,7 @@ public class TokenService {
     public String generateRefreshToken(String email) {
         String refreshToken = Jwts.builder()
                 .setSubject(email)
+                .claim("tokenType", "refresh")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_SEVEN_DAYS))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -55,10 +58,28 @@ public class TokenService {
     }
 
 
-    public String extractEmail(String token) {
-        Claims claims;
+    public String extractEmailFromAccessToken(String accessToken) {
+        Claims claims = parseClaims(accessToken);
+        if (!"access".equals(claims.get("tokenType", String.class))) {
+            throw new BadRequestException("사용된 토큰이 엑세스 토큰이 아닙니다. 요청하신 로직에서는 엑세스 토큰으로만 처리가 가능합니다.");
+        }
+        if (claims.getExpiration().before(new Date())) {
+            throw new AccessTokenExpiredException("액세스 토큰이 만료되었습니다. 리프레시 토큰으로 다시 액세스 토큰을 발급받으세요.");
+        }
+        return claims.getSubject();
+    }
+
+    public String extractEmailFromRefreshToken(String refreshToken) {
+        Claims claims = parseClaims(refreshToken);
+        if (!"refresh".equals(claims.get("tokenType", String.class))) {
+            throw new BadRequestException("해당 토큰은 리프레쉬 토큰이 아닙니다. 요청하신 로직에서는 리프레쉬 토큰만 사용이 가능합니다.");
+        }
+        return claims.getSubject();
+    }
+
+    private Claims parseClaims(String token) {
         try {
-            claims = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token)
@@ -66,16 +87,10 @@ public class TokenService {
         } catch (Exception e) {
             throw new InvalidJwtException(e.getMessage());
         }
-
-        if (claims.getExpiration().before(new Date())) {
-            throw new AccessTokenExpiredException("액세스 토큰이 만료되었습니다. 리프레시 토큰으로 다시 액세스 토큰을 발급받으세요.");
-        }
-
-        return claims.getSubject();
     }
 
     public TokenResponse refreshAccessToken(String refreshToken) {
-        String email = extractEmail(refreshToken);
+        String email = extractEmailFromRefreshToken(refreshToken);
 
         String storedRefreshToken = redisTemplate.opsForValue().get(email);
 
