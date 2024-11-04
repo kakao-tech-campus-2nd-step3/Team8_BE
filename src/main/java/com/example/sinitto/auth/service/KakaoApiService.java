@@ -20,7 +20,7 @@ public class KakaoApiService {
     private static final String KAKAO_AUTH_BASE_URL = "https://kauth.kakao.com/oauth";
     private static final String KAKAO_API_BASE_URL = "https://kapi.kakao.com/v2/user";
     private static final String LOCALHOST_URL = "localhost:5173";
-    private static final String FRONT_URL = "sinitto.s3-website.ap-northeast-2.amazonaws.com";
+    private static final String FRONT_URL = "dc9u22hnkwb24.cloudfront.net";
 
     private final RestTemplate restTemplate;
     private final KakaoProperties kakaoProperties;
