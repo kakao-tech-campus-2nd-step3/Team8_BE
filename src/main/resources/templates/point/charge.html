@@ -6,6 +6,11 @@
     <title>충전 페이지</title>
 </head>
 <body>
+
+<div>
+    <h1>포인트 충전 관리</h1>
+</div>
+
 <div>
     <table>
         <thead>
@@ -36,7 +41,7 @@
                 <form method="post"
                       th:action="@{/admin/point/charge/complete/{pointLogId}(pointLogId=${logWithDepositMessage.pointLogId})}"
                       th:if="${logWithDepositMessage.status.toString()} == 'CHARGE_WAITING'">
-                    <button type="submit">포인트 지급 & 완료 상태로 변경</button>
+                    <button type="submit">완료 상태로 변경</button>
                 </form>
 
                 <!-- 상태가 CHARGE_WAITING일 때 -->

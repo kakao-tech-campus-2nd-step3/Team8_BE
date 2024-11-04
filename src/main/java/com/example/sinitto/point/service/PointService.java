@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PointService {
 
-    public static final double WITHDRAWAL_FEE_RATE = 0.8;
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
@@ -34,6 +33,7 @@ public class PointService {
         this.sinittoBankInfoRepository = sinittoBankInfoRepository;
     }
 
+    @Transactional(readOnly = true)
     public PointResponse getPoint(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
@@ -45,6 +45,7 @@ public class PointService {
         return new PointResponse(point.getPrice());
     }
 
+    @Transactional(readOnly = true)
     public Page<PointLogResponse> getPointLogs(Long memberId, Pageable pageable) {
 
         Member member = memberRepository.findById(memberId)
@@ -87,15 +88,13 @@ public class PointService {
         Point point = pointRepository.findByMember(member)
                 .orElseThrow(() -> new NotFoundException("요청한 멤버의 포인트를 찾을 수 없습니다"));
 
-        int adjustedPrice = (int) (price * WITHDRAWAL_FEE_RATE);
-
         if (!point.isSufficientForDeduction(price)) {
             throw new BadRequestException(String.format("보유한 포인트(%d) 보다 더 많은 포인트에 대한 출금요청입니다", point.getPrice()));
         }
 
         point.deduct(price);
 
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, adjustedPrice, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, price, PointLog.Status.WITHDRAW_REQUEST));
     }
 
     @Transactional
