@@ -16,10 +16,8 @@ import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
-import com.example.sinitto.point.repository.PointLogRepository;
-import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.point.service.PointService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,9 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @MockitoSettings
 public class HelloCallServiceTest {
@@ -51,9 +48,7 @@ public class HelloCallServiceTest {
     @Mock
     HelloCallTimeLogRepository helloCallTimeLogRepository;
     @Mock
-    PointRepository pointRepository;
-    @Mock
-    PointLogRepository pointLogRepository;
+    PointService pointService;
     @InjectMocks
     HelloCallService helloCallService;
 
@@ -61,7 +56,6 @@ public class HelloCallServiceTest {
     @DisplayName("createHelloCallByGuard 메소드 테스트")
     void createHelloCallByGuard() {
         //given
-        Member member = mock(Member.class);
         Long memberId = 1L;
         Senior senior = mock(Senior.class);
         List<HelloCallRequest.TimeSlot> timeSlots = new ArrayList<>();
@@ -79,11 +73,9 @@ public class HelloCallServiceTest {
         }
         timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now().plusHours(1), LocalTime.now().plusHours(1)));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(10), timeSlots, 1000, 10, "testRequirement");
-        Point point = new Point(2000, member);
 
         when(seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)).thenReturn(Optional.of(senior));
         when(helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))).thenReturn(false);
-        when(pointRepository.findByMemberIdWithWriteLock(memberId)).thenReturn(Optional.of(point));
 
         //when
         helloCallService.createHelloCallByGuard(memberId, helloCallRequest);
@@ -91,14 +83,12 @@ public class HelloCallServiceTest {
         //then
         verify(helloCallRepository, times(1)).save(any(HelloCall.class));
         verify(timeSlotRepository, times(helloCallRequest.timeSlots().size())).save(any(TimeSlot.class));
-        verify(pointLogRepository, times(1)).save(any(PointLog.class));
     }
 
     @Test
     @DisplayName("createHelloCallByGuard 메소드 테스트 - 시니어를 찾을 수 없을 때")
     void createHelloCallByGuardWhenSeniorIsNull() {
         //given
-        Member member = mock(Member.class);
         Long memberId = 1L;
         Senior senior = mock(Senior.class);
         List<HelloCallRequest.TimeSlot> timeSlots = new ArrayList<>();
@@ -115,13 +105,11 @@ public class HelloCallServiceTest {
     @DisplayName("createHelloCallByGuard 메소드 테스트 - 안부 전화 서비스가 존재할 때")
     void createHelloCallByGuardWhenHelloCallAlreadyExists() {
         //given
-        Member member = mock(Member.class);
         Long memberId = 1L;
         Senior senior = mock(Senior.class);
         List<HelloCallRequest.TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new HelloCallRequest.TimeSlot("월", LocalTime.now(), LocalTime.now().plusHours(2)));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
-        Point point = new Point(2000, member);
 
         when(seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)).thenReturn(Optional.of(senior));
         when(helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))).thenReturn(true);
@@ -131,43 +119,9 @@ public class HelloCallServiceTest {
     }
 
     @Test
-    @DisplayName("createHelloCallByGuard 메소드 테스트 - 포인트 조회 실패할 때")
-    void createHelloCallByGuardWhenPointIsNotExist() {
-        //given
-        Member member = mock(Member.class);
-        Long memberId = 1L;
-        Senior senior = mock(Senior.class);
-        List<HelloCallRequest.TimeSlot> timeSlots = new ArrayList<>();
-
-        DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-        String dayName = "";
-
-        switch (dayOfWeek) {
-            case DayOfWeek.MONDAY -> dayName = "월";
-            case DayOfWeek.TUESDAY -> dayName = "화";
-            case DayOfWeek.WEDNESDAY -> dayName = "수";
-            case DayOfWeek.THURSDAY -> dayName = "목";
-            case DayOfWeek.FRIDAY -> dayName = "금";
-            case DayOfWeek.SATURDAY -> dayName = "토";
-            case DayOfWeek.SUNDAY -> dayName = "일";
-        }
-
-        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now().plusHours(1), LocalTime.now().plusHours(2)));
-        HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
-
-        when(seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)).thenReturn(Optional.of(senior));
-        when(helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))).thenReturn(false);
-        when(pointRepository.findByMemberIdWithWriteLock(memberId)).thenReturn(Optional.empty());
-
-        //when, then
-        assertThrows(NotFoundException.class, () -> helloCallService.createHelloCallByGuard(memberId, helloCallRequest));
-    }
-
-    @Test
     @DisplayName("createHelloCallByGuard 메소드 테스트 - 포인트 부족할 때")
     void createHelloCallByGuardWhenPointIsLessThanPrice() {
         //given
-        Member member = mock(Member.class);
         Long memberId = 1L;
         Senior senior = mock(Senior.class);
         List<HelloCallRequest.TimeSlot> timeSlots = new ArrayList<>();
@@ -185,11 +139,9 @@ public class HelloCallServiceTest {
         }
         timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now(), LocalTime.now().plusHours(2)));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
-        Point point = new Point(100, member);
 
         when(seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)).thenReturn(Optional.of(senior));
         when(helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))).thenReturn(false);
-        when(pointRepository.findByMemberIdWithWriteLock(memberId)).thenReturn(Optional.of(point));
 
         //when, then
         assertThrows(BadRequestException.class, () -> helloCallService.createHelloCallByGuard(memberId, helloCallRequest));
@@ -314,17 +266,14 @@ public class HelloCallServiceTest {
         Senior senior = new Senior("testSeniorName", "01012345678", member);
         HelloCall helloCall = new HelloCall(LocalDate.now(), LocalDate.now().plusDays(7), 500, 10, "testRequirement", senior);
         Long helloCallId = 2L;
-        Point point = new Point(1000, member);
 
         when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.of(helloCall));
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
-        when(pointRepository.findByMemberIdWithWriteLock(memberId)).thenReturn(Optional.of(point));
 
         //when
         helloCallService.deleteHellCallByGuard(memberId, helloCallId);
 
         //then
-        verify(pointLogRepository, times(1)).save(any(PointLog.class));
         verify(helloCallRepository, times(1)).delete(any(HelloCall.class));
     }
 
@@ -353,24 +302,6 @@ public class HelloCallServiceTest {
 
         when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.of(helloCall));
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
-
-        //when, then
-        assertThrows(NotFoundException.class, () -> helloCallService.deleteHellCallByGuard(memberId, helloCallId));
-    }
-
-    @Test
-    @DisplayName("deleteHellCallByGuard 메소드 테스트 - 포인트를 조회할 수 없을 때")
-    void deleteHellCallByGuardTestWhenPointIsNotExist() {
-        //given
-        Member member = mock(Member.class);
-        Long memberId = 1L;
-        Senior senior = new Senior("testSeniorName", "01012345678", member);
-        HelloCall helloCall = new HelloCall(LocalDate.now(), LocalDate.now().plusDays(7), 500, 10, "testRequirement", senior);
-        Long helloCallId = 2L;
-
-        when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.of(helloCall));
-        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
-        when(pointRepository.findByMemberIdWithWriteLock(memberId)).thenReturn(Optional.empty());
 
         //when, then
         assertThrows(NotFoundException.class, () -> helloCallService.deleteHellCallByGuard(memberId, helloCallId));
@@ -521,17 +452,15 @@ public class HelloCallServiceTest {
         helloCall.setMember(sinitto);
         helloCall.changeStatusToInProgress();
         helloCall.changeStatusToPendingComplete();
-        Point sinittoPoint = mock(Point.class);
 
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.of(helloCall));
-        when(pointRepository.findByMember(helloCall.getMember())).thenReturn(Optional.of(sinittoPoint));
 
         //when
         helloCallService.makeCompleteHelloCallByGuard(memberId, helloCallId);
 
         // then
-        verify(pointLogRepository, times(1)).save(any(PointLog.class));
+        verify(pointService, atLeastOnce()).earnPoint(anyLong(), anyInt(), any(PointLog.Content.class));
     }
 
     @Test
@@ -719,7 +648,6 @@ public class HelloCallServiceTest {
         HelloCall helloCall = new HelloCall(LocalDate.now(), LocalDate.now().plusDays(7), 500, 10, "testRequirement", senior);
         Long helloCallId = 2L;
         helloCall.setMember(sinitto);
-        Optional<HelloCallTimeLog> recentLog = Optional.of(new HelloCallTimeLog(mock(HelloCall.class), sinitto, LocalDateTime.now(), null));
 
         when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.of(helloCall));
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
