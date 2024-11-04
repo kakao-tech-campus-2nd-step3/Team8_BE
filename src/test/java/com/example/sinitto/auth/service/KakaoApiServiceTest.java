@@ -57,7 +57,7 @@ public class KakaoApiServiceTest {
     @DisplayName("getAuthorizationUrl 메소드 테스트 - 배포 uri 포홤 시")
     void getAuthorizationUrlTestWithAwsUri() {
         //given
-        when(httpServletRequest.getHeader("Referer")).thenReturn("http://sinitto.s3-website.ap-northeast-2.amazonaws.com");
+        when(httpServletRequest.getHeader("Referer")).thenReturn("https://dc9u22hnkwb24.cloudfront.net");
         when(kakaoProperties.redirectUri()).thenReturn(redirectUri);
         when(kakaoProperties.clientId()).thenReturn(clientId);
 
