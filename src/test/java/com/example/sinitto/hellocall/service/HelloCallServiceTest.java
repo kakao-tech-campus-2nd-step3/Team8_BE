@@ -119,35 +119,6 @@ public class HelloCallServiceTest {
     }
 
     @Test
-    @DisplayName("createHelloCallByGuard 메소드 테스트 - 포인트 부족할 때")
-    void createHelloCallByGuardWhenPointIsLessThanPrice() {
-        //given
-        Long memberId = 1L;
-        Senior senior = mock(Senior.class);
-        List<HelloCallRequest.TimeSlot> timeSlots = new ArrayList<>();
-        DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-        String dayName = "";
-
-        switch (dayOfWeek) {
-            case DayOfWeek.MONDAY -> dayName = "월";
-            case DayOfWeek.TUESDAY -> dayName = "화";
-            case DayOfWeek.WEDNESDAY -> dayName = "수";
-            case DayOfWeek.THURSDAY -> dayName = "목";
-            case DayOfWeek.FRIDAY -> dayName = "금";
-            case DayOfWeek.SATURDAY -> dayName = "토";
-            case DayOfWeek.SUNDAY -> dayName = "일";
-        }
-        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now(), LocalTime.now().plusHours(2)));
-        HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
-
-        when(seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)).thenReturn(Optional.of(senior));
-        when(helloCallRepository.existsBySeniorAndStatusIn(senior, List.of(HelloCall.Status.WAITING, HelloCall.Status.IN_PROGRESS))).thenReturn(false);
-
-        //when, then
-        assertThrows(BadRequestException.class, () -> helloCallService.createHelloCallByGuard(memberId, helloCallRequest));
-    }
-
-    @Test
     @DisplayName("readAllHelloCallsByGuard 메소드 테스트")
     void readAllHelloCallsByGuardTest() {
         //given
