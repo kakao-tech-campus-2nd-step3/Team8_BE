@@ -41,7 +41,7 @@ public class MemberService implements MemberIdProvider {
 
     @Override
     public Long getMemberIdByToken(String token) {
-        String email = tokenService.extractEmail(token);
+        String email = tokenService.extractEmailFromAccessToken(token);
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
         );

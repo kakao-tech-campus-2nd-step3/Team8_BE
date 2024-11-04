@@ -46,7 +46,7 @@ public class TokenServiceTest {
 
         //when
         String token = tokenService.generateAccessToken(email);
-        String resultEmail = tokenService.extractEmail(token);
+        String resultEmail = tokenService.extractEmailFromAccessToken(token);
 
         //then
         assertNotNull(token);
@@ -64,7 +64,7 @@ public class TokenServiceTest {
 
         //when
         String token = tokenService.generateRefreshToken(email);
-        String resultEmail = tokenService.extractEmail(token);
+        String resultEmail = tokenService.extractEmailFromRefreshToken(token);
 
         //then
         assertNotNull(token);
