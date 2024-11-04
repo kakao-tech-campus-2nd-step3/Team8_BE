@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>더미데이터 유저 로그인</title>
+    <link href="/css/dummy.css" rel="stylesheet">
+</head>
+<body>
+<h2>더미데이터 유저 로그인</h2>
+<p style="color: black; font-weight: bold;">
+    해당 페이지는 개발자용 페이지입니다. 더미데이터 유저만 로그인이 가능합니다.
+</p>
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></p>
+
+<form th:action="@{/dummy}" method="post">
+    <label for="email">이메일:</label>
+    <select id="email" name="email" required>
+        <option value="" disabled selected>이메일을 선택하세요</option>
+        <option th:each="member, iterStat : ${members}" th:value="${member.email}"
+                th:text="${member.email + ' (' + (member.isSinitto ? '시니또' : '보호자') + ' ' + (iterStat.index + 1) + ')'}">
+        </option>
+    </select>
+    <br><br>
+
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password" required/><br><br>
+
+    <div class="button-container">
+        <button type="submit" name="env" value="dev">개발 환경으로 로그인</button>
+        <button type="submit" name="env" value="prod">배포 서버로 로그인</button>
+    </div>
+</form>
+</body>
+</html>

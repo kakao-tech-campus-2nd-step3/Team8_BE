@@ -1,13 +1,12 @@
 package com.example.sinitto.callback.service;
 
+import com.example.sinitto.callback.dto.CallbackForSinittoResponse;
 import com.example.sinitto.callback.dto.CallbackResponse;
 import com.example.sinitto.callback.entity.Callback;
-import com.example.sinitto.callback.exception.GuardMismatchException;
-import com.example.sinitto.callback.exception.NotExistCallbackException;
-import com.example.sinitto.callback.exception.NotMemberException;
-import com.example.sinitto.callback.exception.NotSinittoException;
 import com.example.sinitto.callback.repository.CallbackRepository;
 import com.example.sinitto.callback.util.TwilioHelper;
+import com.example.sinitto.common.exception.ForbiddenException;
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
@@ -87,7 +86,7 @@ class CallbackServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         //when then
-        assertThrows(NotMemberException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
+        assertThrows(NotFoundException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Test
@@ -102,7 +101,7 @@ class CallbackServiceTest {
         when(member.isSinitto()).thenReturn(false);
 
         //when then
-        assertThrows(NotSinittoException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
+        assertThrows(ForbiddenException.class, () -> callbackService.getWaitingCallbacks(memberId, pageable));
     }
 
     @Test
@@ -307,7 +306,7 @@ class CallbackServiceTest {
         when(senior.getMember().getId()).thenReturn(1L);
 
         //when then
-        assertThrows(GuardMismatchException.class, () -> callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId));
+        assertThrows(ForbiddenException.class, () -> callbackService.changeCallbackStatusToCompleteByGuard(memberId, callbackId));
     }
 
     @Test
@@ -342,7 +341,7 @@ class CallbackServiceTest {
         when(callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)).thenReturn(Optional.empty());
 
         //when then
-        assertThrows(NotExistCallbackException.class, () -> callbackService.getAcceptedCallback(memberId));
+        assertThrows(NotFoundException.class, () -> callbackService.getAcceptedCallback(memberId));
     }
 
     @Test
@@ -404,5 +403,84 @@ class CallbackServiceTest {
         assertTrue(일월1일12시59분.isBefore(일월3일13시10분.minusDays(2)));
         assertTrue(일월1일13시00분.isBefore(일월3일13시10분.minusDays(2)));
         assertTrue(일월1일13시01분.isBefore(일월3일13시10분.minusDays(2)));
+    }
+
+    @Test
+    @DisplayName("시니또용 콜백 단건 조회 - 1.대기상태 아님 2.AssignedMemberId 이 null 아님 + 해당 콜백에 할당 된 시니또 맞음 ")
+    void getCallbackForSinitto() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+        Callback callback = mock(Callback.class);
+        Senior senior = mock(Senior.class);
+
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+
+        when(callback.getStatus()).thenReturn(Callback.Status.IN_PROGRESS.toString());
+        when(callback.getAssignedMemberId()).thenReturn(1L);
+        when(callback.getId()).thenReturn(1L);
+        when(callback.getSeniorName()).thenReturn("SeniorName");
+        when(callback.getPostTime()).thenReturn(LocalDateTime.now());
+        when(callback.getSeniorId()).thenReturn(1L);
+        when(callback.getSenior()).thenReturn(senior);
+        when(callback.getSenior().getPhoneNumber()).thenReturn("01012341234");
+
+        //when
+        CallbackForSinittoResponse result = callbackService.getCallbackForSinitto(memberId, callbackId);
+
+        //then
+        assertTrue(result.isAssignedToSelf());
+        assertEquals("01012341234", result.seniorPhoneNumber());
+    }
+
+    @Test
+    @DisplayName("시니또용 콜백 단건 조회 - 1.대기상태 아님 2.AssignedMemberId 이 null 인 상황 ")
+    void getCallbackForSinitto2() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+        Callback callback = mock(Callback.class);
+
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(null);
+        when(callback.getStatus()).thenReturn(Callback.Status.IN_PROGRESS.toString());
+
+        //when then
+        assertThrows(ForbiddenException.class, () -> callbackService.getCallbackForSinitto(memberId, callbackId));
+    }
+
+    @Test
+    @DisplayName("시니또용 콜백 단건 조회 - 1.대기상태 아님 2.AssignedMemberId 이 null 은 아닌데 해당 콜백에 할당된 시니또는 아닌 상황")
+    void getCallbackForSinitto3() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+        Callback callback = mock(Callback.class);
+
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getAssignedMemberId()).thenReturn(999L);
+        when(callback.getStatus()).thenReturn(Callback.Status.IN_PROGRESS.toString());
+
+        //when then
+        assertThrows(ForbiddenException.class, () -> callbackService.getCallbackForSinitto(memberId, callbackId));
+    }
+
+    @Test
+    @DisplayName("시니또용 콜백 단건 조회 - 1.콜백이 '대기상태' 인 경우(모든 시니또가 조회 가능하다)")
+    void getCallbackForSinitto4() {
+        //given
+        Long memberId = 1L;
+        Long callbackId = 1L;
+        Callback callback = mock(Callback.class);
+
+        when(callbackRepository.findById(callbackId)).thenReturn(Optional.of(callback));
+        when(callback.getStatus()).thenReturn(Callback.Status.WAITING.toString());
+
+        //when
+        CallbackForSinittoResponse result = callbackService.getCallbackForSinitto(memberId, callbackId);
+
+        //then
+        assertFalse(result.isAssignedToSelf());
+        assertEquals("", result.seniorPhoneNumber());
     }
 }

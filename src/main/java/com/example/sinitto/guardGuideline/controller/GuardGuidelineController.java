@@ -14,12 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/guardguidelines")
-@Tag(name = "보호자용 가이드라인", description = "보호자가 입력하는 시니어별 가이드라인 관련 API")
+@Tag(name = "가이드라인", description = "가이드라인 관련 API")
 public class GuardGuidelineController {
 
     private final GuardGuidelineService guardGuidelineService;
 
-    public GuardGuidelineController(GuardGuidelineService guardGuidelineService) {this.guardGuidelineService = guardGuidelineService;}
+    public GuardGuidelineController(GuardGuidelineService guardGuidelineService) {
+        this.guardGuidelineService = guardGuidelineService;
+    }
 
     @Operation(summary = "가이드라인 추가", description = "보호자가 시니어별 가이드라인을 추가합니다.")
     @PostMapping
@@ -28,10 +30,16 @@ public class GuardGuidelineController {
         return ResponseEntity.ok("가이드라인이 추가되었습니다.");
     }
 
-    @Operation(summary = "카테고리에 해당하는 모든 가이드라인 조회", description = "시니또용 앱에서 카테고리에 해당하는 모든 가이드라인들을 요청할 때 필요합니다.")
-    @GetMapping("/{seniorId}/{type}")
-    public ResponseEntity<List<GuardGuidelineResponse>> getGuardGuidelinesByCategory(@PathVariable Long seniorId, @PathVariable GuardGuideline.Type type) {
-        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesByCategory(seniorId, type));
+    @Operation(summary = "카테고리에 해당하는 모든 가이드라인 조회(보호자용)", description = "보호자용 앱에서 카테고리에 해당하는 모든 가이드라인들을 요청할 때 필요합니다.")
+    @GetMapping("/guard/{seniorId}/{type}")
+    public ResponseEntity<List<GuardGuidelineResponse>> getGuardGuidelinesByCategoryAndSenior(@MemberId Long memberId, @PathVariable Long seniorId, @PathVariable GuardGuideline.Type type) {
+        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesByCategoryAndSenior(memberId, seniorId, type));
+    }
+
+    @Operation(summary = "카테고리에 해당하는 모든 가이드라인 조회(시니또용)", description = "시니또용 앱에서 카테고리에 해당하는 모든 가이드라인들을 요청할 때 필요합니다.")
+    @GetMapping("/sinitto/{callbackId}/{type}")
+    public ResponseEntity<List<GuardGuidelineResponse>> getGuardGuidelinesByCategoryAndCallback(@MemberId Long memberId, @PathVariable Long callbackId, @PathVariable GuardGuideline.Type type) {
+        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesByCategoryAndCallback(memberId, callbackId, type));
     }
 
     @Operation(summary = "가이드라인 수정", description = "보호자가 특정 가이드라인을 수정할 때 필요합니다.")
@@ -43,15 +51,18 @@ public class GuardGuidelineController {
 
     @Operation(summary = "모든 가이드라인 조회(시니어별로)", description = "보호자가 가이드라인 수정을 위해 시니어별로 모든 가이드라인을 요청할 때 필요합니다.")
     @GetMapping("/{seniorId}")
-    public ResponseEntity<List<GuardGuidelineResponse>> getAllGuardGuidelinesBySenior(@PathVariable Long seniorId) {
+    public ResponseEntity<List<GuardGuidelineResponse>> getAllGuardGuidelinesBySenior(@MemberId Long memberId, @PathVariable Long seniorId) {
 
-        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesBySenior(seniorId));
+        return ResponseEntity.ok(guardGuidelineService.readAllGuardGuidelinesBySenior(memberId, seniorId));
     }
 
-    @Operation(summary = "특정 가이드라인 조회", description = "보호자용 API입니다.")
-    @GetMapping("/{guidelineId}")
-    public ResponseEntity<GuardGuidelineResponse> getGuardGuideline(@PathVariable Long guidelineId) {
-        return ResponseEntity.ok(guardGuidelineService.readGuardGuideline(guidelineId));
+
+    @Operation(summary = "특정 가이드라인 삭제", description = "보호자용 API입니다.")
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteGuardGuideline(@MemberId Long memberId, @RequestParam("guidelineId") Long guidelineId) {
+        guardGuidelineService.deleteGuardGuideline(memberId, guidelineId);
+        return ResponseEntity.ok("가이드라인이 삭제되었습니다.");
     }
+
 
 }

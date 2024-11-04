@@ -31,6 +31,16 @@ public class MemberTest {
     }
 
     @Test
+    @DisplayName("Member 정보 업데이트 테스트")
+    void updateMemberTest() {
+        member.updateMember("updatedName", "01087654321");
+
+        assertThat(member.getName()).isEqualTo("updatedName");
+        assertThat(member.getPhoneNumber()).isEqualTo("01087654321");
+        assertThat(member.getEmail()).isEqualTo("test@test.com");
+    }
+
+    @Test
     @DisplayName("Member SinittoBankInfo 여부 확인 테스트")
     void isSinittoTest() {
         assertThat(member.isSinitto()).isTrue();

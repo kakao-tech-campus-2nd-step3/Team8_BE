@@ -1,8 +1,8 @@
 package com.example.sinitto.hellocall.entity;
 
+import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.helloCall.entity.HelloCall;
 import com.example.sinitto.helloCall.entity.TimeSlot;
-import com.example.sinitto.helloCall.exception.TimeRuleException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class TimeSlotTest {
     @DisplayName("TimeSlot 생성자 테스트 - 잘못된 시간 순서")
     void constructorTest_InvalidTimeOrder() {
         assertThatThrownBy(() -> new TimeSlot("Monday", LocalTime.of(10, 0), LocalTime.of(9, 0), helloCall))
-                .isInstanceOf(TimeRuleException.class)
+                .isInstanceOf(BadRequestException.class)
                 .hasMessage("시작시간이 종료시간 이후일 수 없습니다.");
     }
 
@@ -61,7 +61,7 @@ class TimeSlotTest {
         LocalTime newEndTime = LocalTime.of(10, 0);
 
         assertThatThrownBy(() -> timeSlot.updateTimeSlot(newStartTime, newEndTime))
-                .isInstanceOf(TimeRuleException.class)
+                .isInstanceOf(BadRequestException.class)
                 .hasMessage("시작시간이 종료시간 이후일 수 없습니다.");
     }
 }

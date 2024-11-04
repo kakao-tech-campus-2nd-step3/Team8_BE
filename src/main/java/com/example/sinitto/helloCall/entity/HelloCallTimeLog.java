@@ -2,6 +2,8 @@ package com.example.sinitto.helloCall.entity;
 
 import com.example.sinitto.member.entity.Member;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -14,9 +16,11 @@ public class HelloCallTimeLog {
     private LocalDateTime startDateAndTime;
     private LocalDateTime endDateAndTime;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "helloCall_id")
     private HelloCall helloCall;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "sinitto_id")
     private Member member;
 

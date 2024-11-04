@@ -7,4 +7,5 @@ public record GuardGuidelineRequest(
         GuardGuideline.Type type,
         String title,
         String content
-) {}
+) {
+}

@@ -2,8 +2,10 @@ package com.example.sinitto.auth.service;
 
 import com.example.sinitto.auth.dto.KakaoTokenResponse;
 import com.example.sinitto.auth.dto.KakaoUserResponse;
-import com.example.sinitto.auth.exception.KakaoEmailNotFoundException;
+import com.example.sinitto.common.exception.BadRequestException;
+import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.properties.KakaoProperties;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,20 +27,48 @@ public class KakaoApiService {
         this.kakaoProperties = kakaoProperties;
     }
 
-    public String getAuthorizationUrl() {
+    public String getAuthorizationUrl(HttpServletRequest httpServletRequest) {
+        String requestUrl = httpServletRequest.getHeader("Referer");
+        if (requestUrl == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
+        String redirectUri;
+
+        if (requestUrl.contains("localhost:5173")) {
+            redirectUri = kakaoProperties.devRedirectUri();
+        } else if (requestUrl.contains("sinitto.s3-website.ap-northeast-2.amazonaws.com")) {
+            redirectUri = kakaoProperties.redirectUri();
+        } else {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
+        }
+
         return KAKAO_AUTH_BASE_URL + "/authorize?response_type=code&client_id="
-                + kakaoProperties.clientId() + "&redirect_uri=" + kakaoProperties.redirectUri();
+                + kakaoProperties.clientId() + "&redirect_uri=" + redirectUri;
     }
 
-    public KakaoTokenResponse getAccessToken(String authorizationCode) {
+    public KakaoTokenResponse getAccessToken(String authorizationCode, HttpServletRequest httpServletRequest) {
         String url = KAKAO_AUTH_BASE_URL + "/token";
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
 
+        String requestUrl = httpServletRequest.getHeader("Origin");
+        if (requestUrl == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
+        String redirectUri;
+
+        if (requestUrl.contains("localhost:5173")) {
+            redirectUri = kakaoProperties.devRedirectUri();
+        } else if (requestUrl.contains("sinitto.s3-website.ap-northeast-2.amazonaws.com")) {
+            redirectUri = kakaoProperties.redirectUri();
+        } else {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
+        }
+
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakaoProperties.clientId());
-        body.add("redirect_uri", kakaoProperties.redirectUri());
+        body.add("redirect_uri", redirectUri);
         body.add("code", authorizationCode);
 
         RequestEntity<LinkedMultiValueMap<String, String>> request = new RequestEntity<>(body,
@@ -81,7 +111,7 @@ public class KakaoApiService {
                 url, HttpMethod.POST, request, KakaoUserResponse.class);
 
         if (response.getBody().kakaoAccount().email() == null) {
-            throw new KakaoEmailNotFoundException("카카오 계정으로부터 전달받은 이메일이 없습니다.");
+            throw new NotFoundException("카카오 계정으로부터 전달받은 이메일이 없습니다.");
         }
 
         return response.getBody();
