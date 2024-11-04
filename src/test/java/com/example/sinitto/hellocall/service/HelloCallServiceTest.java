@@ -152,7 +152,10 @@ public class HelloCallServiceTest {
             case DayOfWeek.SUNDAY -> dayName = "일";
         }
 
-        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now().plusHours(1), LocalTime.now().plusHours(2)));
+        LocalTime startTime = LocalTime.of(10, 0);
+        LocalTime endTime = LocalTime.of(11, 0);
+
+        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, startTime, endTime));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
 
         when(seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)).thenReturn(Optional.of(senior));
@@ -183,7 +186,10 @@ public class HelloCallServiceTest {
             case DayOfWeek.SATURDAY -> dayName = "토";
             case DayOfWeek.SUNDAY -> dayName = "일";
         }
-        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now(), LocalTime.now().plusHours(2)));
+        LocalTime startTime = LocalTime.of(10, 0);
+        LocalTime endTime = LocalTime.of(12, 0);
+
+        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, startTime, endTime));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
         Point point = new Point(100, member);
 
