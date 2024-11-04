@@ -20,7 +20,7 @@ public interface CallbackRepository extends JpaRepository<Callback, Long> {
 
     Page<Callback> findAllBySeniorIn(List<Senior> seniors, Pageable pageable);
 
-    List<Callback> findAllByStatusAndPendingCompleteTimeBefore(Callback.Status status, LocalDateTime dateTime);
+    List<Callback> findAllByStatusAndPendingCompleteTimeBetween(Callback.Status status, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
     boolean existsBySeniorAndStatusIn(Senior senior, List<Callback.Status> statuses);
 }

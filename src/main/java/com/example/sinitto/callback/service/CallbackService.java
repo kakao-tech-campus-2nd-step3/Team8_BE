@@ -13,10 +13,8 @@ import com.example.sinitto.guard.repository.SeniorRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
-import com.example.sinitto.point.repository.PointLogRepository;
-import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.point.service.PointService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -38,21 +36,19 @@ public class CallbackService {
     private final CallbackRepository callbackRepository;
     private final MemberRepository memberRepository;
     private final SeniorRepository seniorRepository;
-    private final PointRepository pointRepository;
-    private final PointLogRepository pointLogRepository;
+    private final PointService pointService;
 
-    public CallbackService(CallbackRepository callbackRepository, MemberRepository memberRepository, SeniorRepository seniorRepository, PointRepository pointRepository, PointLogRepository pointLogRepository) {
+    public CallbackService(CallbackRepository callbackRepository, MemberRepository memberRepository, SeniorRepository seniorRepository, PointService pointService) {
         this.callbackRepository = callbackRepository;
         this.memberRepository = memberRepository;
         this.seniorRepository = seniorRepository;
-        this.pointRepository = pointRepository;
-        this.pointLogRepository = pointLogRepository;
+        this.pointService = pointService;
     }
 
     @Transactional(readOnly = true)
     public Page<CallbackResponse> getWaitingCallbacks(Long memberId, Pageable pageable) {
 
-        checkAuthorization(memberId);
+        checkIsSinitto(memberId);
 
         return callbackRepository.findAllByStatus(Callback.Status.WAITING, pageable)
                 .map((callback) -> new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId()));
@@ -61,7 +57,7 @@ public class CallbackService {
     @Transactional
     public void acceptCallbackBySinitto(Long memberId, Long callbackId) {
 
-        checkAuthorization(memberId);
+        checkIsSinitto(memberId);
 
         if (callbackRepository.existsByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)) {
             throw new ConflictException("이 요청을 한 시니또는 이미 진행중인 콜백이 있습니다.");
@@ -76,7 +72,7 @@ public class CallbackService {
     @Transactional
     public void changeCallbackStatusToPendingCompleteBySinitto(Long memberId, Long callbackId) {
 
-        checkAuthorization(memberId);
+        checkIsSinitto(memberId);
 
         Callback callback = getCallbackOrThrow(callbackId);
 
@@ -95,42 +91,36 @@ public class CallbackService {
         Long guardId = senior.getMember().getId();
 
         if (!guardId.equals(memberId)) {
-            throw new ForbiddenException("이 API를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
+            throw new ForbiddenException("이 API 를 요청한 보호자는 이 콜백을 요청 한 시니어의 보호자가 아닙니다.");
         }
 
-        earnPointForSinitto(callback.getAssignedMemberId());
+        pointService.earnPoint(callback.getAssignedMemberId(), CALLBACK_PRICE, PointLog.Content.COMPLETE_CALLBACK_AND_EARN);
         callback.changeStatusToComplete();
     }
 
-    private void earnPointForSinitto(Long sinittoMemberId) {
-
-        Point sinittoPoint = pointRepository.findByMemberId(sinittoMemberId)
-                .orElseThrow(() -> new NotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
-
-        sinittoPoint.earn(CALLBACK_PRICE);
-
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), sinittoPoint.getMember(), CALLBACK_PRICE, PointLog.Status.EARN));
-    }
-
     @Scheduled(cron = "0 */10 * * * *")
-    @Transactional
     public void changeOldPendingCompleteToCompleteByPolicy() {
 
         LocalDateTime referenceDateTimeForComplete = LocalDateTime.now().minusDays(DAYS_FOR_AUTO_COMPLETE);
 
-        List<Callback> callbacks = callbackRepository.findAllByStatusAndPendingCompleteTimeBefore(Callback.Status.PENDING_COMPLETE, referenceDateTimeForComplete);
+        List<Callback> callbacks = callbackRepository.findAllByStatusAndPendingCompleteTimeBetween(Callback.Status.PENDING_COMPLETE, referenceDateTimeForComplete.minusMinutes(5), referenceDateTimeForComplete.plusMinutes(5));
 
         for (Callback callback : callbacks) {
-
-            earnPointForSinitto(callback.getAssignedMemberId());
-            callback.changeStatusToComplete();
+            completeCallbackIndividually(callback);
         }
+    }
+
+    @Transactional
+    public void completeCallbackIndividually(Callback callback) {
+
+        pointService.earnPoint(callback.getAssignedMemberId(), CALLBACK_PRICE, PointLog.Content.COMPLETE_CALLBACK_AND_EARN);
+        callback.changeStatusToComplete();
     }
 
     @Transactional
     public void cancelCallbackAssignmentBySinitto(Long memberId, Long callbackId) {
 
-        checkAuthorization(memberId);
+        checkIsSinitto(memberId);
 
         Callback callback = getCallbackOrThrow(callbackId);
 
@@ -145,47 +135,32 @@ public class CallbackService {
 
         String phoneNumber = TwilioHelper.trimPhoneNumber(fromNumber);
 
-        Senior senior = findSeniorByPhoneNumber(phoneNumber);
+        Senior senior = seniorRepository.findByPhoneNumber(phoneNumber)
+                .orElse(null);
+
         if (senior == null) {
             return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENROLLED);
-        }
-
-        Point point = findPointWithWriteLock(senior.getMember().getId());
-        if (point == null || !point.isSufficientForDeduction(CALLBACK_PRICE)) {
-            return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENOUGH_POINT);
         }
 
         if (callbackRepository.existsBySeniorAndStatusIn(senior, List.of(Callback.Status.WAITING, Callback.Status.IN_PROGRESS))) {
             return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_ALREADY_HAS_CALLBACK_IN_PROGRESS_OR_WAITING);
         }
 
-        point.deduct(CALLBACK_PRICE);
+        try {
+            pointService.deductPoint(senior.getMember().getId(), CALLBACK_PRICE, PointLog.Content.SPEND_COMPLETE_CALLBACK);
+        } catch (Exception e) {
+            return TwilioHelper.convertMessageToTwiML(FAIL_MESSAGE_NOT_ENOUGH_POINT);
+        }
 
-        pointLogRepository.save(
-                new PointLog(
-                        PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(),
-                        senior.getMember(),
-                        CALLBACK_PRICE,
-                        PointLog.Status.SPEND_COMPLETE)
-        );
         callbackRepository.save(new Callback(Callback.Status.WAITING, senior));
 
         return TwilioHelper.convertMessageToTwiML(SUCCESS_MESSAGE);
     }
 
-    private Senior findSeniorByPhoneNumber(String phoneNumber) {
-        return seniorRepository.findByPhoneNumber(phoneNumber)
-                .orElse(null);
-    }
-
-    private Point findPointWithWriteLock(Long memberId) {
-        return pointRepository.findByMemberIdWithWriteLock(memberId)
-                .orElse(null);
-    }
-
+    @Transactional(readOnly = true)
     public CallbackResponse getAcceptedCallback(Long memberId) {
 
-        checkAuthorization(memberId);
+        checkIsSinitto(memberId);
 
         Callback callback = callbackRepository.findByAssignedMemberIdAndStatus(memberId, Callback.Status.IN_PROGRESS)
                 .orElseThrow(() -> new NotFoundException("요청한 시니또에 할당된 콜백이 없습니다"));
@@ -193,7 +168,7 @@ public class CallbackService {
         return new CallbackResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId());
     }
 
-    private void checkAuthorization(Long memberId) {
+    private void checkIsSinitto(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("멤버가 아닙니다"));
@@ -224,11 +199,11 @@ public class CallbackService {
 
         List<Senior> seniors = seniorRepository.findAllByMember(member);
 
-
         return callbackRepository.findAllBySeniorIn(seniors, pageable)
                 .map(callback -> new CallbackUsageHistoryResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus()));
     }
 
+    @Transactional(readOnly = true)
     public CallbackForSinittoResponse getCallbackForSinitto(Long memberId, Long callbackId) {
 
         Callback callback = callbackRepository.findById(callbackId)
