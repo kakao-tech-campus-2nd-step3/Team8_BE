@@ -1,7 +1,5 @@
 package com.example.sinitto.member.service;
 
-import com.example.sinitto.auth.service.KakaoApiService;
-import com.example.sinitto.auth.service.KakaoTokenService;
 import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.NotFoundException;
@@ -21,8 +19,8 @@ import org.springframework.data.redis.core.ValueOperations;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @MockitoSettings
 public class MemberServiceTest {
@@ -47,7 +45,7 @@ public class MemberServiceTest {
         String email = "test@email.com";
         Member member = mock(Member.class);
 
-        when(tokenService.extractEmail(token)).thenReturn(email);
+        when(tokenService.extractEmailFromAccessToken(token)).thenReturn(email);
         when(memberRepository.findByEmail(email)).thenReturn(Optional.of(member));
 
         //when
@@ -65,7 +63,7 @@ public class MemberServiceTest {
         String email = "test@email.com";
         Member member = mock(Member.class);
 
-        when(tokenService.extractEmail(token)).thenReturn(email);
+        when(tokenService.extractEmailFromAccessToken(token)).thenReturn(email);
         when(memberRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         //when, then

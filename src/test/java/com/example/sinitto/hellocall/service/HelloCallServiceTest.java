@@ -152,7 +152,7 @@ public class HelloCallServiceTest {
             case DayOfWeek.SUNDAY -> dayName = "일";
         }
 
-        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now().plusHours(2), LocalTime.now().plusHours(4)));
+        timeSlots.add(new HelloCallRequest.TimeSlot(dayName, LocalTime.now().plusHours(1), LocalTime.now().plusHours(2)));
         HelloCallRequest helloCallRequest = new HelloCallRequest(senior.getId(), LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
 
         when(seniorRepository.findByIdAndMemberId(helloCallRequest.seniorId(), memberId)).thenReturn(Optional.of(senior));
