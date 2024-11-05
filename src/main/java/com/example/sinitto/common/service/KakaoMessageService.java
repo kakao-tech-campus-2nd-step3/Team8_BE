@@ -180,7 +180,7 @@ public class KakaoMessageService {
                         "}" +
                         "]" +
                         "}",
-                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, point * 0.95,
+                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, point * 0.8,
                 bankName, accountNumber, name, kakaoProperties.frontUri(), kakaoProperties.frontUri()
         );
 
@@ -238,7 +238,7 @@ public class KakaoMessageService {
                         "}" +
                         "]" +
                         "}",
-                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, point * 0.95,
+                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, point * 0.8,
                 bankName, accountNumber, name, kakaoProperties.frontUri(), kakaoProperties.frontUri()
         );
 
