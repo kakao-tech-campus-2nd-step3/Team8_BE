@@ -47,6 +47,34 @@ class CallbackServiceTest {
     @InjectMocks
     CallbackService callbackService;
 
+    @Test
+    @DisplayName("보호자의 콜백 요청 내역 조회 테스트")
+    void getCallbackHistoryOfGuard() {
+        // given
+        Long memberId = 1L;
+        Member member = mock(Member.class);
+        Senior senior = mock(Senior.class);
+        List<Senior> seniors = List.of(senior);
+        Callback callback = mock(Callback.class);
+        Page<Callback> callbackPage = new PageImpl<>(List.of(callback));
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(seniorRepository.findAllByMember(member)).thenReturn(seniors);
+        when(callbackRepository.findAllBySeniorIn(seniors, pageable)).thenReturn(callbackPage);
+        when(callback.getId()).thenReturn(1L);
+        when(callback.getSeniorName()).thenReturn("SeniorName");
+        when(callback.getPostTime()).thenReturn(LocalDateTime.now());
+        when(callback.getStatus()).thenReturn(Callback.Status.WAITING.name());
+
+        // when
+        Page<CallbackUsageHistoryResponse> result = callbackService.getCallbackHistoryOfGuard(memberId, pageable);
+
+        // then
+        assertEquals(1, result.getContent().size());
+        assertEquals("SeniorName", result.getContent().getFirst().seniorName());
+    }
+
     @Nested
     @DisplayName("대기 상태인 콜백 조회 테스트")
     class GetWaitingCallbackTest {
@@ -500,33 +528,5 @@ class CallbackServiceTest {
             assertFalse(result.isAssignedToSelf());
             assertEquals("", result.seniorPhoneNumber());
         }
-    }
-
-    @Test
-    @DisplayName("보호자의 콜백 요청 내역 조회 테스트")
-    void getCallbackHistoryOfGuard() {
-        // given
-        Long memberId = 1L;
-        Member member = mock(Member.class);
-        Senior senior = mock(Senior.class);
-        List<Senior> seniors = List.of(senior);
-        Callback callback = mock(Callback.class);
-        Page<Callback> callbackPage = new PageImpl<>(List.of(callback));
-        Pageable pageable = PageRequest.of(0, 10);
-
-        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
-        when(seniorRepository.findAllByMember(member)).thenReturn(seniors);
-        when(callbackRepository.findAllBySeniorIn(seniors, pageable)).thenReturn(callbackPage);
-        when(callback.getId()).thenReturn(1L);
-        when(callback.getSeniorName()).thenReturn("SeniorName");
-        when(callback.getPostTime()).thenReturn(LocalDateTime.now());
-        when(callback.getStatus()).thenReturn(Callback.Status.WAITING.name());
-
-        // when
-        Page<CallbackUsageHistoryResponse> result = callbackService.getCallbackHistoryOfGuard(memberId, pageable);
-
-        // then
-        assertEquals(1, result.getContent().size());
-        assertEquals("SeniorName", result.getContent().getFirst().seniorName());
     }
 }

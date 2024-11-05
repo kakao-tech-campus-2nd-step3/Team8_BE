@@ -11,28 +11,23 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.springframework.beans.factory.annotation.Value;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @MockitoSettings
 public class KakaoApiServiceTest {
-    @Mock
-    private HttpServletRequest httpServletRequest;
-
-    @Mock
-    private KakaoProperties kakaoProperties;
-
-    @Value("kakao.clientId")
-    private String clientId;
-
-    @Value("kakao.devRedirectUri")
-    private String devRedirectUri;
-
-    @Value("kakao.redirectUri")
-    private String redirectUri;
-
     @InjectMocks
     KakaoApiService kakaoApiService;
+    @Mock
+    private HttpServletRequest httpServletRequest;
+    @Mock
+    private KakaoProperties kakaoProperties;
+    @Value("kakao.clientId")
+    private String clientId;
+    @Value("kakao.devRedirectUri")
+    private String devRedirectUri;
+    @Value("kakao.redirectUri")
+    private String redirectUri;
 
     @Test
     @DisplayName("getAuthorizationUrl 메소드 테스트 - devUri 포홤 시")

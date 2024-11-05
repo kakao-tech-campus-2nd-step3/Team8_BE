@@ -32,10 +32,10 @@ public class MemberServiceTest {
     TokenService tokenService;
     @Mock
     RedisTemplate<String, String> redisTemplate;
-    @Mock
-    private ValueOperations<String, String> valueOperations;
     @InjectMocks
     MemberService memberService;
+    @Mock
+    private ValueOperations<String, String> valueOperations;
 
     @Test
     @DisplayName("getMemberIdByToken 메소드 테스트")
