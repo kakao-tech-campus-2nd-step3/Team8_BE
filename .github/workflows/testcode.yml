@@ -19,6 +19,19 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -29,6 +42,13 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+
+      - name: Set environment variables for database
+        run: |
+          echo "spring.datasource.url=${{ secrets.MYSQL_URL }}" >> $GITHUB_ENV
+          echo "spring.datasource.username=${{ secrets.MYSQL_USERNAME }}" >> $GITHUB_ENV
+          echo "spring.datasource.password=${{ secrets.MYSQL_PASSWORD }}" >> $GITHUB_ENV
+          echo "spring.jpa.hibernate.ddl-auto=create" >> $GITHUB_ENV
 
       - name: Run Tests
         env:
