@@ -85,7 +85,7 @@ public class TokenService {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            throw new InvalidJwtException(e.getMessage());
+            throw new AccessTokenExpiredException(e.getMessage());
         }
     }
 
