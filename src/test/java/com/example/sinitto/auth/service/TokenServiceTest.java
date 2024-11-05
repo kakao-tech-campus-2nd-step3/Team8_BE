@@ -1,19 +1,14 @@
 package com.example.sinitto.auth.service;
 
-import com.example.sinitto.common.exception.InvalidJwtException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoSettings;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,10 +17,10 @@ import static org.mockito.Mockito.*;
 @MockitoSettings
 public class TokenServiceTest {
     @Mock
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Mock
-    private ValueOperations<String, String> valueOperations;
+    private HashOperations<String, Object, Object> hashOperations;
 
     private TokenService tokenService;
 
@@ -60,7 +55,7 @@ public class TokenServiceTest {
         //given
         String email = "test@email.com";
 
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
 
         //when
         String token = tokenService.generateRefreshToken(email);

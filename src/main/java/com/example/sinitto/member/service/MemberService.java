@@ -28,9 +28,9 @@ public class MemberService implements MemberIdProvider {
     private final KakaoApiService kakaoApiService;
     private final KakaoTokenService kakaoTokenService;
     private final PointRepository pointRepository;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, RedisTemplate<String, String> redisTemplate) {
+    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, RedisTemplate<String, Object> redisTemplate) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.kakaoApiService = kakaoApiService;
@@ -90,10 +90,23 @@ public class MemberService implements MemberIdProvider {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
 
-        String storedRefreshToken = redisTemplate.opsForValue().get(member.getEmail());
+        String storedRefreshToken = (String) redisTemplate.opsForHash().get(member.getEmail(), "refreshToken");
 
         if (storedRefreshToken != null) {
             redisTemplate.delete(member.getEmail());
         }
+    }
+
+    public void deleteMember(Long memberId){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
+
+        String storedRefreshToken = (String) redisTemplate.opsForHash().get(member.getEmail(), "refreshToken");
+
+        if (storedRefreshToken != null) {
+            redisTemplate.delete(member.getEmail());
+        }
+
+        memberRepository.deleteById(memberId);
     }
 }
