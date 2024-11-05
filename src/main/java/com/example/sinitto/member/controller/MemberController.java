@@ -44,4 +44,10 @@ public class MemberController {
         memberService.memberLogout(memberId);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "멤버 회원탈퇴", description = "회원 정보를 삭제합니다.")
+    public ResponseEntity<Void> deleteMember(@MemberId Long memberId) {
+        memberService.deleteMember(memberId);
+        return ResponseEntity.ok().build();
+    }
 }
