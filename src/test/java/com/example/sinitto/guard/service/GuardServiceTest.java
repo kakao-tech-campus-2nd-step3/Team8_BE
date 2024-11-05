@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @MockitoSettings
 public class GuardServiceTest {
@@ -116,6 +116,20 @@ public class GuardServiceTest {
     }
 
     @Test
+    @DisplayName("createSenior 테스트 - 이미 등록된 번호로 시니어 생성하면 예외를 발생시켜야한다.")
+    void createSeniorTestFailWhenDuplicatedPhoneNumber() {
+        // Given
+        Long memberId = 1L;
+        Member member = new Member("testName", "01012345678", "test@mail.com", false);
+        SeniorRequest seniorRequest = new SeniorRequest("testSeniorName", "01011111111");
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(seniorRepository.existsByPhoneNumber("01011111111")).thenReturn(true);
+
+        // When, Then
+        assertThrows(BadRequestException.class, () -> guardService.createSenior(memberId, seniorRequest));
+    }
+
+    @Test
     @DisplayName("readSeniors 메소드 테스트")
     void readSeniorsTest() {
         //given
@@ -175,6 +189,22 @@ public class GuardServiceTest {
 
         //then
         verify(senior, times(1)).updateSenior(request.seniorName(), request.seniorPhoneNumber());
+    }
+
+    @Test
+    @DisplayName("updateSenior 메소드 테스트 - 이미 등록된 번호로 수정시 예외가 발생해야한다.")
+    void updateSeniorTestFailWhenDuplicatedPhoneNumber() {
+        //given
+        Long memberId = 1L;
+        Long seniorId = 2L;
+        Member member = new Member("testName", "01012345678", "test@mail.com", true);
+        Senior senior = mock(Senior.class);
+        SeniorRequest request = new SeniorRequest("newSeniorName", "01011111111");
+
+        when(seniorRepository.findByIdAndMemberId(seniorId, memberId)).thenReturn(Optional.of(senior));
+        when(seniorRepository.existsByPhoneNumber("01011111111")).thenReturn(true);
+        //when then
+        assertThrows(BadRequestException.class, () -> guardService.updateSenior(memberId, seniorId, request));
     }
 
     @Test

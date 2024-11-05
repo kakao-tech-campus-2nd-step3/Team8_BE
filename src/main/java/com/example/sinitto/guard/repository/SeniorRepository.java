@@ -17,4 +17,6 @@ public interface SeniorRepository extends JpaRepository<Senior, Long> {
     Optional<Senior> findByPhoneNumber(String phoneNumber);
 
     List<Senior> findAllByMember(Member member);
+
+    boolean existsByPhoneNumber(String phoneNumber);
 }
