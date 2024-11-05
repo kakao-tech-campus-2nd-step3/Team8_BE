@@ -3,6 +3,7 @@ package com.example.sinitto.point.service;
 import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.common.exception.ForbiddenException;
 import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.common.service.KakaoMessageService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointChargeResponse;
@@ -12,6 +13,7 @@ import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +27,14 @@ public class PointService {
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
     private final SinittoBankInfoRepository sinittoBankInfoRepository;
+    private final KakaoMessageService kakaoMessageService;
 
-    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository, SinittoBankInfoRepository sinittoBankInfoRepository) {
+    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository, SinittoBankInfoRepository sinittoBankInfoRepository, KakaoMessageService kakaoMessageService) {
         this.memberRepository = memberRepository;
         this.pointRepository = pointRepository;
         this.pointLogRepository = pointLogRepository;
         this.sinittoBankInfoRepository = sinittoBankInfoRepository;
+        this.kakaoMessageService = kakaoMessageService;
     }
 
     @Transactional(readOnly = true)
@@ -68,6 +72,8 @@ public class PointService {
 
         pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
 
+        kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName());
+
         return new PointChargeResponse(member.getDepositMessage());
     }
 
@@ -95,6 +101,9 @@ public class PointService {
         point.deduct(price);
 
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, price, PointLog.Status.WITHDRAW_REQUEST));
+
+        SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("시니또의 은행 계좌 정보가 없습니다."));
+        kakaoMessageService.sendPointWithdrawRequestReceivedMessage(member.getEmail(), price, member.getName(), sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
     }
 
     @Transactional

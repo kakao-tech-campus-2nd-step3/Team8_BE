@@ -4,7 +4,6 @@ import com.example.sinitto.auth.dto.KakaoTokenResponse;
 import com.example.sinitto.auth.entity.KakaoToken;
 import com.example.sinitto.auth.repository.KakaoTokenRepository;
 import com.example.sinitto.common.exception.InvalidJwtException;
-import com.example.sinitto.common.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,11 @@ public class KakaoTokenService {
     @Transactional
     public String getValidAccessTokenInServer(String email) {
         KakaoToken kakaoToken = kakaoTokenRepository.findByMemberEmail(email)
-                .orElseThrow(() -> new NotFoundException("email에 해당하는 카카오 토큰이 없습니다."));
+                .orElse(null);
+
+        if (kakaoToken == null) {
+            return null;
+        }
 
         if (kakaoToken.isAccessTokenExpired()) {
             if (kakaoToken.isRefreshTokenExpired()) {

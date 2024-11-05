@@ -1,6 +1,7 @@
 package com.example.sinitto.point.service;
 
 import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.common.service.KakaoMessageService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointLogWithBankInfo;
@@ -25,12 +26,14 @@ public class PointAdminService {
     private final PointRepository pointRepository;
     private final SinittoBankInfoRepository sinittoBankInfoRepository;
     private final MemberRepository memberRepository;
+    private final KakaoMessageService kakaoMessageService;
 
-    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository, SinittoBankInfoRepository sinittoBankInfoRepository, MemberRepository memberRepository) {
+    public PointAdminService(PointLogRepository pointLogRepository, PointRepository pointRepository, SinittoBankInfoRepository sinittoBankInfoRepository, MemberRepository memberRepository, KakaoMessageService kakaoMessageService) {
         this.pointLogRepository = pointLogRepository;
         this.pointRepository = pointRepository;
         this.sinittoBankInfoRepository = sinittoBankInfoRepository;
         this.memberRepository = memberRepository;
+        this.kakaoMessageService = kakaoMessageService;
     }
 
     @Transactional(readOnly = true)
@@ -76,6 +79,8 @@ public class PointAdminService {
 
         pointLog.changeStatusToChargeComplete();
         point.earn(pointLog.getPrice());
+
+        kakaoMessageService.sendPointChargeCompleteMessage(pointLog.getMember().getEmail(), pointLog.getPrice(), pointLog.getMember().getName());
     }
 
     @Transactional
@@ -103,6 +108,9 @@ public class PointAdminService {
                 .orElseThrow(() -> new NotFoundException("포인트 로그를 찾을 수 없습니다."));
 
         pointLog.changeStatusToWithdrawComplete();
+
+        SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(pointLog.getMember().getId()).orElseThrow(() -> new NotFoundException("시니또의 은행 계좌 정보가 없습니다."));
+        kakaoMessageService.sendPointWithdrawCompleteMessage(pointLog.getMember().getEmail(), pointLog.getPrice(), pointLog.getMember().getName(), sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
     }
 
     @Transactional

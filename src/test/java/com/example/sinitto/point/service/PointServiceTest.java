@@ -3,6 +3,7 @@ package com.example.sinitto.point.service;
 import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.common.exception.ForbiddenException;
 import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.common.service.KakaoMessageService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointChargeResponse;
@@ -12,6 +13,7 @@ import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -42,6 +44,8 @@ class PointServiceTest {
     SinittoBankInfoRepository sinittoBankInfoRepository;
     @InjectMocks
     PointService pointService;
+    @Mock
+    KakaoMessageService kakaoMessageService;
 
     @Nested
     @DisplayName("포인트 조회 테스트")
@@ -174,6 +178,9 @@ class PointServiceTest {
             Point point = mock(Point.class);
             when(pointRepository.findByMember(member)).thenReturn(Optional.of(point));
             when(point.isSufficientForDeduction(10000)).thenReturn(true);
+
+            SinittoBankInfo sinittoBankInfo = mock(SinittoBankInfo.class);
+            when(sinittoBankInfoRepository.findByMemberId(1L)).thenReturn(Optional.of(sinittoBankInfo));
 
             //when
             pointService.savePointWithdrawRequest(1L, 10000);
