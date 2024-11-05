@@ -1,5 +1,6 @@
 package com.example.sinitto.point.service;
 
+import com.example.sinitto.common.service.KakaoMessageService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointLogWithBankInfo;
@@ -40,6 +41,8 @@ class PointAdminServiceTest {
     private MemberRepository memberRepository;
     @InjectMocks
     private PointAdminService pointAdminService;
+    @Mock
+    private KakaoMessageService kakaoMessageService;
 
     @Nested
     @DisplayName("포인트 충전에 관한 관리자 페이지 테스트")
@@ -138,7 +141,11 @@ class PointAdminServiceTest {
         void changeWithdrawLogToComplete() {
             // given
             PointLog pointLog = mock(PointLog.class);
+            Member member = mock(Member.class);
+            SinittoBankInfo sinittoBankInfo = mock(SinittoBankInfo.class);
             when(pointLogRepository.findById(anyLong())).thenReturn(Optional.of(pointLog));
+            when(pointLog.getMember()).thenReturn(member);
+            when(sinittoBankInfoRepository.findByMemberId(member.getId())).thenReturn(Optional.of(sinittoBankInfo));
 
             // when
             pointAdminService.changeWithdrawLogToComplete(1L);
