@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.Optional;
 
@@ -31,7 +31,9 @@ public class MemberServiceTest {
     @Mock
     TokenService tokenService;
     @Mock
-    RedisTemplate<String, String> redisTemplate;
+    RedisTemplate<String, Object> redisTemplate;
+    @Mock
+    private HashOperations<String, Object, Object> hashOperations;
     @InjectMocks
     MemberService memberService;
     @Mock
@@ -61,7 +63,6 @@ public class MemberServiceTest {
         //given
         String token = "testtoken";
         String email = "test@email.com";
-        Member member = mock(Member.class);
 
         when(tokenService.extractEmailFromAccessToken(token)).thenReturn(email);
         when(memberRepository.findByEmail(email)).thenReturn(Optional.empty());
@@ -110,12 +111,14 @@ public class MemberServiceTest {
     void memberLogoutTest() {
         //given
         Long memberId = 1L;
+        String email = "test@email.com";
         Member member = mock(Member.class);
         String storedRefreshToken = "testRefreshToken";
 
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
-        when(redisTemplate.opsForValue().get(member.getEmail())).thenReturn(storedRefreshToken);
+        when(member.getEmail()).thenReturn(email);
+        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
+        when(redisTemplate.opsForHash().get(member.getEmail(), "refreshToken")).thenReturn(storedRefreshToken);
         //when
         memberService.memberLogout(memberId);
 
@@ -135,5 +138,26 @@ public class MemberServiceTest {
 
         //when, then
         assertThrows(NotFoundException.class, () -> memberService.memberLogout(memberId));
+    }
+
+    @Test
+    @DisplayName("deleteMember 메소드 테스트")
+    void deleteMemberTest(){
+        //given
+        Long memberId = 1L;
+        String email = "test@email.com";
+        Member member = mock(Member.class);
+        String storedRefreshToken = "testRefreshToken";
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.getEmail()).thenReturn(email);
+        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
+        when(redisTemplate.opsForHash().get(member.getEmail(), "refreshToken")).thenReturn(storedRefreshToken);
+
+        //when
+        memberService.deleteMember(memberId);
+
+        //when
+        verify(memberRepository, times(1)).deleteById(memberId);
     }
 }

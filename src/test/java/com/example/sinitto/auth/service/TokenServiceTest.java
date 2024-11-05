@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoSettings;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.Base64;
 
@@ -18,9 +18,11 @@ import static org.mockito.Mockito.when;
 public class TokenServiceTest {
     String key = "thisistestkeynotrealkeythisistestkeynotrealkey";
     @Mock
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
+
     @Mock
-    private ValueOperations<String, String> valueOperations;
+    private HashOperations<String, Object, Object> hashOperations;
+
     private TokenService tokenService;
 
     @BeforeEach
@@ -52,7 +54,7 @@ public class TokenServiceTest {
         //given
         String email = "test@email.com";
 
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
 
         //when
         String token = tokenService.generateRefreshToken(email);
