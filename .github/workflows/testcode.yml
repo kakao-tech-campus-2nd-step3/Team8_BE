@@ -50,6 +50,12 @@ jobs:
           echo "spring.datasource.password=${{ secrets.MYSQL_PASSWORD }}" >> $GITHUB_ENV
           echo "spring.jpa.hibernate.ddl-auto=create" >> $GITHUB_ENV
 
+      - name: Wait for MySQL to be ready
+        run: |
+          wget https://github.com/vishnubob/wait-for-it/releases/download/v2.2.3/wait-for-it.sh
+          chmod +x wait-for-it.sh
+          ./wait-for-it.sh localhost:3306 --timeout=60 --strict -- echo "MySQL is ready!"
+
       - name: Run Tests
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
