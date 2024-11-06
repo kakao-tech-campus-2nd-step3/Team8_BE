@@ -119,4 +119,11 @@ public class TokenService {
 
         return new TokenResponse(newAccessToken, newRefreshToken);
     }
+
+    public void deleteAllDataFromRedis(){
+        redisTemplate.getConnectionFactory()
+                .getConnection()
+                .serverCommands()
+                .flushAll();
+    }
 }
