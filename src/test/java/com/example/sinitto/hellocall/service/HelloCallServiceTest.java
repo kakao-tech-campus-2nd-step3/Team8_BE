@@ -872,14 +872,14 @@ public class HelloCallServiceTest {
         Member member = mock(Member.class);
         HelloCall helloCall = mock(HelloCall.class);
 
-        when(helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)).thenReturn(Optional.of(helloCall));
+        when(helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)).thenReturn(List.of(helloCall));
 
         // when
         helloCallService.cancelAssignedHelloCallIfInProgress(member);
 
         // then
-        verify(helloCall, atLeastOnce()).changeStatusToWaiting();
-        verify(helloCall, atLeastOnce()).setMember(null);
+        verify(helloCall, times(1)).changeStatusToWaiting();
+        verify(helloCall, times(1)).setMember(null);
     }
 
     @Test
@@ -889,7 +889,7 @@ public class HelloCallServiceTest {
         Member member = mock(Member.class);
         HelloCall helloCall = mock(HelloCall.class);
 
-        when(helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)).thenReturn(Optional.empty());
+        when(helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)).thenReturn(List.of());
 
         // when
         helloCallService.cancelAssignedHelloCallIfInProgress(member);

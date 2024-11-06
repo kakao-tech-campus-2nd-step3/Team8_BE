@@ -323,10 +323,9 @@ public class HelloCallService {
     @Transactional
     public void cancelAssignedHelloCallIfInProgress(Member member) {
 
-        HelloCall helloCall = helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)
-                .orElse(null);
+        List<HelloCall> helloCalls = helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS);
 
-        if (helloCall != null) {
+        for (HelloCall helloCall : helloCalls) {
             helloCall.changeStatusToWaiting();
             helloCall.setMember(null);
         }
