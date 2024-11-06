@@ -3,12 +3,10 @@ package com.example.sinitto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @SpringBootTest
-@Transactional
 class SinittoApplicationTests {
 
     @Value("${jwt.secret}")
