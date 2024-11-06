@@ -154,7 +154,7 @@ public class PointService {
             throw new BadRequestException("포인트가 부족합니다.");
         }
 
-        point.deduct(price);
+        point.earn(price);
 
         pointLogRepository.save(
                 new PointLog(

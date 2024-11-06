@@ -123,33 +123,6 @@ public class HelloCallService {
     }
 
     @Transactional
-    public void updateHelloCallByGuard(Long memberId, Long helloCallId, HelloCallDetailUpdateRequest helloCallDetailUpdateRequest) {
-        HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
-
-        helloCall.checkGuardIsCorrect(member);
-
-        helloCall.updateHelloCall(helloCallDetailUpdateRequest.startDate(), helloCallDetailUpdateRequest.endDate(),
-                helloCallDetailUpdateRequest.price(), helloCallDetailUpdateRequest.serviceTime(), helloCallDetailUpdateRequest.requirement());
-
-        updateTimeSlots(helloCall, helloCallDetailUpdateRequest.timeSlots());
-    }
-
-    private void updateTimeSlots(HelloCall helloCall, List<HelloCallDetailUpdateRequest.TimeSlot> updatedTimeSlots) {
-        timeSlotRepository.deleteAllByHelloCall(helloCall);
-        helloCall.getTimeSlots().clear();
-
-        for (HelloCallDetailUpdateRequest.TimeSlot updatedSlot : updatedTimeSlots) {
-            TimeSlot newTimeSlot = new TimeSlot(updatedSlot.dayName(), updatedSlot.startTime(), updatedSlot.endTime(), helloCall);
-            timeSlotRepository.save(newTimeSlot);
-            helloCall.getTimeSlots().add(newTimeSlot);
-        }
-    }
-
-    @Transactional
     public void deleteHellCallByGuard(Long memberId, Long helloCallId) {
         HelloCall helloCall = helloCallRepository.findById(helloCallId)
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
