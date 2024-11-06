@@ -49,6 +49,6 @@ jobs:
           SPRING_DATASOURCE_URL: ${{ secrets.MYSQL_URL }}
           SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USERNAME }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          SPRING_JPA_HIBERNATE_DDL_AUTO: "create"
+          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: ./gradlew test

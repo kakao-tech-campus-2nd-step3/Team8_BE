@@ -71,7 +71,7 @@ class SinittoBankInfoRepositoryTest {
         boolean check1 = sinittoBankInfoRepository.existsByMemberId(member.getId());
         assertTrue(check1);
 
-        boolean check2 = sinittoBankInfoRepository.existsByMemberId(2L);
+        boolean check2 = sinittoBankInfoRepository.existsByMemberId(0L);
         assertFalse(check2);
     }
 }
