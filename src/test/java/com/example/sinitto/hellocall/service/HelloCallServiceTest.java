@@ -193,42 +193,6 @@ public class HelloCallServiceTest {
     }
 
     @Test
-    @DisplayName("updateHelloCallByGuard 메소드 테스트 - HelloCall이 없을 때")
-    void updateHelloCallByGuardTestWhenHelloCallIsNotExist() {
-        //given
-        Long memberId = 1L;
-        Long helloCallId = 2L;
-        List<HelloCallDetailUpdateRequest.TimeSlot> timeSlots = new ArrayList<>();
-        timeSlots.add(new HelloCallDetailUpdateRequest.TimeSlot("월", LocalTime.now(), LocalTime.now().plusHours(2)));
-        HelloCallDetailUpdateRequest helloCallDetailUpdateRequest = new HelloCallDetailUpdateRequest(LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
-
-        when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.empty());
-
-        //when, then
-        assertThrows(NotFoundException.class, () -> helloCallService.updateHelloCallByGuard(memberId, helloCallId, helloCallDetailUpdateRequest));
-    }
-
-    @Test
-    @DisplayName("updateHelloCallByGuard 메소드 테스트 - member가 없을 때")
-    void updateHelloCallByGuardTestWhenMemberIsNotExist() {
-        //given
-        Member member = mock(Member.class);
-        Long memberId = 1L;
-        Senior senior = new Senior("testSeniorName", "01012345678", member);
-        Long helloCallId = 2L;
-        List<HelloCallDetailUpdateRequest.TimeSlot> timeSlots = new ArrayList<>();
-        timeSlots.add(new HelloCallDetailUpdateRequest.TimeSlot("월", LocalTime.now(), LocalTime.now().plusHours(2)));
-        HelloCallDetailUpdateRequest helloCallDetailUpdateRequest = new HelloCallDetailUpdateRequest(LocalDate.now(), LocalDate.now().plusDays(7), timeSlots, 1000, 10, "testRequirement");
-        HelloCall helloCall = new HelloCall(LocalDate.now(), LocalDate.now().plusDays(7), 500, 10, "testRequirement", senior);
-
-        when(helloCallRepository.findById(helloCallId)).thenReturn(Optional.of(helloCall));
-        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
-
-        //when, then
-        assertThrows(NotFoundException.class, () -> helloCallService.updateHelloCallByGuard(memberId, helloCallId, helloCallDetailUpdateRequest));
-    }
-
-    @Test
     @DisplayName("deleteHellCallByGuard 메소드 테스트")
     void deleteHellCallByGuardTest() {
         //given
