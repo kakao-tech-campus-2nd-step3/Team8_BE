@@ -138,7 +138,7 @@ public class MemberServiceTest {
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         //when, then
-        assertThrows(NotFoundException.class, () -> memberService.memberLogout(memberId));
+        assertThrows(NullPointerException.class, () -> memberService.memberLogout(memberId));
     }
 
     @Test

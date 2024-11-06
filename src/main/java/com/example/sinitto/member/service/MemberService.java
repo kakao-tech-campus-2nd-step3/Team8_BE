@@ -88,7 +88,11 @@ public class MemberService implements MemberIdProvider {
 
     public void memberLogout(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
+                .orElseThrow(null);
+
+        if (member == null) {
+            return;
+        }
 
         String storedRefreshToken = (String) redisTemplate.opsForHash().get(member.getEmail(), "refreshToken");
 
