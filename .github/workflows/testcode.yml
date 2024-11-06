@@ -44,14 +44,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Set environment variables for database
-        run: |
-          echo "spring.datasource.url=${{ secrets.MYSQL_URL }}" >> $GITHUB_ENV
-          echo "spring.datasource.username=${{ secrets.MYSQL_USERNAME }}" >> $GITHUB_ENV
-          echo "spring.datasource.password=${{ secrets.MYSQL_PASSWORD }}" >> $GITHUB_ENV
-          echo "spring.jpa.hibernate.ddl-auto=create" >> $GITHUB_ENV
-
       - name: Run Tests
         env:
+          SPRING_DATASOURCE_URL: ${{ secrets.MYSQL_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          SPRING_JPA_HIBERNATE_DDL_AUTO: "create"
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: ./gradlew test
