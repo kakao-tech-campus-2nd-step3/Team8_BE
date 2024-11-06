@@ -12,10 +12,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @MockitoSettings
 public class TokenServiceTest {
+    String key = "thisistestkeynotrealkeythisistestkeynotrealkey";
     @Mock
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -23,8 +24,6 @@ public class TokenServiceTest {
     private HashOperations<String, Object, Object> hashOperations;
 
     private TokenService tokenService;
-
-    String key = "thisistestkeynotrealkeythisistestkeynotrealkey";
 
     @BeforeEach
     void setUp() {

@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public class MemberServiceTest {
     private HashOperations<String, Object, Object> hashOperations;
     @InjectMocks
     MemberService memberService;
+    @Mock
+    private ValueOperations<String, String> valueOperations;
 
     @Test
     @DisplayName("getMemberIdByToken 메소드 테스트")
