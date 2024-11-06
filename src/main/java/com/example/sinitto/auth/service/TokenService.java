@@ -1,14 +1,12 @@
 package com.example.sinitto.auth.service;
 
 import com.example.sinitto.auth.dto.TokenResponse;
-import com.example.sinitto.common.exception.AccessTokenExpiredException;
-import com.example.sinitto.common.exception.BadRequestException;
-import com.example.sinitto.common.exception.InvalidJwtException;
-import com.example.sinitto.common.exception.RefreshTokenStolenException;
+import com.example.sinitto.common.exception.*;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +24,9 @@ public class TokenService {
     private static final long REFRESH_SEVEN_DAYS = 1000 * 60 * 60 * 24 * 7;
 
     private final Key secretKey;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public TokenService(@Value("${jwt.secret}") String secretKey, RedisTemplate<String, String> redisTemplate) {
+    public TokenService(@Value("${jwt.secret}") String secretKey, RedisTemplate<String, Object> redisTemplate) {
         byte[] decodedKey = Base64.getDecoder().decode(secretKey);
         this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
         this.redisTemplate = redisTemplate;
@@ -45,6 +43,10 @@ public class TokenService {
     }
 
     public String generateRefreshToken(String email) {
+        DataType keyType = redisTemplate.type(email);
+        if (keyType != null && keyType != DataType.HASH) {
+            redisTemplate.delete(email);
+        }
         String refreshToken = Jwts.builder()
                 .setSubject(email)
                 .claim("tokenType", "refresh")
@@ -53,7 +55,10 @@ public class TokenService {
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
 
-        redisTemplate.opsForValue().set(email, refreshToken, REFRESH_SEVEN_DAYS, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForHash().put(email, "refreshToken", refreshToken);
+        redisTemplate.opsForHash().put(email, "createdAt", System.currentTimeMillis());
+
+        redisTemplate.expire(email, REFRESH_SEVEN_DAYS, TimeUnit.MILLISECONDS);
         return refreshToken;
     }
 
@@ -92,7 +97,12 @@ public class TokenService {
     public TokenResponse refreshAccessToken(String refreshToken) {
         String email = extractEmailFromRefreshToken(refreshToken);
 
-        String storedRefreshToken = redisTemplate.opsForValue().get(email);
+        String storedRefreshToken = (String) redisTemplate.opsForHash().get(email, "refreshToken");
+        Long createdAt = Long.parseLong((String) redisTemplate.opsForHash().get(email, "createdAt"));
+
+        if (((System.currentTimeMillis() - createdAt) / 1000 / 60) < 1) {
+            throw new ConflictException("1분 이내에 발급받은 refresh Token이 있습니다.");
+        }
 
         if (storedRefreshToken == null) {
             throw new InvalidJwtException("토큰이 만료되었습니다. 재로그인이 필요합니다.");
@@ -108,5 +118,12 @@ public class TokenService {
         String newRefreshToken = generateRefreshToken(email);
 
         return new TokenResponse(newAccessToken, newRefreshToken);
+    }
+
+    public void deleteAllDataFromRedis(){
+        redisTemplate.getConnectionFactory()
+                .getConnection()
+                .serverCommands()
+                .flushAll();
     }
 }
