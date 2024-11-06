@@ -6,9 +6,11 @@ import com.example.sinitto.auth.dto.LoginResponse;
 import com.example.sinitto.auth.service.KakaoApiService;
 import com.example.sinitto.auth.service.KakaoTokenService;
 import com.example.sinitto.auth.service.TokenService;
+import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.resolver.MemberIdProvider;
+import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
@@ -29,14 +31,18 @@ public class MemberService implements MemberIdProvider {
     private final KakaoTokenService kakaoTokenService;
     private final PointRepository pointRepository;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final CallbackService callbackService;
+    private final HelloCallService helloCallService;
 
-    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, RedisTemplate<String, Object> redisTemplate) {
+    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, RedisTemplate<String, Object> redisTemplate, CallbackService callbackService, HelloCallService helloCallService) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.kakaoApiService = kakaoApiService;
         this.kakaoTokenService = kakaoTokenService;
         this.pointRepository = pointRepository;
         this.redisTemplate = redisTemplate;
+        this.callbackService = callbackService;
+        this.helloCallService = helloCallService;
     }
 
     @Override
@@ -101,7 +107,7 @@ public class MemberService implements MemberIdProvider {
         }
     }
 
-    public void deleteMember(Long memberId){
+    public void deleteMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
 
@@ -111,6 +117,12 @@ public class MemberService implements MemberIdProvider {
             redisTemplate.delete(member.getEmail());
         }
 
+        if (member.isSinitto()) {
+            callbackService.cancelAssignedCallbackIfInProgress(member);
+            helloCallService.cancelAssignedHelloCallIfInProgress(member);
+        }
+
         memberRepository.deleteById(memberId);
     }
 }
+

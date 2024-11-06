@@ -1,8 +1,10 @@
 package com.example.sinitto.member.service;
 
 import com.example.sinitto.auth.service.TokenService;
+import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
@@ -34,11 +36,16 @@ public class MemberServiceTest {
     @Mock
     RedisTemplate<String, Object> redisTemplate;
     @Mock
-    private HashOperations<String, Object, Object> hashOperations;
+    HashOperations<String, Object, Object> hashOperations;
     @InjectMocks
     MemberService memberService;
     @Mock
-    private ValueOperations<String, String> valueOperations;
+    ValueOperations<String, String> valueOperations;
+    @Mock
+    CallbackService callbackService;
+    @Mock
+    HelloCallService helloCallService;
+
 
     @Test
     @DisplayName("getMemberIdByToken 메소드 테스트")
@@ -143,7 +150,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("deleteMember 메소드 테스트")
-    void deleteMemberTest(){
+    void deleteMemberTest() {
         //given
         Long memberId = 1L;
         String email = "test@email.com";
@@ -160,5 +167,53 @@ public class MemberServiceTest {
 
         //when
         verify(memberRepository, times(1)).deleteById(memberId);
+    }
+
+    @Test
+    @DisplayName("deleteMember 메소드 테스트 - 탈퇴 신청한게 시니또인 경우")
+    void deleteMemberTest2() {
+        //given
+        Long memberId = 1L;
+        String email = "test@email.com";
+        Member member = mock(Member.class);
+        String storedRefreshToken = "testRefreshToken";
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.getEmail()).thenReturn(email);
+        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
+        when(redisTemplate.opsForHash().get(member.getEmail(), "refreshToken")).thenReturn(storedRefreshToken);
+
+        when(member.isSinitto()).thenReturn(true);
+        //when
+        memberService.deleteMember(memberId);
+
+        //when
+        verify(memberRepository, times(1)).deleteById(memberId);
+        verify(callbackService, times(1)).cancelAssignedCallbackIfInProgress(any(Member.class));
+        verify(helloCallService, times(1)).cancelAssignedHelloCallIfInProgress(any(Member.class));
+    }
+
+    @Test
+    @DisplayName("deleteMember 메소드 테스트 - 탈퇴 신청한게 보호자인 경우")
+    void deleteMemberTest3() {
+        //given
+        Long memberId = 1L;
+        String email = "test@email.com";
+        Member member = mock(Member.class);
+        String storedRefreshToken = "testRefreshToken";
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(member.getEmail()).thenReturn(email);
+        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
+        when(redisTemplate.opsForHash().get(member.getEmail(), "refreshToken")).thenReturn(storedRefreshToken);
+
+        when(member.isSinitto()).thenReturn(false);
+        //when
+        memberService.deleteMember(memberId);
+
+        //when
+        verify(memberRepository, times(1)).deleteById(memberId);
+        verify(callbackService, times(0)).cancelAssignedCallbackIfInProgress(any(Member.class));
+        verify(helloCallService, times(0)).cancelAssignedHelloCallIfInProgress(any(Member.class));
     }
 }
