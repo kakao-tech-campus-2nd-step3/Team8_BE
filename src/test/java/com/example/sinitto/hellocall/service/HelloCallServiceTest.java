@@ -864,4 +864,39 @@ public class HelloCallServiceTest {
         //when, then
         assertThrows(NotFoundException.class, () -> helloCallService.readOwnHelloCallBySinitto(memberId));
     }
+
+    @Test
+    @DisplayName("시니또 탈퇴시 할당받은 안부전화가 있으면 안부전화 엔티티를 대기상태로 바꾸고, 멤버도 null 로 교체한다.")
+    void cancelAssignedHelloCallIfInProgressTest1() {
+        // given
+        Member member = mock(Member.class);
+        HelloCall helloCall = mock(HelloCall.class);
+
+        when(helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)).thenReturn(Optional.of(helloCall));
+
+        // when
+        helloCallService.cancelAssignedHelloCallIfInProgress(member);
+
+        // then
+        verify(helloCall, atLeastOnce()).changeStatusToWaiting();
+        verify(helloCall, atLeastOnce()).setMember(null);
+    }
+
+    @Test
+    @DisplayName("시니또 탈퇴시 할당받은 안부전화가 없으면 아무것도 하지 않는다.")
+    void cancelAssignedHelloCallIfInProgressTest2() {
+        // given
+        Member member = mock(Member.class);
+        HelloCall helloCall = mock(HelloCall.class);
+
+        when(helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)).thenReturn(Optional.empty());
+
+        // when
+        helloCallService.cancelAssignedHelloCallIfInProgress(member);
+
+        // then
+        verify(helloCall, never()).changeStatusToWaiting();
+        verify(helloCall, never()).setMember(null);
+    }
+
 }

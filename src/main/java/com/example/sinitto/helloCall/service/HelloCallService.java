@@ -320,4 +320,16 @@ public class HelloCallService {
         return helloCallResponses;
     }
 
+    @Transactional
+    public void cancelAssignedHelloCallIfInProgress(Member member) {
+
+        HelloCall helloCall = helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS)
+                .orElse(null);
+
+        if (helloCall != null) {
+            helloCall.changeStatusToWaiting();
+            helloCall.setMember(null);
+        }
+    }
+
 }
