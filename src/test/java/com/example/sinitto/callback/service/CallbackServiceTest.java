@@ -529,4 +529,43 @@ class CallbackServiceTest {
             assertEquals("", result.seniorPhoneNumber());
         }
     }
+
+    @Nested
+    @DisplayName("시니또가 탈퇴시 진행중인 콜백이 있으면 취소시키는 로직 테스트")
+    class CancelAssignedCallbackIfInProgress {
+
+        @Test
+        @DisplayName("진행중인 콜백이 있으면, 콜백을 대기상태로 전환시켜야한다.")
+        void cancelAssignedCallbackIfInProgress1() {
+            //given
+            Member member = mock(Member.class);
+            Callback callback = mock(Callback.class);
+
+            when(callbackRepository.findByAssignedMemberAndStatus(any(Member.class), any(Callback.Status.class))).thenReturn(Optional.of(callback));
+
+            //when
+            callbackService.cancelAssignedCallbackIfInProgress(member);
+
+            //then
+            verify(callback, atLeastOnce()).cancelAssignment();
+            verify(callback, atLeastOnce()).changeStatusToWaiting();
+        }
+
+        @Test
+        @DisplayName("진행중인 콜백이 없으면, 아무것도 하지 않아야한다.")
+        void cancelAssignedCallbackIfInProgress2() {
+            //given
+            Member member = mock(Member.class);
+            Callback callback = mock(Callback.class);
+
+            when(callbackRepository.findByAssignedMemberAndStatus(any(Member.class), any(Callback.Status.class))).thenReturn(Optional.empty());
+
+            //when
+            callbackService.cancelAssignedCallbackIfInProgress(member);
+
+            //then
+            verify(callback, never()).cancelAssignment();
+            verify(callback, never()).changeStatusToWaiting();
+        }
+    }
 }

@@ -219,4 +219,16 @@ public class CallbackService {
         return new CallbackForSinittoResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId(), false, "");
     }
 
+    @Transactional
+    public void cancelAssignedCallbackIfInProgress(Member member) {
+
+        Callback callback = callbackRepository.findByAssignedMemberAndStatus(member, Callback.Status.IN_PROGRESS)
+                .orElse(null);
+
+        if (callback != null) {
+            callback.cancelAssignment();
+            callback.changeStatusToWaiting();
+        }
+    }
+
 }
