@@ -7,11 +7,21 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 public class HelloCallPriceService {
 
     private static final int PRICE_PER_ONE_MINUTE = 50;
+    private static final Map<String, DayOfWeek> DAY_NAME_MAP = Map.of(
+            "월", DayOfWeek.MONDAY,
+            "화", DayOfWeek.TUESDAY,
+            "수", DayOfWeek.WEDNESDAY,
+            "목", DayOfWeek.THURSDAY,
+            "금", DayOfWeek.FRIDAY,
+            "토", DayOfWeek.SATURDAY,
+            "일", DayOfWeek.SUNDAY
+    );
 
     public HelloCallPriceResponse calculateHelloCallPrice(HelloCallPriceRequest helloCallPriceRequest) {
         int totalServiceCount = calculateTotalServiceCount(helloCallPriceRequest);
@@ -37,16 +47,11 @@ public class HelloCallPriceService {
     }
 
     private DayOfWeek convertDayStringToDayOfWeek(String dayName) {
-        return switch (dayName) {
-            case "월" -> DayOfWeek.MONDAY;
-            case "화" -> DayOfWeek.TUESDAY;
-            case "수" -> DayOfWeek.WEDNESDAY;
-            case "목" -> DayOfWeek.THURSDAY;
-            case "금" -> DayOfWeek.FRIDAY;
-            case "토" -> DayOfWeek.SATURDAY;
-            case "일" -> DayOfWeek.SUNDAY;
-            default -> throw new BadRequestException("잘못된 dayName 입니다 : " + dayName);
-        };
+        DayOfWeek dayOfWeek = DAY_NAME_MAP.get(dayName);
+        if (dayOfWeek == null) {
+            throw new BadRequestException("잘못된 dayName 입니다 : " + dayName);
+        }
+        return dayOfWeek;
     }
 
     private int countOccurrencesOfDay(LocalDate startDate, LocalDate endDate, DayOfWeek targetDayOfWeek) {
