@@ -184,6 +184,7 @@ public class GuardServiceTest {
         SeniorRequest request = new SeniorRequest("newSeniorName", "01011111111");
 
         when(seniorRepository.findByIdAndMemberId(seniorId, memberId)).thenReturn(Optional.of(senior));
+        when(senior.getPhoneNumber()).thenReturn("01012121212");
         //when
         guardService.updateSenior(memberId, seniorId, request);
 
@@ -203,6 +204,7 @@ public class GuardServiceTest {
 
         when(seniorRepository.findByIdAndMemberId(seniorId, memberId)).thenReturn(Optional.of(senior));
         when(seniorRepository.existsByPhoneNumber("01011111111")).thenReturn(true);
+        when(senior.getPhoneNumber()).thenReturn("01012121212");
         //when then
         assertThrows(BadRequestException.class, () -> guardService.updateSenior(memberId, seniorId, request));
     }
