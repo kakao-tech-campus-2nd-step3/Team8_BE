@@ -75,7 +75,7 @@ public class KakaoMessageService {
                         "]" +
                         "}",
                 name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, point, depositMessage,
-                , kakaoProperties.bankName(), kakaoProperties.accountNumber(), kakaoProperties.name(), kakaoProperties.frontUri(), kakaoProperties.frontUri()
+                kakaoProperties.bankName(), kakaoProperties.accountNumber(), kakaoProperties.name(), kakaoProperties.frontUri(), kakaoProperties.frontUri()
         );
 
 
