@@ -45,7 +45,7 @@ public class KakaoMessageService {
                         "\"object_type\": \"feed\"," +
                         "\"content\": {" +
                         "\"title\": \"%s님의 포인트 충전 요청 접수\"," +
-                        "\"description\": \"입금자명 변경하여 입금해주시기 바랍니다.\"," +
+                        "\"description\": \"입금자명을 변경하여 입금해주시기 바랍니다.\"," +
                         "\"image_url\": \"%s\"," +
                         "\"image_width\": 640," +
                         "\"image_height\": 640," +
@@ -56,7 +56,6 @@ public class KakaoMessageService {
                         "}," +
                         "\"item_content\": {" +
                         "\"items\": [" +
-                        "{\"item\": \"충전 요청\", \"item_op\": \"%d points\"}," +
                         "{\"item\": \"입금 금액\", \"item_op\": \"%d 원\"}," +
                         "{\"item\": \"입금자명\", \"item_op\": \"%s\"}," +
                         "{\"item\": \"은행\", \"item_op\": \"%s\"}," +
@@ -74,7 +73,7 @@ public class KakaoMessageService {
                         "}" +
                         "]" +
                         "}",
-                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, point, depositMessage,
+                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, depositMessage,
                 kakaoProperties.bankName(), kakaoProperties.accountNumber(), kakaoProperties.name(), kakaoProperties.frontUri(), kakaoProperties.frontUri()
         );
 
