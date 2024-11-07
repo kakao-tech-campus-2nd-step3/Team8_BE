@@ -90,7 +90,8 @@ public class GuardService {
                 () -> new NotFoundException("이메일에 해당하는 시니어를 찾을 수 없습니다.")
         );
 
-        if(seniorRepository.existsByPhoneNumber(seniorRequest.seniorPhoneNumber())) {
+        if(!senior.getPhoneNumber().equals(seniorRequest.seniorPhoneNumber())
+                && seniorRepository.existsByPhoneNumber(seniorRequest.seniorPhoneNumber())) {
             throw new BadRequestException("이미 등록되어 있는 전화번호 입니다.");
         }
 
