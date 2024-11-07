@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -110,7 +111,7 @@ public class CallbackService {
         }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void completeCallbackIndividually(Callback callback) {
 
         pointService.earnPoint(callback.getAssignedMemberId(), CALLBACK_PRICE, PointLog.Content.COMPLETE_CALLBACK_AND_EARN);
@@ -217,6 +218,18 @@ public class CallbackService {
         }
 
         return new CallbackForSinittoResponse(callback.getId(), callback.getSeniorName(), callback.getPostTime(), callback.getStatus(), callback.getSeniorId(), false, "");
+    }
+
+    @Transactional
+    public void cancelAssignedCallbackIfInProgress(Member member) {
+
+        Callback callback = callbackRepository.findByAssignedMemberIdAndStatus(member.getId(), Callback.Status.IN_PROGRESS)
+                .orElse(null);
+
+        if (callback != null) {
+            callback.cancelAssignment();
+            callback.changeStatusToWaiting();
+        }
     }
 
 }

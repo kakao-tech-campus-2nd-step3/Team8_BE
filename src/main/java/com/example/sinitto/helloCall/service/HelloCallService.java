@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -318,6 +319,22 @@ public class HelloCallService {
         }
 
         return helloCallResponses;
+    }
+
+    @Transactional
+    public void cancelAssignedHelloCallIfInProgress(Member member) {
+
+        List<HelloCall> helloCalls = helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS);
+
+        changeHelloCall(helloCalls);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void changeHelloCall(List<HelloCall> helloCalls) {
+        for (HelloCall helloCall : helloCalls) {
+            helloCall.changeStatusToWaiting();
+            helloCall.setMember(null);
+        }
     }
 
 }
