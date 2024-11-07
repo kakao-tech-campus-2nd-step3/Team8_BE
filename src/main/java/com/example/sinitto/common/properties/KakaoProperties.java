@@ -10,6 +10,7 @@ public record KakaoProperties(
         String frontUri,
         String bankName,
         String accountNumber,
-        String name
+        String name,
+        String frontUriWithoutHttps
 ) {
 }
