@@ -20,7 +20,6 @@ public class KakaoApiService {
     private static final String KAKAO_AUTH_BASE_URL = "https://kauth.kakao.com/oauth";
     private static final String KAKAO_API_BASE_URL = "https://kapi.kakao.com/v2/user";
     private static final String LOCALHOST_URL = "localhost:5173";
-    private static final String FRONT_URL = "dc9u22hnkwb24.cloudfront.net";
 
     private final RestTemplate restTemplate;
     private final KakaoProperties kakaoProperties;
@@ -39,7 +38,7 @@ public class KakaoApiService {
 
         if (requestUrl.contains(LOCALHOST_URL)) {
             redirectUri = kakaoProperties.devRedirectUri();
-        } else if (requestUrl.contains(FRONT_URL)) {
+        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttps())) {
             redirectUri = kakaoProperties.redirectUri();
         } else {
             throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
@@ -62,7 +61,7 @@ public class KakaoApiService {
 
         if (requestUrl.contains(LOCALHOST_URL)) {
             redirectUri = kakaoProperties.devRedirectUri();
-        } else if (requestUrl.contains(FRONT_URL)) {
+        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttps())) {
             redirectUri = kakaoProperties.redirectUri();
         } else {
             throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
