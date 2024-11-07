@@ -541,7 +541,7 @@ class CallbackServiceTest {
             Member member = mock(Member.class);
             Callback callback = mock(Callback.class);
 
-            when(callbackRepository.findByAssignedMemberAndStatus(any(Member.class), any(Callback.Status.class))).thenReturn(Optional.of(callback));
+            when(callbackRepository.findByAssignedMemberIdAndStatus(anyLong(), any(Callback.Status.class))).thenReturn(Optional.of(callback));
 
             //when
             callbackService.cancelAssignedCallbackIfInProgress(member);
@@ -558,7 +558,7 @@ class CallbackServiceTest {
             Member member = mock(Member.class);
             Callback callback = mock(Callback.class);
 
-            when(callbackRepository.findByAssignedMemberAndStatus(any(Member.class), any(Callback.Status.class))).thenReturn(Optional.empty());
+            when(callbackRepository.findByAssignedMemberIdAndStatus(anyLong(), any(Callback.Status.class))).thenReturn(Optional.empty());
 
             //when
             callbackService.cancelAssignedCallbackIfInProgress(member);

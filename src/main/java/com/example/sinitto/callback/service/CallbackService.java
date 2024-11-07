@@ -222,7 +222,7 @@ public class CallbackService {
     @Transactional
     public void cancelAssignedCallbackIfInProgress(Member member) {
 
-        Callback callback = callbackRepository.findByAssignedMemberAndStatus(member, Callback.Status.IN_PROGRESS)
+        Callback callback = callbackRepository.findByAssignedMemberIdAndStatus(member.getId(), Callback.Status.IN_PROGRESS)
                 .orElse(null);
 
         if (callback != null) {
