@@ -29,7 +29,7 @@ public class KakaoMessageService {
         this.kakaoProperties = kakaoProperties;
     }
 
-    public void sendPointChargeRequestReceivedMessage(String email, int point, String name) {
+    public void sendPointChargeRequestReceivedMessage(String email, int point, String name, String depositMessage) {
         String accessToken = kakaoTokenService.getValidAccessTokenInServer(email);
 
         if (accessToken == null) {
@@ -45,7 +45,7 @@ public class KakaoMessageService {
                         "\"object_type\": \"feed\"," +
                         "\"content\": {" +
                         "\"title\": \"%s님의 포인트 충전 요청 접수\"," +
-                        "\"description\": \"입금 금액을 입금해주시기 바랍니다.\"," +
+                        "\"description\": \"입금자명을 변경하여 입금해주시기 바랍니다.\"," +
                         "\"image_url\": \"%s\"," +
                         "\"image_width\": 640," +
                         "\"image_height\": 640," +
@@ -56,11 +56,11 @@ public class KakaoMessageService {
                         "}," +
                         "\"item_content\": {" +
                         "\"items\": [" +
-                        "{\"item\": \"충전 요청\", \"item_op\": \"%d points\"}," +
                         "{\"item\": \"입금 금액\", \"item_op\": \"%d 원\"}," +
-                        "{\"item\": \"은행\", \"item_op\": \"시니또 은행\"}," +
-                        "{\"item\": \"계좌번호\", \"item_op\": \"3333-11-225533\"}," +
-                        "{\"item\": \"성명\", \"item_op\": \"시니또 매니저\"}" +
+                        "{\"item\": \"입금자명\", \"item_op\": \"%s\"}," +
+                        "{\"item\": \"은행\", \"item_op\": \"%s\"}," +
+                        "{\"item\": \"계좌번호\", \"item_op\": \"%s\"}," +
+                        "{\"item\": \"성명\", \"item_op\": \"%s\"}" +
                         "]" +
                         "}," +
                         "\"buttons\": [" +
@@ -73,8 +73,8 @@ public class KakaoMessageService {
                         "}" +
                         "]" +
                         "}",
-                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, point,
-                kakaoProperties.frontUri(), kakaoProperties.frontUri()
+                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, depositMessage,
+                kakaoProperties.bankName(), kakaoProperties.accountNumber(), kakaoProperties.name(), kakaoProperties.frontUri(), kakaoProperties.frontUri()
         );
 
 

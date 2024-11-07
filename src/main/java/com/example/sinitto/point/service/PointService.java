@@ -72,7 +72,7 @@ public class PointService {
 
         pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
 
-        kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName());
+        kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName(), member.getDepositMessage());
 
         return new PointChargeResponse(member.getDepositMessage());
     }
