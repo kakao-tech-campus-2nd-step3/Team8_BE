@@ -7,6 +7,9 @@ public record KakaoProperties(
         String clientId,
         String redirectUri,
         String devRedirectUri,
-        String frontUri
+        String frontUri,
+        String bankName,
+        String accountNumber,
+        String name
 ) {
 }
