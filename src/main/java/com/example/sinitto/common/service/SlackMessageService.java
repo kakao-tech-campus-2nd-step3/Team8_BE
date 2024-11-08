@@ -14,8 +14,8 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class SlackMessageService {
 
-    @Value("${slack.webhook.url}")
-    private String slackWebhookUrl;
+    @Value("${slack.notice.webhook.url}")
+    private String slackNoticeWebhookUrl;
 
     @Value("${slack.charge.request.url}")
     private String chargeRequestUrl;
@@ -64,6 +64,6 @@ public class SlackMessageService {
 
         HttpEntity<String> entity = new HttpEntity<>(payload, headers);
 
-        restTemplate.exchange(slackWebhookUrl, HttpMethod.POST, entity, String.class);
+        restTemplate.exchange(slackNoticeWebhookUrl, HttpMethod.POST, entity, String.class);
     }
 }

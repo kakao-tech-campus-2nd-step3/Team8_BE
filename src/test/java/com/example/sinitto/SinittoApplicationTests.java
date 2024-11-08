@@ -12,8 +12,8 @@ class SinittoApplicationTests {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${slack.webhook.url}")
-    private String slackWebhookUrl;
+    @Value("${slack.notice.webhook.url}")
+    private String slackNoticeWebhookUrl;
 
     @Value("${slack.charge.request.url}")
     private String chargeRequestUrl;
