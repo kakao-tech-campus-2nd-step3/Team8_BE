@@ -65,7 +65,14 @@ public class KakaoMessageService {
                         "}," +
                         "\"buttons\": [" +
                         "{" +
-                        "\"title\": \"서비스 이용하기\"," +
+                        "\"title\": \"서비스 이용\"," +
+                        "\"link\": {" +
+                        "\"web_url\": \"%s\"," +
+                        "\"mobile_web_url\": \"%s\"" +
+                        "}" +
+                        "}," +
+                        "{" +
+                        "\"title\": \"송금하기\"," +
                         "\"link\": {" +
                         "\"web_url\": \"%s\"," +
                         "\"mobile_web_url\": \"%s\"" +
@@ -73,8 +80,9 @@ public class KakaoMessageService {
                         "}" +
                         "]" +
                         "}",
-                name, SINITTO_IMAGE_URL, kakaoProperties.frontUri(), kakaoProperties.frontUri(), point, depositMessage,
-                kakaoProperties.bankName(), kakaoProperties.accountNumber(), kakaoProperties.name(), kakaoProperties.frontUri(), kakaoProperties.frontUri()
+                name, SINITTO_IMAGE_URL, kakaoProperties.PayUrl(), kakaoProperties.PayUrl(), point, depositMessage,
+                kakaoProperties.bankName(), kakaoProperties.accountNumber(), kakaoProperties.name(),
+                kakaoProperties.frontUri(), kakaoProperties.frontUri(), kakaoProperties.PayUrl(), kakaoProperties.PayUrl()
         );
 
 
