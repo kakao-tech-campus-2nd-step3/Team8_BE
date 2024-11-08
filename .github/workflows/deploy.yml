@@ -22,4 +22,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} 'SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL bash /home/ubuntu/deploy.sh'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }} bash /home/ubuntu/deploy.sh"
