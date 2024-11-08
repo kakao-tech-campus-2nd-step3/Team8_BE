@@ -14,13 +14,13 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class SlackMessageService {
 
-    @Value("${slack.webhook.url:#{null}}}")
+    @Value("${slack.webhook.url}")
     private String slackWebhookUrl;
 
-    @Value("${slack.charge.request.url:#{null}}}")
+    @Value("${slack.charge.request.url}")
     private String chargeRequestUrl;
 
-    @Value("${slack.withdraw.request.url:#{null}}}")
+    @Value("${slack.withdraw.request.url}")
     private String withdrawRequestUrl;
 
     private final RestTemplate restTemplate;
