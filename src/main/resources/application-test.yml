@@ -1,0 +1,9 @@
+slack:
+  webhook:
+    url: "http://test/mock-slack-webhook"
+  charge:
+    request:
+      url: "http://test/mock-charge-request"
+  withdraw:
+    request:
+      url: "http://test/mock-withdraw-request"
