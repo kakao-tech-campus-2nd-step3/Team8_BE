@@ -78,7 +78,7 @@ public class GuardController {
 
     @Operation(summary = "모든 보호자 조회", description = "관리자용 API입니다.")
     @GetMapping("/all")
-    public ResponseEntity<List<GuardResponse>> getAllGuards(@RequestAttribute("memberId") Long memberId) {
+    public ResponseEntity<List<GuardResponse>> getAllGuards() {
         return ResponseEntity.ok(guardService.readAllGuards());
     }
 
