@@ -21,6 +21,7 @@ public class PointLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private PointLog.Content content;
     @NotNull
     private int price;
