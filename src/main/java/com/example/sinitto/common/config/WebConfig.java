@@ -77,7 +77,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/reviews")
                 .excludePathPatterns("/api/members/sinitto")
                 .excludePathPatterns("/api/members/guard")
-                .excludePathPatterns("/api/reviews")
+                .excludePathPatterns("/api/reviews/all")
                 .excludePathPatterns("/api/callbacks/twilio")
                 .excludePathPatterns("/api/hellocalls/admin/reports");
     }
