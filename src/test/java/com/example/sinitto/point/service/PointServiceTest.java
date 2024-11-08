@@ -4,6 +4,7 @@ import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.common.exception.ForbiddenException;
 import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.service.KakaoMessageService;
+import com.example.sinitto.common.service.SlackMessageService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointChargeResponse;
@@ -46,6 +47,8 @@ class PointServiceTest {
     PointService pointService;
     @Mock
     KakaoMessageService kakaoMessageService;
+    @Mock
+    private SlackMessageService slackMessageService;
 
     @Nested
     @DisplayName("포인트 조회 테스트")
