@@ -3,6 +3,8 @@ package com.example.sinitto.point.service;
 import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.common.exception.ForbiddenException;
 import com.example.sinitto.common.exception.NotFoundException;
+import com.example.sinitto.common.service.KakaoMessageService;
+import com.example.sinitto.common.service.SlackMessageService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointChargeResponse;
@@ -12,6 +14,7 @@ import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
 import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,19 +24,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PointService {
 
-    public static final double WITHDRAWAL_FEE_RATE = 0.8;
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
     private final SinittoBankInfoRepository sinittoBankInfoRepository;
+    private final KakaoMessageService kakaoMessageService;
+    private final SlackMessageService slackMessageService;
 
-    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository, SinittoBankInfoRepository sinittoBankInfoRepository) {
+    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository, SinittoBankInfoRepository sinittoBankInfoRepository, KakaoMessageService kakaoMessageService, SlackMessageService slackMessageService) {
         this.memberRepository = memberRepository;
         this.pointRepository = pointRepository;
         this.pointLogRepository = pointLogRepository;
         this.sinittoBankInfoRepository = sinittoBankInfoRepository;
+        this.kakaoMessageService = kakaoMessageService;
+        this.slackMessageService = slackMessageService;
     }
 
+    @Transactional(readOnly = true)
     public PointResponse getPoint(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
@@ -45,6 +52,7 @@ public class PointService {
         return new PointResponse(point.getPrice());
     }
 
+    @Transactional(readOnly = true)
     public Page<PointLogResponse> getPointLogs(Long memberId, Pageable pageable) {
 
         Member member = memberRepository.findById(memberId)
@@ -67,6 +75,12 @@ public class PointService {
 
         pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
 
+        kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName(), member.getDepositMessage());
+
+        String title = "포인트 충전 요청";
+        String description = String.format("%s님이 %d 포인트를 충전 요청했습니다.", member.getName(), price);
+        slackMessageService.sendStyledSlackMessage(title, description,"충전");
+
         return new PointChargeResponse(member.getDepositMessage());
     }
 
@@ -87,14 +101,80 @@ public class PointService {
         Point point = pointRepository.findByMember(member)
                 .orElseThrow(() -> new NotFoundException("요청한 멤버의 포인트를 찾을 수 없습니다"));
 
-        int adjustedPrice = (int) (price * WITHDRAWAL_FEE_RATE);
-
         if (!point.isSufficientForDeduction(price)) {
             throw new BadRequestException(String.format("보유한 포인트(%d) 보다 더 많은 포인트에 대한 출금요청입니다", point.getPrice()));
         }
 
         point.deduct(price);
 
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, adjustedPrice, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, price, PointLog.Status.WITHDRAW_REQUEST));
+
+        SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("시니또의 은행 계좌 정보가 없습니다."));
+        kakaoMessageService.sendPointWithdrawRequestReceivedMessage(member.getEmail(), price, member.getName(), sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
+
+        String title = "포인트 출금 요청";
+        String description = String.format("%s님이 %d 포인트를 출금 요청했습니다.\n은행: %s, 계좌번호: %s",
+                member.getName(), price, sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
+        slackMessageService.sendStyledSlackMessage(title, description,"출금");
     }
+
+    @Transactional
+    public void earnPoint(Long memberId, int price, PointLog.Content contentForPointLog) {
+
+        Point point = pointRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        point.earn(price);
+
+        pointLogRepository.save(
+                new PointLog(
+                        contentForPointLog.getMessage(),
+                        point.getMember(),
+                        price,
+                        PointLog.Status.EARN)
+        );
+    }
+
+    @Transactional
+    public void deductPoint(Long memberId, int price, PointLog.Content contentForPointLog) {
+
+        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        if (!point.isSufficientForDeduction(price)) {
+            throw new BadRequestException("포인트가 부족합니다.");
+        }
+
+        point.deduct(price);
+
+        pointLogRepository.save(
+                new PointLog(
+                        contentForPointLog.getMessage(),
+                        point.getMember(),
+                        price,
+                        PointLog.Status.SPEND_COMPLETE
+                ));
+    }
+
+    @Transactional
+    public void refundPointByDelete(Long memberId, int price, PointLog.Content contentForPointLog) {
+
+        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
+                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
+
+        if (!point.isSufficientForDeduction(price)) {
+            throw new BadRequestException("포인트가 부족합니다.");
+        }
+
+        point.earn(price);
+
+        pointLogRepository.save(
+                new PointLog(
+                        contentForPointLog.getMessage(),
+                        point.getMember(),
+                        price,
+                        PointLog.Status.SPEND_CANCEL
+                ));
+    }
+
 }

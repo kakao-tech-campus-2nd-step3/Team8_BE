@@ -19,6 +19,20 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -32,5 +46,12 @@ jobs:
 
       - name: Run Tests
         env:
+          SPRING_DATASOURCE_URL: ${{ secrets.MYSQL_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          SLACK_NOTICE_WEBHOOK_URL: ${{ secrets.SLACK_NOTICE_WEBHOOK_URL }}
+          SLACK_CHARGE_REQUEST_URL: ${{ secrets.SLACK_CHARGE_REQUEST_URL }}
+          SLACK_WITHDRAW_REQUEST_URL: ${{ secrets.SLACK_WITHDRAW_REQUEST_URL }}
         run: ./gradlew test

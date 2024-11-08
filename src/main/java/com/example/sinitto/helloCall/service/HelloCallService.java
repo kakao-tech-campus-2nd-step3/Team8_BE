@@ -15,14 +15,13 @@ import com.example.sinitto.helloCall.repository.TimeSlotRepository;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.entity.Senior;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.point.entity.Point;
 import com.example.sinitto.point.entity.PointLog;
-import com.example.sinitto.point.repository.PointLogRepository;
-import com.example.sinitto.point.repository.PointRepository;
+import com.example.sinitto.point.service.PointService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -38,20 +37,18 @@ public class HelloCallService {
     private final SeniorRepository seniorRepository;
     private final MemberRepository memberRepository;
     private final HelloCallTimeLogRepository helloCallTimeLogRepository;
-    private final PointRepository pointRepository;
-    private final PointLogRepository pointLogRepository;
+    private final PointService pointService;
 
 
     public HelloCallService(HelloCallRepository helloCallRepository, TimeSlotRepository timeSlotRepository,
-                            SeniorRepository seniorRepository, MemberRepository memberRepository, HelloCallTimeLogRepository helloCallTimeLogRepository,
-                            PointRepository pointRepository, PointLogRepository pointLogRepository) {
+                            SeniorRepository seniorRepository, MemberRepository memberRepository,
+                            HelloCallTimeLogRepository helloCallTimeLogRepository, PointService pointService) {
         this.helloCallRepository = helloCallRepository;
         this.timeSlotRepository = timeSlotRepository;
         this.seniorRepository = seniorRepository;
         this.memberRepository = memberRepository;
         this.helloCallTimeLogRepository = helloCallTimeLogRepository;
-        this.pointRepository = pointRepository;
-        this.pointLogRepository = pointLogRepository;
+        this.pointService = pointService;
     }
 
     @Transactional
@@ -73,22 +70,7 @@ public class HelloCallService {
             timeSlotRepository.save(timeSlot);
         }
 
-        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
-                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
-
-        if (!point.isSufficientForDeduction(helloCall.getPrice())) {
-            throw new BadRequestException("포인트가 부족합니다.");
-        }
-
-        point.deduct(helloCall.getPrice());
-
-        pointLogRepository.save(
-                new PointLog(
-                        PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(),
-                        senior.getMember(),
-                        helloCall.getPrice(),
-                        PointLog.Status.SPEND_COMPLETE
-                ));
+        pointService.deductPoint(memberId, helloCall.getPrice(), PointLog.Content.SPEND_COMPLETE_HELLO_CALL);
     }
 
     @Transactional
@@ -138,34 +120,7 @@ public class HelloCallService {
 
         return new HelloCallDetailResponse(helloCall.getStartDate(), helloCall.getEndDate(),
                 timeSlots, helloCall.getRequirement(), helloCall.getSenior().getName(),
-                helloCall.getSenior().getPhoneNumber(), helloCall.getPrice());
-    }
-
-    @Transactional
-    public void updateHelloCallByGuard(Long memberId, Long helloCallId, HelloCallDetailUpdateRequest helloCallDetailUpdateRequest) {
-        HelloCall helloCall = helloCallRepository.findById(helloCallId)
-                .orElseThrow(() -> new NotFoundException("id에 해당하는 안부전화 정보를 찾을 수 없습니다."));
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
-
-        helloCall.checkGuardIsCorrect(member);
-
-        helloCall.updateHelloCall(helloCallDetailUpdateRequest.startDate(), helloCallDetailUpdateRequest.endDate(),
-                helloCallDetailUpdateRequest.price(), helloCallDetailUpdateRequest.serviceTime(), helloCallDetailUpdateRequest.requirement());
-
-        updateTimeSlots(helloCall, helloCallDetailUpdateRequest.timeSlots());
-    }
-
-    private void updateTimeSlots(HelloCall helloCall, List<HelloCallDetailUpdateRequest.TimeSlot> updatedTimeSlots) {
-        timeSlotRepository.deleteAllByHelloCall(helloCall);
-        helloCall.getTimeSlots().clear();
-
-        for (HelloCallDetailUpdateRequest.TimeSlot updatedSlot : updatedTimeSlots) {
-            TimeSlot newTimeSlot = new TimeSlot(updatedSlot.dayName(), updatedSlot.startTime(), updatedSlot.endTime(), helloCall);
-            timeSlotRepository.save(newTimeSlot);
-            helloCall.getTimeSlots().add(newTimeSlot);
-        }
+                helloCall.getSenior().getPhoneNumber(), helloCall.getPrice(), helloCall.getServiceTime());
     }
 
     @Transactional
@@ -178,18 +133,7 @@ public class HelloCallService {
 
         helloCall.checkGuardIsCorrect(member);
 
-        Point point = pointRepository.findByMemberIdWithWriteLock(memberId)
-                .orElseThrow(() -> new NotFoundException("멤버에 연관된 포인트가 없습니다."));
-
-        point.earn(helloCall.getPrice());
-
-        pointLogRepository.save(
-                new PointLog(
-                        PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(),
-                        member,
-                        helloCall.getPrice(),
-                        PointLog.Status.SPEND_CANCEL)
-        );
+        pointService.refundPointByDelete(memberId, helloCall.getPrice(), PointLog.Content.SPEND_CANCEL_HELLO_CALL);
 
         helloCall.checkStatusIsWaiting();
         helloCallRepository.delete(helloCall);
@@ -248,18 +192,7 @@ public class HelloCallService {
 
         helloCall.changeStatusToComplete();
 
-        Point sinittoPoint = pointRepository.findByMember(helloCall.getMember())
-                .orElseThrow(() -> new NotFoundException("포인트 적립 받을 시니또와 연관된 포인트가 없습니다"));
-
-        sinittoPoint.earn(helloCall.getPrice());
-
-        pointLogRepository.save(
-                new PointLog(
-                        PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(),
-                        sinittoPoint.getMember(),
-                        helloCall.getPrice(),
-                        PointLog.Status.EARN)
-        );
+        pointService.earnPoint(helloCall.getMember().getId(), helloCall.getPrice(), PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN);
     }
 
     @Transactional(readOnly = true)
@@ -386,6 +319,22 @@ public class HelloCallService {
         }
 
         return helloCallResponses;
+    }
+
+    @Transactional
+    public void cancelAssignedHelloCallIfInProgress(Member member) {
+
+        List<HelloCall> helloCalls = helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS);
+
+        changeHelloCall(helloCalls);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void changeHelloCall(List<HelloCall> helloCalls) {
+        for (HelloCall helloCall : helloCalls) {
+            helloCall.changeStatusToWaiting();
+            helloCall.setMember(null);
+        }
     }
 
 }
