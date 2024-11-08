@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class PointLog {
 
-    public static final double WITHDRAWAL_FEE_RATE = 0.8;
+    private static final double WITHDRAWAL_FEE_RATE = 0.8;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

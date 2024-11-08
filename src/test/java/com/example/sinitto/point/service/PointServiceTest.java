@@ -48,7 +48,7 @@ class PointServiceTest {
     @Mock
     KakaoMessageService kakaoMessageService;
     @Mock
-    private SlackMessageService slackMessageService;
+    SlackMessageService slackMessageService;
 
     @Nested
     @DisplayName("포인트 조회 테스트")
@@ -233,6 +233,16 @@ class PointServiceTest {
 
             //when then
             assertThrows(BadRequestException.class, () -> pointService.savePointWithdrawRequest(1L, 10000));
+        }
+
+        @Test
+        @DisplayName("최소 출금 포인트보다 모자라면 예외를 발생시켜야한다.")
+        void savePointWithdrawRequest5() {
+            //given
+            int withdrawPoint = 4999;
+
+            //when then
+            assertThrows(BadRequestException.class, () -> pointService.savePointWithdrawRequest(1L, withdrawPoint));
         }
     }
 

@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PointService {
 
+    private static final int MINIMUM_WITHDRAW_POINT = 5000;
+
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
@@ -79,13 +81,17 @@ public class PointService {
 
         String title = "포인트 충전 요청";
         String description = String.format("%s님이 %d 포인트를 충전 요청했습니다.", member.getName(), price);
-        slackMessageService.sendStyledSlackMessage(title, description,"충전");
+        slackMessageService.sendStyledSlackMessage(title, description, "충전");
 
         return new PointChargeResponse(member.getDepositMessage());
     }
 
     @Transactional
     public void savePointWithdrawRequest(Long memberId, int price) {
+
+        if (price < MINIMUM_WITHDRAW_POINT) {
+            throw new BadRequestException(String.format("출금시 최소 %d 이상 요청하셔야합니다.", MINIMUM_WITHDRAW_POINT));
+        }
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("요청한 멤버를 찾을 수 없습니다"));
@@ -115,7 +121,7 @@ public class PointService {
         String title = "포인트 출금 요청";
         String description = String.format("%s님이 %d 포인트를 출금 요청했습니다.\n은행: %s, 계좌번호: %s",
                 member.getName(), price, sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
-        slackMessageService.sendStyledSlackMessage(title, description,"출금");
+        slackMessageService.sendStyledSlackMessage(title, description, "출금");
     }
 
     @Transactional
