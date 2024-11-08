@@ -4,6 +4,7 @@ import com.example.sinitto.common.exception.BadRequestException;
 import com.example.sinitto.common.exception.ForbiddenException;
 import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.service.KakaoMessageService;
+import com.example.sinitto.common.service.SlackMessageService;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.dto.PointChargeResponse;
@@ -28,13 +29,15 @@ public class PointService {
     private final PointLogRepository pointLogRepository;
     private final SinittoBankInfoRepository sinittoBankInfoRepository;
     private final KakaoMessageService kakaoMessageService;
+    private final SlackMessageService slackMessageService;
 
-    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository, SinittoBankInfoRepository sinittoBankInfoRepository, KakaoMessageService kakaoMessageService) {
+    public PointService(MemberRepository memberRepository, PointRepository pointRepository, PointLogRepository pointLogRepository, SinittoBankInfoRepository sinittoBankInfoRepository, KakaoMessageService kakaoMessageService, SlackMessageService slackMessageService) {
         this.memberRepository = memberRepository;
         this.pointRepository = pointRepository;
         this.pointLogRepository = pointLogRepository;
         this.sinittoBankInfoRepository = sinittoBankInfoRepository;
         this.kakaoMessageService = kakaoMessageService;
+        this.slackMessageService = slackMessageService;
     }
 
     @Transactional(readOnly = true)
@@ -74,6 +77,10 @@ public class PointService {
 
         kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName(), member.getDepositMessage());
 
+        String title = "포인트 충전 요청";
+        String description = String.format("%s님이 %d 포인트를 충전 요청했습니다.", member.getName(), price);
+        slackMessageService.sendStyledSlackMessage(title, description,"충전");
+
         return new PointChargeResponse(member.getDepositMessage());
     }
 
@@ -104,6 +111,11 @@ public class PointService {
 
         SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("시니또의 은행 계좌 정보가 없습니다."));
         kakaoMessageService.sendPointWithdrawRequestReceivedMessage(member.getEmail(), price, member.getName(), sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
+
+        String title = "포인트 출금 요청";
+        String description = String.format("%s님이 %d 포인트를 출금 요청했습니다.\n은행: %s, 계좌번호: %s",
+                member.getName(), price, sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
+        slackMessageService.sendStyledSlackMessage(title, description,"출금");
     }
 
     @Transactional
