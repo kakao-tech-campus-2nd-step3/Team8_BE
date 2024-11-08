@@ -8,7 +8,8 @@ import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.point.service.PointService;
+import com.example.sinitto.point.repository.PointLogRepository;
+import com.example.sinitto.point.repository.PointRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -43,7 +44,9 @@ public class MemberServiceTest {
     @Mock
     HelloCallService helloCallService;
     @Mock
-    PointService pointService;
+    PointRepository pointRepository;
+    @Mock
+    PointLogRepository pointLogRepository;
 
 
     @Test
@@ -94,7 +97,8 @@ public class MemberServiceTest {
 
         //then
         verify(memberRepository, times(1)).save(any(Member.class));
-        verify(pointService, times(1)).earnPoint(any(), anyInt(), any());
+        verify(pointRepository, times(1)).save(any());
+        verify(pointLogRepository, times(1)).save(any());
         assertEquals(isSinitto, result.isSinitto());
     }
 
