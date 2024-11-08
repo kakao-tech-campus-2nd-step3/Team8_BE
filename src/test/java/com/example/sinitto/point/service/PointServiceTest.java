@@ -107,7 +107,7 @@ class PointServiceTest {
             when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
 
             PointLog pointLog = mock(PointLog.class);
-            when(pointLog.getContent()).thenReturn("content");
+            when(pointLog.getContent()).thenReturn(PointLog.Content.WELCOME_POINT);
             when(pointLog.getPrice()).thenReturn(10000);
             when(pointLog.getStatus()).thenReturn(PointLog.Status.EARN);
 

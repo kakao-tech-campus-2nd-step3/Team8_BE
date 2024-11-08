@@ -75,7 +75,7 @@ public class PointService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("요청한 멤버를 찾을 수 없습니다"));
 
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, member, price, PointLog.Status.CHARGE_REQUEST));
 
         kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName(), member.getDepositMessage());
 
@@ -113,7 +113,7 @@ public class PointService {
 
         point.deduct(price);
 
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, price, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, member, price, PointLog.Status.WITHDRAW_REQUEST));
 
         SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("시니또의 은행 계좌 정보가 없습니다."));
         kakaoMessageService.sendPointWithdrawRequestReceivedMessage(member.getEmail(), price, member.getName(), sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
@@ -134,7 +134,7 @@ public class PointService {
 
         pointLogRepository.save(
                 new PointLog(
-                        contentForPointLog.getMessage(),
+                        contentForPointLog,
                         point.getMember(),
                         price,
                         PointLog.Status.EARN)
@@ -155,7 +155,7 @@ public class PointService {
 
         pointLogRepository.save(
                 new PointLog(
-                        contentForPointLog.getMessage(),
+                        contentForPointLog,
                         point.getMember(),
                         price,
                         PointLog.Status.SPEND_COMPLETE
@@ -176,7 +176,7 @@ public class PointService {
 
         pointLogRepository.save(
                 new PointLog(
-                        contentForPointLog.getMessage(),
+                        contentForPointLog,
                         point.getMember(),
                         price,
                         PointLog.Status.SPEND_CANCEL
