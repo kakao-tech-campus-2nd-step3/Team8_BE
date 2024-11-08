@@ -1,6 +1,7 @@
 package com.example.sinitto.point.service;
 
 import com.example.sinitto.common.exception.BadRequestException;
+import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.ForbiddenException;
 import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.service.KakaoMessageService;
@@ -20,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class PointService {
@@ -73,13 +76,17 @@ public class PointService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("요청한 멤버를 찾을 수 없습니다"));
 
+        if (pointLogRepository.existsByMemberAndStatusIn(member, List.of(PointLog.Status.CHARGE_REQUEST, PointLog.Status.CHARGE_WAITING))) {
+            throw new ConflictException("이미 진행중인 포인트 충전 요청이 존재합니다.");
+        }
+
         pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
 
         kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName(), member.getDepositMessage());
 
         String title = "포인트 충전 요청";
         String description = String.format("%s님이 %d 포인트를 충전 요청했습니다.", member.getName(), price);
-        slackMessageService.sendStyledSlackMessage(title, description,"충전");
+        slackMessageService.sendStyledSlackMessage(title, description, "충전");
 
         return new PointChargeResponse(member.getDepositMessage());
     }
@@ -92,6 +99,10 @@ public class PointService {
 
         if (!member.isSinitto()) {
             throw new ForbiddenException("출금 요청은 시니또만 가능합니다. 지금 요청은 시니또가 요청하지 않았습니다.");
+        }
+
+        if (pointLogRepository.existsByMemberAndStatusIn(member, List.of(PointLog.Status.WITHDRAW_REQUEST, PointLog.Status.WITHDRAW_WAITING))) {
+            throw new ConflictException("이미 진행중인 포인트 출금 요청이 존재합니다.");
         }
 
         if (!sinittoBankInfoRepository.existsByMemberId(memberId)) {
@@ -115,7 +126,7 @@ public class PointService {
         String title = "포인트 출금 요청";
         String description = String.format("%s님이 %d 포인트를 출금 요청했습니다.\n은행: %s, 계좌번호: %s",
                 member.getName(), price, sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
-        slackMessageService.sendStyledSlackMessage(title, description,"출금");
+        slackMessageService.sendStyledSlackMessage(title, description, "출금");
     }
 
     @Transactional
