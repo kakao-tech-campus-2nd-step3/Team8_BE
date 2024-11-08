@@ -1,6 +1,5 @@
 package com.example.sinitto.helloCall.controller;
 
-import com.example.sinitto.common.annotation.MemberId;
 import com.example.sinitto.helloCall.dto.*;
 import com.example.sinitto.helloCall.service.HelloCallPriceService;
 import com.example.sinitto.helloCall.service.HelloCallService;
@@ -31,7 +30,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 안부 전화 서비스 전체 리스트 보기", description = "안부전화 신청정보를 페이지로 조회합니다.")
     @GetMapping("/sinittos/list")
-    public ResponseEntity<Page<HelloCallResponse>> getHelloCallListBySinitto(@PageableDefault(size = 10, sort = "helloCallId", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<HelloCallResponse>> getHelloCallListBySinitto(@RequestAttribute("memberId") Long memberId, @PageableDefault(size = 10, sort = "helloCallId", direction = Sort.Direction.ASC) Pageable pageable) {
 
         Page<HelloCallResponse> helloCallResponses = helloCallService.readAllWaitingHelloCallsBySinitto(pageable);
 
@@ -40,7 +39,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 보호자가 신청한 안부전화 리스트 보기", description = "보호자 본인이 신청한 안부전화 리스트를 조회합니다.")
     @GetMapping("/guards/lists")
-    public ResponseEntity<List<HelloCallResponse>> getHelloCallListByGuard(@MemberId Long memberId) {
+    public ResponseEntity<List<HelloCallResponse>> getHelloCallListByGuard(@RequestAttribute("memberId") Long memberId) {
 
         List<HelloCallResponse> helloCallResponses = helloCallService.readAllHelloCallsByGuard(memberId);
 
@@ -49,7 +48,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또, 보호자용] 선택한 안부 전화 서비스의 상세정보 보기", description = "안부전화 신청정보의 상세정보를 조회합니다.")
     @GetMapping("/{callId}")
-    public ResponseEntity<HelloCallDetailResponse> getHelloCallDetail(@PathVariable Long callId) {
+    public ResponseEntity<HelloCallDetailResponse> getHelloCallDetail(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         HelloCallDetailResponse helloCallDetailResponse = helloCallService.readHelloCallDetail(callId);
 
@@ -58,7 +57,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 안부 전화 서비스 비용 조회", description = "안부 전화 서비스의 이용 비용을 조회합니다.")
     @PostMapping("/guards/cost")
-    public ResponseEntity<HelloCallPriceResponse> calculateHelloCallPrice(@RequestBody HelloCallPriceRequest helloCallPriceRequest) {
+    public ResponseEntity<HelloCallPriceResponse> calculateHelloCallPrice(@RequestAttribute("memberId") Long memberId, @RequestBody HelloCallPriceRequest helloCallPriceRequest) {
 
         HelloCallPriceResponse helloCallPriceResponse = helloCallPriceService.calculateHelloCallPrice(helloCallPriceRequest);
 
@@ -67,7 +66,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 안부 전화 서비스 신청하기", description = "보호자가 안부 전화 서비스를 신청합니다.")
     @PostMapping("/guards")
-    public ResponseEntity<StringMessageResponse> createHelloCallByGuard(@MemberId Long memberId, @RequestBody HelloCallRequest helloCallRequest) {
+    public ResponseEntity<StringMessageResponse> createHelloCallByGuard(@RequestAttribute("memberId") Long memberId, @RequestBody HelloCallRequest helloCallRequest) {
 
         helloCallService.createHelloCallByGuard(memberId, helloCallRequest);
 
@@ -76,7 +75,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 안부 전화 서비스 삭제하기", description = "보호자가 안부 전화 서비스 신청을 취소합니다.")
     @DeleteMapping("/guards/{callId}")
-    public ResponseEntity<StringMessageResponse> deleteHelloCallByGuard(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<StringMessageResponse> deleteHelloCallByGuard(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         helloCallService.deleteHellCallByGuard(memberId, callId);
 
@@ -85,7 +84,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 서비스 수락하기", description = "시니또가 안부전화 신청을 수락합니다.")
     @PutMapping("/accept/{callId}")
-    public ResponseEntity<StringMessageResponse> acceptHelloCall(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<StringMessageResponse> acceptHelloCall(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         helloCallService.acceptHelloCallBySinitto(memberId, callId);
 
@@ -94,7 +93,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 시니또가 수락한 안부전화 리스트 조회", description = "시니또가 수락한 안부전화 리스트를 조회합니다.")
     @GetMapping("/own")
-    public ResponseEntity<List<HelloCallResponse>> readOwnHelloCallBySinitto(@MemberId Long memberId) {
+    public ResponseEntity<List<HelloCallResponse>> readOwnHelloCallBySinitto(@RequestAttribute("memberId") Long memberId) {
 
         List<HelloCallResponse> helloCallResponses = helloCallService.readOwnHelloCallBySinitto(memberId);
 
@@ -103,7 +102,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 안부전화 서비스 시작시간 기록", description = "시니또가 안부전화 시작시간을 기록합니다.")
     @PostMapping("/sinittos/start/{callId}")
-    public ResponseEntity<StringMessageResponse> writeHelloCallStartTimeBySinitto(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<StringMessageResponse> writeHelloCallStartTimeBySinitto(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         helloCallService.writeHelloCallStartTimeBySinitto(memberId, callId);
 
@@ -112,7 +111,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 안부전화 서비스 종료시간 기록", description = "시니또가 안부전화 종료시간을 기록합니다.")
     @PostMapping("/sinittos/end/{callId}")
-    public ResponseEntity<StringMessageResponse> writeHelloCallEndTimeBySinitto(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<StringMessageResponse> writeHelloCallEndTimeBySinitto(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         helloCallService.writeHelloCallEndTimeBySinitto(memberId, callId);
 
@@ -121,7 +120,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 소통 보고서 작성 및 완료 대기 상태 변경", description = "시니또가 최종 안부전화 후에 보고서를 작성합니다.")
     @PostMapping("/reports")
-    public ResponseEntity<StringMessageResponse> createHelloCallReport(@MemberId Long memberId, @RequestBody HelloCallReportRequest request) {
+    public ResponseEntity<StringMessageResponse> createHelloCallReport(@RequestAttribute("memberId") Long memberId, @RequestBody HelloCallReportRequest request) {
 
         helloCallService.sendReportBySinitto(memberId, request);
 
@@ -130,7 +129,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 완료 대기 상태 안부전화 완료 처리", description = "보호자가 완료 대기 상태인 안부전화의 상태를 완료로 변경합니다.")
     @PutMapping("/complete/{callId}")
-    public ResponseEntity<StringMessageResponse> completeHelloCall(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<StringMessageResponse> completeHelloCall(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         helloCallService.makeCompleteHelloCallByGuard(memberId, callId);
 
@@ -139,7 +138,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 안부전화 타임로그 조회", description = "보호자가 안부전화를 수행한 시니또의 전화 타임로그를 리스트로 조회합니다.")
     @GetMapping("/guards/log/{callId}")
-    public ResponseEntity<List<HelloCallTimeLogResponse>> readHelloCallTimeLogByGuard(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<List<HelloCallTimeLogResponse>> readHelloCallTimeLogByGuard(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         List<HelloCallTimeLogResponse> helloCallTimeLogResponses = helloCallService.readHelloCallTimeLogByGuard(memberId, callId);
 
@@ -149,7 +148,7 @@ public class HelloCallController {
 
     @Operation(summary = "[보호자용] 소통 보고서 조회", description = "보호자가 시니또가 작성한 보고서가 있다면 보고서를 조회합니다.")
     @GetMapping("/reports/{callId}")
-    public ResponseEntity<HelloCallReportResponse> getHelloCallReportDetail(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<HelloCallReportResponse> getHelloCallReportDetail(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         HelloCallReportResponse helloCallReportResponse = helloCallService.readHelloCallReportByGuard(memberId, callId);
 
@@ -158,7 +157,7 @@ public class HelloCallController {
 
     @Operation(summary = "[시니또용] 진행중인 안부 서비스 취소 요청", description = "시니또가 진행중인 안부전화 서비스를 취소합니다. 취소시 포인트는 받을 수 없습니다.")
     @PutMapping("/cancel/{callId}")
-    public ResponseEntity<StringMessageResponse> cancelHelloCall(@MemberId Long memberId, @PathVariable Long callId) {
+    public ResponseEntity<StringMessageResponse> cancelHelloCall(@RequestAttribute("memberId") Long memberId, @PathVariable Long callId) {
 
         helloCallService.cancelHelloCallBySinitto(memberId, callId);
 

@@ -1,7 +1,6 @@
 package com.example.sinitto.member.controller;
 
 import com.example.sinitto.member.dto.RegisterResponse;
-import com.example.sinitto.common.annotation.MemberId;
 import com.example.sinitto.member.dto.SignupRequest;
 import com.example.sinitto.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,14 +39,14 @@ public class MemberController {
 
     @Operation(summary = "멤버 로그아웃", description = "레디스에 저장되어있는 멤버의 refreshToken을 삭제합니다.")
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> memberLogout(@MemberId Long memberId) {
+    public ResponseEntity<Void> memberLogout(@RequestAttribute("memberId") Long memberId) {
         memberService.memberLogout(memberId);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "멤버 회원탈퇴", description = "회원 정보를 삭제합니다.")
     @DeleteMapping("/withdrawal")
-    public ResponseEntity<Void> deleteMember(@MemberId Long memberId) {
+    public ResponseEntity<Void> deleteMember(@RequestAttribute("memberId") Long memberId) {
         memberService.deleteMember(memberId);
         return ResponseEntity.ok().build();
     }
