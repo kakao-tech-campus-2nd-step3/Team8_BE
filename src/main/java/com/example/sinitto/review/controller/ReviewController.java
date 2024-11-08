@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +21,7 @@ public class ReviewController {
     }
 
     @Operation(summary = "서비스 리뷰 리스트 보기", description = "서비스 리뷰를 리스트 형태로 보여줍니다.")
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<ReviewResponse>> getReviewList() {
         return ResponseEntity.ok(reviewService.readAllReviews());
     }
