@@ -43,6 +43,7 @@ public class HelloCall {
     private List<TimeSlot> timeSlots = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Member member;
     @OneToMany(mappedBy = "helloCall")
     private List<HelloCallTimeLog> helloCallTimeLogs = new ArrayList<>();

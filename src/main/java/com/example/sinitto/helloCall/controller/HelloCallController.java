@@ -74,15 +74,6 @@ public class HelloCallController {
         return ResponseEntity.ok(new StringMessageResponse("안부 전화 서비스가 신청되었습니다."));
     }
 
-    @Operation(summary = "[보호자용] 안부 전화 서비스 수정하기", description = "보호자가 안부 전화 서비스 내용을 수정합니다.")
-    @PutMapping("/guards/{callId}")
-    public ResponseEntity<StringMessageResponse> updateHelloCallByGuard(@MemberId Long memberId, @PathVariable Long callId, @RequestBody HelloCallDetailUpdateRequest helloCallDetailUpdateRequest) {
-
-        helloCallService.updateHelloCallByGuard(memberId, callId, helloCallDetailUpdateRequest);
-
-        return ResponseEntity.ok(new StringMessageResponse("안부 전화 서비스 내용이 수정되었습니다."));
-    }
-
     @Operation(summary = "[보호자용] 안부 전화 서비스 삭제하기", description = "보호자가 안부 전화 서비스 신청을 취소합니다.")
     @DeleteMapping("/guards/{callId}")
     public ResponseEntity<StringMessageResponse> deleteHelloCallByGuard(@MemberId Long memberId, @PathVariable Long callId) {

@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class PointLog {
 
+    public static final double WITHDRAWAL_FEE_RATE = 0.8;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -92,6 +94,10 @@ public class PointLog {
         if (this.status != wantStatus) {
             throw new ConflictException(String.format("현재 %s 상태입니다. 이 상태에서는 %s 로의 전환이 불가합니다.", this.status, wantStatus));
         }
+    }
+
+    public int getPointPriceAfterFee() {
+        return (int) (price * WITHDRAWAL_FEE_RATE);
     }
 
     public Long getId() {
