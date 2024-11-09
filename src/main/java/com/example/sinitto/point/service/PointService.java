@@ -66,7 +66,7 @@ public class PointService {
         return pointLogRepository.findAllByMember(member, pageable)
                 .map(pointLog -> new PointLogResponse(
                         pointLog.getPostTime(),
-                        pointLog.getContent(),
+                        pointLog.getContent().getMessage(),
                         pointLog.getPrice(),
                         pointLog.getStatus()
                 ));
