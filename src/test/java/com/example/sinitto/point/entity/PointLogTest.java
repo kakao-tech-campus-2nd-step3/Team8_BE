@@ -19,7 +19,7 @@ class PointLogTest {
     @DisplayName("포인트 로그 ChargeWaiting 상태로 전환 성공")
     void changeStatusToChargeWaiting() {
         //given
-        PointLog pointLog = new PointLog("content", member, 1000, PointLog.Status.CHARGE_REQUEST);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, PointLog.Status.CHARGE_REQUEST);
 
         //when
         pointLog.changeStatusToChargeWaiting();
@@ -34,7 +34,7 @@ class PointLogTest {
     void changeStatusToChargeWaiting_fail(String initialStatus) {
         //given
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
-        PointLog pointLog = new PointLog("content", member, 1000, status);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, status);
 
         //when then
         assertThrows(ConflictException.class, pointLog::changeStatusToChargeWaiting);
@@ -44,7 +44,7 @@ class PointLogTest {
     @DisplayName("포인트 로그 ChargeComplete 상태로 전환 성공")
     void changeStatusToChargeComplete() {
         //given
-        PointLog pointLog = new PointLog("content", member, 1000, PointLog.Status.CHARGE_WAITING);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, PointLog.Status.CHARGE_WAITING);
 
         //when
         pointLog.changeStatusToChargeComplete();
@@ -59,7 +59,7 @@ class PointLogTest {
     void changeStatusToChargeComplete_fail(String initialStatus) {
         //given
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
-        PointLog pointLog = new PointLog("content", member, 1000, status);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, status);
 
         //when then
         assertThrows(ConflictException.class, pointLog::changeStatusToChargeComplete);
@@ -69,7 +69,7 @@ class PointLogTest {
     @DisplayName("포인트 로그 ChargeFail 상태로 전환 성공")
     void changeStatusToChargeFail() {
         //given
-        PointLog pointLog = new PointLog("content", member, 1000, PointLog.Status.CHARGE_WAITING);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, PointLog.Status.CHARGE_WAITING);
 
         //when
         pointLog.changeStatusToChargeFail();
@@ -84,7 +84,7 @@ class PointLogTest {
     void changeStatusToChargeFail_fail(String initialStatus) {
         //given
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
-        PointLog pointLog = new PointLog("content", member, 1000, status);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, status);
 
         //when then
         assertThrows(ConflictException.class, pointLog::changeStatusToChargeFail);
@@ -94,7 +94,7 @@ class PointLogTest {
     @DisplayName("포인트 로그 WithdrawWaiting 상태로 전환 성공")
     void changeStatusToWithdrawWaiting() {
         //given
-        PointLog pointLog = new PointLog("content", member, 1000, PointLog.Status.WITHDRAW_REQUEST);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, PointLog.Status.WITHDRAW_REQUEST);
 
         //when
         pointLog.changeStatusToWithdrawWaiting();
@@ -109,7 +109,7 @@ class PointLogTest {
     void changeStatusToWithdrawWaiting_fail(String initialStatus) {
         //given
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
-        PointLog pointLog = new PointLog("content", member, 1000, status);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, status);
 
         //when then
         assertThrows(ConflictException.class, pointLog::changeStatusToWithdrawWaiting);
@@ -119,7 +119,7 @@ class PointLogTest {
     @DisplayName("포인트 로그 WithdrawComplete 상태로 전환 성공")
     void changeStatusToWithdrawComplete() {
         //given
-        PointLog pointLog = new PointLog("content", member, 1000, PointLog.Status.WITHDRAW_WAITING);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, PointLog.Status.WITHDRAW_WAITING);
 
         //when
         pointLog.changeStatusToWithdrawComplete();
@@ -134,7 +134,7 @@ class PointLogTest {
     void changeStatusToWithdrawComplete_fail(String initialStatus) {
         //given
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
-        PointLog pointLog = new PointLog("content", member, 1000, status);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, status);
 
         //when then
         assertThrows(ConflictException.class, pointLog::changeStatusToWithdrawComplete);
@@ -144,7 +144,7 @@ class PointLogTest {
     @DisplayName("포인트 로그 WithdrawFail 상태로 전환 성공")
     void changeStatusToWithdrawFail() {
         //given
-        PointLog pointLog = new PointLog("content", member, 1000, PointLog.Status.WITHDRAW_WAITING);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, PointLog.Status.WITHDRAW_WAITING);
 
         //when
         pointLog.changeStatusToWithdrawFail();
@@ -159,7 +159,7 @@ class PointLogTest {
     void changeStatusToWithdrawFail_fail(String initialStatus) {
         //given
         PointLog.Status status = PointLog.Status.valueOf(initialStatus);
-        PointLog pointLog = new PointLog("content", member, 1000, status);
+        PointLog pointLog = new PointLog(PointLog.Content.CHARGE_REQUEST, member, 1000, status);
 
         //when then
         assertThrows(ConflictException.class, pointLog::changeStatusToWithdrawFail);
