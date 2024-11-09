@@ -82,7 +82,7 @@ public class PointService {
             throw new ConflictException("이미 진행중인 포인트 충전 요청이 존재합니다.");
         }
 
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, member, price, PointLog.Status.CHARGE_REQUEST));
 
         kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName(), member.getDepositMessage());
 
