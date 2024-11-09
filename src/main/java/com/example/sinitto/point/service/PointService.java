@@ -27,6 +27,8 @@ import java.util.List;
 @Service
 public class PointService {
 
+    private static final int MINIMUM_WITHDRAW_POINT = 5000;
+
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
     private final PointLogRepository pointLogRepository;
@@ -80,7 +82,7 @@ public class PointService {
             throw new ConflictException("이미 진행중인 포인트 충전 요청이 존재합니다.");
         }
 
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), member, price, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, member, price, PointLog.Status.CHARGE_REQUEST));
 
         kakaoMessageService.sendPointChargeRequestReceivedMessage(member.getEmail(), price, member.getName(), member.getDepositMessage());
 
@@ -93,6 +95,10 @@ public class PointService {
 
     @Transactional
     public void savePointWithdrawRequest(Long memberId, int price) {
+
+        if (price < MINIMUM_WITHDRAW_POINT) {
+            throw new BadRequestException(String.format("출금시 최소 %d 이상 요청하셔야합니다.", MINIMUM_WITHDRAW_POINT));
+        }
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("요청한 멤버를 찾을 수 없습니다"));
@@ -118,7 +124,7 @@ public class PointService {
 
         point.deduct(price);
 
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), member, price, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, member, price, PointLog.Status.WITHDRAW_REQUEST));
 
         SinittoBankInfo sinittoBankInfo = sinittoBankInfoRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("시니또의 은행 계좌 정보가 없습니다."));
         kakaoMessageService.sendPointWithdrawRequestReceivedMessage(member.getEmail(), price, member.getName(), sinittoBankInfo.getBankName(), sinittoBankInfo.getAccountNumber());
@@ -139,7 +145,7 @@ public class PointService {
 
         pointLogRepository.save(
                 new PointLog(
-                        contentForPointLog.getMessage(),
+                        contentForPointLog,
                         point.getMember(),
                         price,
                         PointLog.Status.EARN)
@@ -160,7 +166,7 @@ public class PointService {
 
         pointLogRepository.save(
                 new PointLog(
-                        contentForPointLog.getMessage(),
+                        contentForPointLog,
                         point.getMember(),
                         price,
                         PointLog.Status.SPEND_COMPLETE
@@ -181,7 +187,7 @@ public class PointService {
 
         pointLogRepository.save(
                 new PointLog(
-                        contentForPointLog.getMessage(),
+                        contentForPointLog,
                         point.getMember(),
                         price,
                         PointLog.Status.SPEND_CANCEL

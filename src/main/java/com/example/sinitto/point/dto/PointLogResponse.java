@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record PointLogResponse(
         LocalDateTime postTime,
-        String content,
+        PointLog.Content content,
         int price,
         PointLog.Status status
 ) {
