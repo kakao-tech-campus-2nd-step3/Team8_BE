@@ -9,7 +9,6 @@ import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.NotFoundException;
-import com.example.sinitto.common.resolver.MemberIdProvider;
 import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class MemberService implements MemberIdProvider {
+public class MemberService{
 
     private static final int WELCOME_POINT = 10000;
 
@@ -49,15 +48,6 @@ public class MemberService implements MemberIdProvider {
         this.helloCallService = helloCallService;
         this.pointRepository = pointRepository;
         this.pointLogRepository = pointLogRepository;
-    }
-
-    @Override
-    public Long getMemberIdByToken(String token) {
-        String email = tokenService.extractEmailFromAccessToken(token);
-        Member member = memberRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
-        );
-        return member.getId();
     }
 
     public LoginResponse kakaoLogin(String authorizationCode, HttpServletRequest httpServletRequest) {

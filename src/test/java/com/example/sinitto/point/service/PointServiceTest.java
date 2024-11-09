@@ -1,6 +1,7 @@
 package com.example.sinitto.point.service;
 
 import com.example.sinitto.common.exception.BadRequestException;
+import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.ForbiddenException;
 import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.common.service.KakaoMessageService;
@@ -162,6 +163,18 @@ class PointServiceTest {
 
             //when then
             assertThrows(NotFoundException.class, () -> pointService.savePointChargeRequest(1L, 10000));
+        }
+
+        @Test
+        @DisplayName("REQUEST or WAITING 상태인 포인트 충전 요청이 있으면 예외를 발생시킨다.")
+        void savePointChargeRequest3() {
+            //given
+            Member member = mock(Member.class);
+            when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+            when(pointLogRepository.existsByMemberAndStatusIn(member, List.of(PointLog.Status.CHARGE_REQUEST, PointLog.Status.CHARGE_WAITING))).thenReturn(true);
+
+            //when then
+            assertThrows(ConflictException.class, () -> pointService.savePointChargeRequest(1L, 10000));
         }
     }
 

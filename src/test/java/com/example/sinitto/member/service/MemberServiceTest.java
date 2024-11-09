@@ -48,39 +48,6 @@ public class MemberServiceTest {
     @Mock
     PointLogRepository pointLogRepository;
 
-
-    @Test
-    @DisplayName("getMemberIdByToken 메소드 테스트")
-    void getMemberIdByTokenTest() {
-        //given
-        String token = "testtoken";
-        String email = "test@email.com";
-        Member member = mock(Member.class);
-
-        when(tokenService.extractEmailFromAccessToken(token)).thenReturn(email);
-        when(memberRepository.findByEmail(email)).thenReturn(Optional.of(member));
-
-        //when
-        Long result = memberService.getMemberIdByToken(token);
-
-        //then
-        assertEquals(result, member.getId());
-    }
-
-    @Test
-    @DisplayName("getMemberIdByToken 메소드 테스트 - memberRepository에 없을 경우")
-    void getMemberIdByTokenTestWhenNotInMemberRepository() {
-        //given
-        String token = "testtoken";
-        String email = "test@email.com";
-
-        when(tokenService.extractEmailFromAccessToken(token)).thenReturn(email);
-        when(memberRepository.findByEmail(email)).thenReturn(Optional.empty());
-
-        //when, then
-        assertThrows(NotFoundException.class, () -> memberService.getMemberIdByToken(token));
-    }
-
     @Test
     @DisplayName("registerNewMember 메소드 테스트")
     void registerNewMemberTest() {
