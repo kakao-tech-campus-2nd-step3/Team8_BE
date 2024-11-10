@@ -4,13 +4,14 @@ import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.common.properties.DummyProperties;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.servlet.http.HttpSession;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class MemberAdminController {
     }
 
     @GetMapping("/admin/login")
-    public String showAdminLoginPage(){
+    public String showAdminLoginPage() {
         return "point/login";
     }
 

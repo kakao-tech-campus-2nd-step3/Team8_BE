@@ -8,14 +8,14 @@
 <body>
 <h1>Admin Login</h1>
 
-<form id="loginForm" action="/admin/login" method="POST">
+<form action="/admin/login" id="loginForm" method="POST">
     <div>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input id="email" name="email" required type="email">
     </div>
     <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <input id="password" name="password" required type="password">
     </div>
     <button type="submit">Login</button>
 </form>

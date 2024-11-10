@@ -23,7 +23,7 @@ public class PointAdminController {
 
     @GetMapping("/admin/point/charge")
     public String showAllChargeRequest(Model model, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
         List<PointLogWithDepositMessage> logWithDepositMessages = pointAdminService.getPointLogWithDepositMessage();
@@ -35,7 +35,7 @@ public class PointAdminController {
 
     @PostMapping("/admin/point/charge/waiting/{pointLogId}")
     public String changeToWaiting(@PathVariable Long pointLogId, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
         pointAdminService.changeChargeLogToWaiting(pointLogId);
@@ -44,7 +44,7 @@ public class PointAdminController {
 
     @PostMapping("/admin/point/charge/complete/{pointLogId}")
     public String changeToCompleteAndEarn(@PathVariable Long pointLogId, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
         pointAdminService.earnPointAndChangeToChargeComplete(pointLogId);
@@ -53,7 +53,7 @@ public class PointAdminController {
 
     @PostMapping("/admin/point/charge/fail/{pointLogId}")
     public String changeToFail(@PathVariable Long pointLogId, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
         pointAdminService.changeChargeLogToFail(pointLogId);
@@ -62,7 +62,7 @@ public class PointAdminController {
 
     @GetMapping("/admin/point/withdraw")
     public String showAllWithdrawRequest(Model model, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
 
@@ -75,7 +75,7 @@ public class PointAdminController {
 
     @PostMapping("/admin/point/withdraw/waiting/{pointLogId}")
     public String changeWithdrawLogToWaiting(@PathVariable Long pointLogId, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
         pointAdminService.changeWithdrawLogToWaiting(pointLogId);
@@ -84,7 +84,7 @@ public class PointAdminController {
 
     @PostMapping("/admin/point/withdraw/complete/{pointLogId}")
     public String changeWithdrawLogToCompleteAndEarn(@PathVariable Long pointLogId, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
         pointAdminService.changeWithdrawLogToComplete(pointLogId);
@@ -93,7 +93,7 @@ public class PointAdminController {
 
     @PostMapping("/admin/point/withdraw/fail/{pointLogId}")
     public String changeWithdrawLogToFail(@PathVariable Long pointLogId, HttpSession session) {
-        if(!isAdmin(session)){
+        if (!isAdmin(session)) {
             return "redirect:/admin/login";
         }
         pointAdminService.changeWithdrawLogToFail(pointLogId);
