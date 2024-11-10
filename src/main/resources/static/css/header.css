@@ -1,0 +1,54 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.header {
+    background-color: transparent;
+    border: none;
+    padding: 20px;
+    color: #333;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+nav {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+button {
+    background-color: rgba(52, 87, 217, 0.8);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: rgba(52, 87, 217, 0.93);
+    transform: scale(1.03);
+}
+
+button:active {
+    background-color: #00473c;
+}
+
+form {
+    display: inline;
+}
