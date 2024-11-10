@@ -1,5 +1,6 @@
 package com.example.sinitto.common.config;
 
+import com.example.sinitto.common.interceptor.JwtInterceptor;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.Duration;
@@ -23,6 +25,11 @@ public class WebConfig implements WebMvcConfigurer {
     private static final int TIME_OUT_DURATION = 5;
     private static final int MAX_OPEN_CONNECTIONS = 100;
     private static final int CONNECTIONS_PER_IP_PORT_PAIR = 5;
+    private final JwtInterceptor jwtInterceptor;
+
+    public WebConfig(JwtInterceptor jwtInterceptor){
+        this.jwtInterceptor = jwtInterceptor;
+    }
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder, RestTemplateResponseErrorHandler errorHandler) {
@@ -61,5 +68,10 @@ public class WebConfig implements WebMvcConfigurer {
         config.setMaxAge(3600L);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/**");
     }
 }

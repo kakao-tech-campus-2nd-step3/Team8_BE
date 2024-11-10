@@ -9,12 +9,13 @@ import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.exception.ConflictException;
 import com.example.sinitto.common.exception.NotFoundException;
-import com.example.sinitto.common.resolver.MemberIdProvider;
 import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
 import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.entity.PointLog;
+import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,35 +24,30 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class MemberService implements MemberIdProvider {
+public class MemberService {
+
+    private static final int WELCOME_POINT = 10000;
 
     private final MemberRepository memberRepository;
     private final TokenService tokenService;
     private final KakaoApiService kakaoApiService;
     private final KakaoTokenService kakaoTokenService;
-    private final PointRepository pointRepository;
     private final RedisTemplate<String, Object> redisTemplate;
     private final CallbackService callbackService;
     private final HelloCallService helloCallService;
+    private final PointRepository pointRepository;
+    private final PointLogRepository pointLogRepository;
 
-    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, PointRepository pointRepository, RedisTemplate<String, Object> redisTemplate, CallbackService callbackService, HelloCallService helloCallService) {
+    public MemberService(MemberRepository memberRepository, TokenService tokenService, KakaoApiService kakaoApiService, KakaoTokenService kakaoTokenService, RedisTemplate<String, Object> redisTemplate, CallbackService callbackService, HelloCallService helloCallService, PointRepository pointRepository, PointLogRepository pointLogRepository) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.kakaoApiService = kakaoApiService;
         this.kakaoTokenService = kakaoTokenService;
-        this.pointRepository = pointRepository;
         this.redisTemplate = redisTemplate;
         this.callbackService = callbackService;
         this.helloCallService = helloCallService;
-    }
-
-    @Override
-    public Long getMemberIdByToken(String token) {
-        String email = tokenService.extractEmailFromAccessToken(token);
-        Member member = memberRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
-        );
-        return member.getId();
+        this.pointRepository = pointRepository;
+        this.pointLogRepository = pointLogRepository;
     }
 
     public LoginResponse kakaoLogin(String authorizationCode, HttpServletRequest httpServletRequest) {
@@ -84,7 +80,10 @@ public class MemberService implements MemberIdProvider {
         Member newMember = new Member(name, phoneNumber, email, isSinitto);
         memberRepository.save(newMember);
 
-        pointRepository.save(new Point(0, newMember));
+        if (!isSinitto) {
+            pointRepository.save(new Point(WELCOME_POINT, newMember));
+            pointLogRepository.save(new PointLog(PointLog.Content.WELCOME_POINT, newMember, WELCOME_POINT, PointLog.Status.EARN));
+        }
 
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);

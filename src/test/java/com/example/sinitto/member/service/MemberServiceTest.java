@@ -3,12 +3,11 @@ package com.example.sinitto.member.service;
 import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.exception.ConflictException;
-import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
-import com.example.sinitto.point.entity.Point;
+import com.example.sinitto.point.repository.PointLogRepository;
 import com.example.sinitto.point.repository.PointRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,8 +29,6 @@ public class MemberServiceTest {
     @Mock
     MemberRepository memberRepository;
     @Mock
-    PointRepository pointRepository;
-    @Mock
     TokenService tokenService;
     @Mock
     RedisTemplate<String, Object> redisTemplate;
@@ -45,43 +42,14 @@ public class MemberServiceTest {
     CallbackService callbackService;
     @Mock
     HelloCallService helloCallService;
-
-
-    @Test
-    @DisplayName("getMemberIdByToken 메소드 테스트")
-    void getMemberIdByTokenTest() {
-        //given
-        String token = "testtoken";
-        String email = "test@email.com";
-        Member member = mock(Member.class);
-
-        when(tokenService.extractEmailFromAccessToken(token)).thenReturn(email);
-        when(memberRepository.findByEmail(email)).thenReturn(Optional.of(member));
-
-        //when
-        Long result = memberService.getMemberIdByToken(token);
-
-        //then
-        assertEquals(result, member.getId());
-    }
+    @Mock
+    PointRepository pointRepository;
+    @Mock
+    PointLogRepository pointLogRepository;
 
     @Test
-    @DisplayName("getMemberIdByToken 메소드 테스트 - memberRepository에 없을 경우")
-    void getMemberIdByTokenTestWhenNotInMemberRepository() {
-        //given
-        String token = "testtoken";
-        String email = "test@email.com";
-
-        when(tokenService.extractEmailFromAccessToken(token)).thenReturn(email);
-        when(memberRepository.findByEmail(email)).thenReturn(Optional.empty());
-
-        //when, then
-        assertThrows(NotFoundException.class, () -> memberService.getMemberIdByToken(token));
-    }
-
-    @Test
-    @DisplayName("registerNewMember 메소드 테스트")
-    void registerNewMemberTest() {
+    @DisplayName("registerNewMember 메소드 테스트 - 시니또의 회원가입인 경우 환영 포인트 미지급")
+    void registerNewMemberTest1() {
         //given
         String name = "testName";
         String phoneNumber = "01000000000";
@@ -95,7 +63,29 @@ public class MemberServiceTest {
 
         //then
         verify(memberRepository, times(1)).save(any(Member.class));
-        verify(pointRepository, times(1)).save(any(Point.class));
+        verify(pointRepository, never()).save(any());
+        verify(pointLogRepository, never()).save(any());
+        assertEquals(isSinitto, result.isSinitto());
+    }
+
+    @Test
+    @DisplayName("registerNewMember 메소드 테스트 - 보호자의 회원가입인 경우 환영 포인트 지급")
+    void registerNewMemberTest2() {
+        //given
+        String name = "testName";
+        String phoneNumber = "01000000000";
+        String email = "test@email.com";
+        boolean isSinitto = false;
+
+        when(memberRepository.existsByEmail(email)).thenReturn(false);
+
+        //when
+        RegisterResponse result = memberService.registerNewMember(name, phoneNumber, email, isSinitto);
+
+        //then
+        verify(memberRepository, times(1)).save(any(Member.class));
+        verify(pointRepository, times(1)).save(any());
+        verify(pointLogRepository, times(1)).save(any());
         assertEquals(isSinitto, result.isSinitto());
     }
 
