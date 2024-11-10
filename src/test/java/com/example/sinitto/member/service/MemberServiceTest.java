@@ -3,7 +3,6 @@ package com.example.sinitto.member.service;
 import com.example.sinitto.auth.service.TokenService;
 import com.example.sinitto.callback.service.CallbackService;
 import com.example.sinitto.common.exception.ConflictException;
-import com.example.sinitto.common.exception.NotFoundException;
 import com.example.sinitto.helloCall.service.HelloCallService;
 import com.example.sinitto.member.dto.RegisterResponse;
 import com.example.sinitto.member.entity.Member;
@@ -49,13 +48,34 @@ public class MemberServiceTest {
     PointLogRepository pointLogRepository;
 
     @Test
-    @DisplayName("registerNewMember 메소드 테스트")
-    void registerNewMemberTest() {
+    @DisplayName("registerNewMember 메소드 테스트 - 시니또의 회원가입인 경우 환영 포인트 미지급")
+    void registerNewMemberTest1() {
         //given
         String name = "testName";
         String phoneNumber = "01000000000";
         String email = "test@email.com";
         boolean isSinitto = true;
+
+        when(memberRepository.existsByEmail(email)).thenReturn(false);
+
+        //when
+        RegisterResponse result = memberService.registerNewMember(name, phoneNumber, email, isSinitto);
+
+        //then
+        verify(memberRepository, times(1)).save(any(Member.class));
+        verify(pointRepository, never()).save(any());
+        verify(pointLogRepository, never()).save(any());
+        assertEquals(isSinitto, result.isSinitto());
+    }
+
+    @Test
+    @DisplayName("registerNewMember 메소드 테스트 - 보호자의 회원가입인 경우 환영 포인트 지급")
+    void registerNewMemberTest2() {
+        //given
+        String name = "testName";
+        String phoneNumber = "01000000000";
+        String email = "test@email.com";
+        boolean isSinitto = false;
 
         when(memberRepository.existsByEmail(email)).thenReturn(false);
 
