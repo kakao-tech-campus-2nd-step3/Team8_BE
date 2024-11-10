@@ -8,34 +8,32 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* 화면 전체 높이 */
+    height: 100vh;
     flex-direction: column;
 }
 
-/* 제목 스타일 */
 h1 {
     font-size: 32px;
-    color: #344fd9; /* 파란색 제목 */
+    color: #344fd9;
     margin-bottom: 40px;
     text-align: center;
 }
 
-/* 로그인 폼 스타일 */
 form {
     background-color: #ffffff;
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px; /* 폼 너비 제한 */
+    max-width: 400px;
 }
 
-/* 폼 내부 레이블 스타일 */
+
 form div {
     margin-bottom: 20px;
 }
 
-/* 레이블 스타일 */
+
 label {
     display: block;
     margin-bottom: 5px;
@@ -43,7 +41,7 @@ label {
     color: #555;
 }
 
-/* 입력 필드 스타일 */
+
 input[type="email"], input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -54,20 +52,20 @@ input[type="email"], input[type="password"] {
     transition: border-color 0.3s;
 }
 
-/* 입력 필드 포커스 시 스타일 */
+
 input[type="email"]:focus, input[type="password"]:focus {
-    border-color: #344fd9; /* 포커스 시 파란색 테두리 */
+    border-color: #344fd9;
     outline: none;
 }
 
-/* 로그인 버튼 스타일 */
+
 button {
     width: 100%;
     padding: 12px;
     font-size: 16px;
-    background-color: #344fd9; /* 파란색 배경 */
+    background-color: #344fd9;
     color: #ffffff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-
+}
