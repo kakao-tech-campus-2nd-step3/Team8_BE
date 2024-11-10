@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class MemberService{
+public class MemberService {
 
     private static final int WELCOME_POINT = 10000;
 
@@ -80,8 +80,10 @@ public class MemberService{
         Member newMember = new Member(name, phoneNumber, email, isSinitto);
         memberRepository.save(newMember);
 
-        pointRepository.save(new Point(WELCOME_POINT, newMember));
-        pointLogRepository.save(new PointLog(PointLog.Content.WELCOME_POINT, newMember, WELCOME_POINT, PointLog.Status.EARN));
+        if (!isSinitto) {
+            pointRepository.save(new Point(WELCOME_POINT, newMember));
+            pointLogRepository.save(new PointLog(PointLog.Content.WELCOME_POINT, newMember, WELCOME_POINT, PointLog.Status.EARN));
+        }
 
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
