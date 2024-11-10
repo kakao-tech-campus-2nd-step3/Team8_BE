@@ -10,18 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import jakarta.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/dummy")
+@RequestMapping
 public class MemberAdminController {
 
     private final MemberRepository memberRepository;
     private final TokenService tokenService;
     private final DummyProperties dummyProperties;
-
+    private final String adminEmail = "admin@kakao.com";
+    private final String adminPassword = "1234";
     private final List<String> dummyEmails = Arrays.asList(
             "1chulsoo@example.com", "2kim@example.com", "3lee@example.com", "4park@example.com", "5choi@example.com",
             "6jeong@example.com", "7han@example.com", "8oh@example.com", "9lim@example.com", "10song@example.com"
@@ -33,14 +34,38 @@ public class MemberAdminController {
         this.dummyProperties = dummyProperties;
     }
 
-    @GetMapping
+    @GetMapping("/dummy")
     public String showDummyLoginPage(Model model) {
         List<Member> dummyMembers = memberRepository.findAllByEmailIn(dummyEmails);
         model.addAttribute("members", dummyMembers);
         return "dummy/login";
     }
 
-    @PostMapping
+    @GetMapping("/admin/login")
+    public String showAdminLoginPage(){
+        return "point/login";
+    }
+
+    @PostMapping("/admin/login")
+    public String login(@RequestParam String email,
+                        @RequestParam String password,
+                        HttpSession session) {
+        if (adminEmail.equals(email) && adminPassword.equals(password)) {
+            session.setAttribute("email", email);
+            session.setAttribute("role", "ADMIN");
+            return "redirect:/admin/point/charge";
+        } else {
+            return "redirect:/admin/login?error=true";
+        }
+    }
+
+    @PostMapping("/admin/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/admin/login";
+    }
+
+    @PostMapping("/dummy")
     public String login(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
