@@ -19,5 +19,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run deployment script on server
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} 'bash /home/ubuntu/deploy.sh'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }} bash /home/ubuntu/deploy.sh"

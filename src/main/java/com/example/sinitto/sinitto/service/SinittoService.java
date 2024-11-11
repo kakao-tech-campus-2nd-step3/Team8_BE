@@ -65,14 +65,4 @@ public class SinittoService {
         );
         sinittoBankInfo.updateSinitto(sinittoBankRequest.bankName(), sinittoBankRequest.accountNumber());
     }
-
-    @Transactional
-    public void deleteSinitto(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException("이메일에 해당하는 멤버를 찾을 수 없습니다.")
-        );
-        memberRepository.delete(member);
-    }
-
-
 }

@@ -20,7 +20,7 @@ public class HelloCallTimeLog {
     @JoinColumn(name = "helloCall_id")
     private HelloCall helloCall;
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "sinitto_id")
     private Member member;
 
@@ -56,6 +56,9 @@ public class HelloCallTimeLog {
     }
 
     public String getSinittoName() {
+        if (member == null) {
+            return "탈퇴한 시니또";
+        }
         return this.member.getName();
     }
 

@@ -12,6 +12,15 @@ class SinittoApplicationTests {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    @Value("${slack.notice.webhook.url}")
+    private String slackNoticeWebhookUrl;
+
+    @Value("${slack.charge.request.url}")
+    private String chargeRequestUrl;
+
+    @Value("${slack.withdraw.request.url}")
+    private String withdrawRequestUrl;
+
     @Test
     void contextLoads() {
         assertNotNull(jwtSecret);

@@ -25,6 +25,7 @@ import com.example.sinitto.review.repository.ReviewRepository;
 import com.example.sinitto.sinitto.entity.SinittoBankInfo;
 import com.example.sinitto.sinitto.repository.SinittoBankInfoRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Component
+@Profile("prod")
 public class InitialData implements CommandLineRunner {
 
     private final MemberRepository memberRepository;
