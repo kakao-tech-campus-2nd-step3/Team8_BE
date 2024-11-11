@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/header.css" rel="stylesheet">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Admin Header</title>
+</head>
+<body>
+<div th:fragment="header">
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <button onclick="window.location.href='/admin/point/charge'">충전 관리</button>
+            <button onclick="window.location.href='/admin/point/withdraw'">출금 관리</button>
+            <form action="/admin/logout" method="POST">
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

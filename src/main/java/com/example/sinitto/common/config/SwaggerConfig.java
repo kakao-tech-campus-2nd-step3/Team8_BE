@@ -3,9 +3,9 @@ package com.example.sinitto.common.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -14,10 +14,9 @@ import org.springframework.core.env.Profiles;
 @Configuration
 public class SwaggerConfig {
 
-    private final Environment environment;
-
     private static final String LOCAL_SERVER_URL = "http://localhost:8080";
     private static final String PROD_SERVER_URL = "https://sinitto.site";
+    private final Environment environment;
 
     public SwaggerConfig(Environment environment) {
         this.environment = environment;

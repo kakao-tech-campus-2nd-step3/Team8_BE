@@ -58,7 +58,7 @@ public class AuthController {
 
     @Operation(summary = "Redis안의 모든 데이터 제거", description = "발급된 refreshToken을 사용하지 못하게 Redis 안의 모든 데이터를 제거합니다.")
     @DeleteMapping("/redis")
-    public ResponseEntity<Void> deleteAllDataFromRedis(){
+    public ResponseEntity<Void> deleteAllDataFromRedis() {
         tokenService.deleteAllDataFromRedis();
         return new ResponseEntity<>(HttpStatus.OK);
     }

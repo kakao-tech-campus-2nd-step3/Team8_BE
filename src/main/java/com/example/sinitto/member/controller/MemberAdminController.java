@@ -1,9 +1,11 @@
 package com.example.sinitto.member.controller;
 
 import com.example.sinitto.auth.service.TokenService;
+import com.example.sinitto.common.properties.AdminProperties;
 import com.example.sinitto.common.properties.DummyProperties;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,32 +17,61 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/dummy")
+@RequestMapping
 public class MemberAdminController {
 
     private final MemberRepository memberRepository;
     private final TokenService tokenService;
     private final DummyProperties dummyProperties;
-
+    private final AdminProperties adminProperties;
     private final List<String> dummyEmails = Arrays.asList(
             "1chulsoo@example.com", "2kim@example.com", "3lee@example.com", "4park@example.com", "5choi@example.com",
             "6jeong@example.com", "7han@example.com", "8oh@example.com", "9lim@example.com", "10song@example.com"
     );
 
-    public MemberAdminController(MemberRepository memberRepository, TokenService tokenService, DummyProperties dummyProperties) {
+    public MemberAdminController(MemberRepository memberRepository, TokenService tokenService, DummyProperties dummyProperties, AdminProperties adminProperties) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.dummyProperties = dummyProperties;
+        this.adminProperties = adminProperties;
     }
 
-    @GetMapping
+    @GetMapping("/dummy")
     public String showDummyLoginPage(Model model) {
         List<Member> dummyMembers = memberRepository.findAllByEmailIn(dummyEmails);
         model.addAttribute("members", dummyMembers);
         return "dummy/login";
     }
 
-    @PostMapping
+    @GetMapping("/admin/login")
+    public String showAdminLoginPage(HttpSession session) {
+        if (isAdmin(session)) {
+            return "redirect:/admin/point/charge";
+        }
+        return "point/login";
+    }
+
+    @PostMapping("/admin/login")
+    public String login(@RequestParam String email,
+                        @RequestParam String password,
+                        HttpSession session) {
+        if (adminProperties.adminEmail().equals(email) && adminProperties.adminPassword().equals(password)) {
+            session.setAttribute("email", email);
+            session.setAttribute("role", "ADMIN");
+            session.setMaxInactiveInterval(1800);
+            return "redirect:/admin/point/charge";
+        } else {
+            return "redirect:/admin/login?error=true";
+        }
+    }
+
+    @PostMapping("/admin/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/admin/login";
+    }
+
+    @PostMapping("/dummy")
     public String login(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
@@ -66,5 +97,10 @@ public class MemberAdminController {
 
         String frontendRedirectUrl = env.equals("dev") ? dummyProperties.devRedirectUri() : dummyProperties.redirectUri();
         return "redirect:" + frontendRedirectUrl + "?accessToken=" + accessToken + "&refreshToken=" + refreshToken + "&isSinitto=" + isSinitto;
+    }
+
+    private boolean isAdmin(HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        return "ADMIN".equals(role);
     }
 }

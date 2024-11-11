@@ -80,7 +80,7 @@ public class TokenServiceTest {
 
     @Test
     @DisplayName("deleteAllDataFromRedis 메소드 테스트")
-    void deleteAllDataFromRedisTest(){
+    void deleteAllDataFromRedisTest() {
         //given
         String email = "test@email.com";
         String refreshToken = "test.Refresh.Token";

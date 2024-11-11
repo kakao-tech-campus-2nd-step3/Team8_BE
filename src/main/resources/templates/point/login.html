@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/login.css" rel="stylesheet">
+    <title>Admin Login</title>
+</head>
+<body>
+<h1>Admin Login</h1>
+
+<form action="/admin/login" id="loginForm" method="POST">
+    <div>
+        <label for="email">Email:</label>
+        <input id="email" name="email" required type="email">
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input id="password" name="password" required type="password">
+    </div>
+    <button type="submit">Login</button>
+</form>
+
+<div id="errorMessage" style="color:orange;"></div>
+
+<script>
+    // 페이지가 로드되었을 때, 쿼리 파라미터에 'error'가 있으면 오류 메시지 표시
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            document.getElementById("errorMessage").textContent = '로그인 정보를 다시 확인해주세요';
+        }
+    };
+</script>
+</body>
+</html>
