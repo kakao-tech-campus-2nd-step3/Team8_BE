@@ -45,7 +45,9 @@ public class MemberAdminController {
 
     @GetMapping("/admin/login")
     public String showAdminLoginPage(HttpSession session) {
-        if (isAdmin(session)) { return "redirect:/admin/point/charge"; }
+        if (isAdmin(session)) {
+            return "redirect:/admin/point/charge";
+        }
         return "point/login";
     }
 

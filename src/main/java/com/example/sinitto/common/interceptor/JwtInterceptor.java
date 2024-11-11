@@ -14,11 +14,12 @@ import java.lang.reflect.Method;
 public class JwtInterceptor implements HandlerInterceptor {
     private final MemberTokenService memberTokenService;
 
-    public JwtInterceptor(MemberTokenService memberTokenService){
+    public JwtInterceptor(MemberTokenService memberTokenService) {
         this.memberTokenService = memberTokenService;
     }
+
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();

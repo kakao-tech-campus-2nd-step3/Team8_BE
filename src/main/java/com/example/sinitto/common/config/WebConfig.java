@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
     private static final int CONNECTIONS_PER_IP_PORT_PAIR = 5;
     private final JwtInterceptor jwtInterceptor;
 
-    public WebConfig(JwtInterceptor jwtInterceptor){
+    public WebConfig(JwtInterceptor jwtInterceptor) {
         this.jwtInterceptor = jwtInterceptor;
     }
 

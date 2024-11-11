@@ -11,7 +11,7 @@ public class MemberTokenService {
     private final TokenService tokenService;
     private final MemberRepository memberRepository;
 
-    public MemberTokenService(TokenService tokenService, MemberRepository memberRepository){
+    public MemberTokenService(TokenService tokenService, MemberRepository memberRepository) {
         this.tokenService = tokenService;
         this.memberRepository = memberRepository;
     }
