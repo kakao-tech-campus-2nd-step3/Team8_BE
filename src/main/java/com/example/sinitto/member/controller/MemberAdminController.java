@@ -43,7 +43,8 @@ public class MemberAdminController {
     }
 
     @GetMapping("/admin/login")
-    public String showAdminLoginPage() {
+    public String showAdminLoginPage(HttpSession session) {
+        if (isAdmin(session)) { return "redirect:/admin/point/charge"; }
         return "point/login";
     }
 
@@ -92,5 +93,10 @@ public class MemberAdminController {
 
         String frontendRedirectUrl = env.equals("dev") ? dummyProperties.devRedirectUri() : dummyProperties.redirectUri();
         return "redirect:" + frontendRedirectUrl + "?accessToken=" + accessToken + "&refreshToken=" + refreshToken + "&isSinitto=" + isSinitto;
+    }
+
+    private boolean isAdmin(HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        return "ADMIN".equals(role);
     }
 }
