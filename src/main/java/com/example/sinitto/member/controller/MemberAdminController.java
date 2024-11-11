@@ -1,6 +1,7 @@
 package com.example.sinitto.member.controller;
 
 import com.example.sinitto.auth.service.TokenService;
+import com.example.sinitto.common.properties.AdminProperties;
 import com.example.sinitto.common.properties.DummyProperties;
 import com.example.sinitto.member.entity.Member;
 import com.example.sinitto.member.repository.MemberRepository;
@@ -22,17 +23,17 @@ public class MemberAdminController {
     private final MemberRepository memberRepository;
     private final TokenService tokenService;
     private final DummyProperties dummyProperties;
-    private final String adminEmail = "admin@kakao.com";
-    private final String adminPassword = "1234";
+    private final AdminProperties adminProperties;
     private final List<String> dummyEmails = Arrays.asList(
             "1chulsoo@example.com", "2kim@example.com", "3lee@example.com", "4park@example.com", "5choi@example.com",
             "6jeong@example.com", "7han@example.com", "8oh@example.com", "9lim@example.com", "10song@example.com"
     );
 
-    public MemberAdminController(MemberRepository memberRepository, TokenService tokenService, DummyProperties dummyProperties) {
+    public MemberAdminController(MemberRepository memberRepository, TokenService tokenService, DummyProperties dummyProperties, AdminProperties adminProperties) {
         this.memberRepository = memberRepository;
         this.tokenService = tokenService;
         this.dummyProperties = dummyProperties;
+        this.adminProperties = adminProperties;
     }
 
     @GetMapping("/dummy")
@@ -52,7 +53,7 @@ public class MemberAdminController {
     public String login(@RequestParam String email,
                         @RequestParam String password,
                         HttpSession session) {
-        if (adminEmail.equals(email) && adminPassword.equals(password)) {
+        if (adminProperties.adminEmail().equals(email) && adminProperties.adminPassword().equals(password)) {
             session.setAttribute("email", email);
             session.setAttribute("role", "ADMIN");
             session.setMaxInactiveInterval(1800);
