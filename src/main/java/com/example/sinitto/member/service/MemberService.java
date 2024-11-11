@@ -80,7 +80,9 @@ public class MemberService {
         Member newMember = new Member(name, phoneNumber, email, isSinitto);
         memberRepository.save(newMember);
 
-        if (!isSinitto) {
+        if (isSinitto) {
+            pointRepository.save(new Point(0, newMember));
+        } else {
             pointRepository.save(new Point(WELCOME_POINT, newMember));
             pointLogRepository.save(new PointLog(PointLog.Content.WELCOME_POINT, newMember, WELCOME_POINT, PointLog.Status.EARN));
         }

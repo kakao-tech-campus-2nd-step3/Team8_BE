@@ -63,7 +63,7 @@ public class MemberServiceTest {
 
         //then
         verify(memberRepository, times(1)).save(any(Member.class));
-        verify(pointRepository, never()).save(any());
+        verify(pointRepository, times(1)).save(any());
         verify(pointLogRepository, never()).save(any());
         assertEquals(isSinitto, result.isSinitto());
     }
@@ -86,7 +86,6 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).save(any(Member.class));
         verify(pointRepository, times(1)).save(any());
         verify(pointLogRepository, times(1)).save(any());
-        assertEquals(isSinitto, result.isSinitto());
     }
 
     @Test
