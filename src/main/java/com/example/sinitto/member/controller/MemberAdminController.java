@@ -55,6 +55,7 @@ public class MemberAdminController {
         if (adminEmail.equals(email) && adminPassword.equals(password)) {
             session.setAttribute("email", email);
             session.setAttribute("role", "ADMIN");
+            session.setMaxInactiveInterval(1800);
             return "redirect:/admin/point/charge";
         } else {
             return "redirect:/admin/login?error=true";
