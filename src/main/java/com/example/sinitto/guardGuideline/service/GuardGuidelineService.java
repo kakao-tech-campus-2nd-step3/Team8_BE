@@ -61,7 +61,7 @@ public class GuardGuidelineService {
         Callback callback = callbackRepository.findById(callbackId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 콜백입니다"));
 
-        if (!callback.getStatus().equals(Callback.Status.WAITING.name()) && !callback.getAssignedMemberId().equals(memberId)) {
+        if (!callback.getStatus().equals(Callback.Status.WAITING.name()) && (callback.getAssignedMemberId() == null || !callback.getAssignedMemberId().equals(memberId))) {
             throw new BadRequestException("해당 콜백은 대기 상태가 아니고, 배정된 시니또가 아닙니다.");
         }
 
