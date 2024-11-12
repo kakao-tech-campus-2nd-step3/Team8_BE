@@ -24,7 +24,7 @@
 
 <script>
     // 페이지가 로드되었을 때, 쿼리 파라미터에 'error'가 있으면 오류 메시지 표시
-    window.onload = function() {
+    window.onload = function () {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('error')) {
             document.getElementById("errorMessage").textContent = '로그인 정보를 다시 확인해주세요';

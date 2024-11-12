@@ -356,6 +356,26 @@ public class InitialData implements CommandLineRunner {
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior11));
         callbackRepository.save(new Callback(Callback.Status.WAITING, senior11));
 
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior12));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior13));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior14));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior15));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior16));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior17));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior18));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior19));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior20));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior21));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior22));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior23));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior24));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior25));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior26));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior27));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior28));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior29));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior30));
+
         //리뷰
         reviewRepository.save(new Review(5, 4, 5, "테스트용 리뷰 1", guard1));
         reviewRepository.save(new Review(5, 2, 2, "테스트용 리뷰 2", guard2));
