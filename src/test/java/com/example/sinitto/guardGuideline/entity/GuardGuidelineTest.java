@@ -16,7 +16,7 @@ class GuardGuidelineTest {
 
     @BeforeEach
     void setUp() {
-        // 테스트용 Member와 Senior 객체 생성
+
         member = new Member("John Doe", "123456789", "john@example.com", true);
         senior = new Senior("Jane Doe", "987654321", member);
     }
@@ -24,13 +24,13 @@ class GuardGuidelineTest {
     @Test
     @DisplayName("GuardGuideline 객체 생성 테스트")
     void createGuardGuideline() {
-        GuardGuideline guideline = new GuardGuideline(GuardGuideline.Type.TAXI, "Taxi Guidelines", "Details about taxi guidelines", senior);
+        GuardGuideline guideline = new GuardGuideline(GuardGuideline.Type.HOSPITAL, "Taxi Guidelines", "Details about taxi guidelines", senior);
 
-        assertEquals(GuardGuideline.Type.TAXI, guideline.getType());
+        assertEquals(GuardGuideline.Type.HOSPITAL, guideline.getType());
         assertEquals("Taxi Guidelines", guideline.getTitle());
         assertEquals("Details about taxi guidelines", guideline.getContent());
         assertEquals(senior, guideline.getSenior());
-        assertEquals(senior.getMember(), member);  // Senior와 Member의 관계 확인
+        assertEquals(senior.getMember(), member);
     }
 
     @Test

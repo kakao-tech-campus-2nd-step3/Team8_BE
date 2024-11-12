@@ -14,6 +14,7 @@ public class GuardGuideline {
     private Long id;
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private Type type;
     @NotNull
     private String title;
@@ -65,6 +66,8 @@ public class GuardGuideline {
 
     public enum Type {
         TAXI,
-        DELIVERY
+        DELIVERY,
+        HOSPITAL,
+        CULTURE_LIFE
     }
 }

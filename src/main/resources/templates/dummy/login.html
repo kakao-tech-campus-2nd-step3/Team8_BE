@@ -15,7 +15,8 @@
     <label for="email">이메일:</label>
     <select id="email" name="email" required>
         <option disabled selected value="">이메일을 선택하세요</option>
-        <option th:each="member, iterStat : ${members}" th:text="${member.email + ' (' + (member.isSinitto ? '시니또' : '보호자') + ' ' + (iterStat.index + 1) + ')'}"
+        <option th:each="member, iterStat : ${members}"
+                th:text="${member.email + ' (' + (member.isSinitto ? '시니또' : '보호자') + ' ' + (iterStat.index + 1) + ')'}"
                 th:value="${member.email}">
         </option>
     </select>
