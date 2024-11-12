@@ -326,11 +326,11 @@ public class HelloCallService {
 
         List<HelloCall> helloCalls = helloCallRepository.findByMemberAndStatus(member, HelloCall.Status.IN_PROGRESS);
 
-        changeHelloCall(helloCalls);
+        updateHelloCallStatusToWaiting(helloCalls);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void changeHelloCall(List<HelloCall> helloCalls) {
+    public void updateHelloCallStatusToWaiting(List<HelloCall> helloCalls) {
         for (HelloCall helloCall : helloCalls) {
             helloCall.changeStatusToWaiting();
             helloCall.setMember(null);
