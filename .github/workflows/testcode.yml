@@ -55,10 +55,17 @@ jobs:
           SLACK_NOTICE_WEBHOOK_URL: ${{ secrets.SLACK_NOTICE_WEBHOOK_URL }}
           SLACK_CHARGE_REQUEST_URL: ${{ secrets.SLACK_CHARGE_REQUEST_URL }}
           SLACK_WITHDRAW_REQUEST_URL: ${{ secrets.SLACK_WITHDRAW_REQUEST_URL }}
-        run: ./gradlew test --quiet
+        run: ./gradlew test --summary
 
-      - name: 📤 Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: build/test-results/test/*.xml
+      - name: 📢 Notify Test Results on Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.TEST_CODE_SLACK_WEBHOOK_URL }}
+        run: |
+          TEST_RESULT=$(./gradlew test --info | grep -E "Tests run: [0-9]+, Failures: [0-9]+, Errors: [0-9]+, Skipped: [0-9]+")
+          if echo "$TEST_RESULT" | grep -q "Failures: 0, Errors: 0"; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text": "✅ *테스트 성공* - 모든 테스트가 통과되었습니다.\n'"$TEST_RESULT"'"}' $TEST_CODE_SLACK_WEBHOOK_URL
+          else
+            FAILED_TESTS=$(grep -E "FAILED.*" build/test-results/test/TEST-*.xml)
+            curl -X POST -H 'Content-type: application/json' --data '{"text": "❌ *테스트 실패* - 실패한 테스트가 있습니다.\n'"$TEST_RESULT"'\n*실패 테스트 목록:*\n'"$FAILED_TESTS"'"}' $TEST_CODE_SLACK_WEBHOOK_URL
+          fi        
