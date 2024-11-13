@@ -62,7 +62,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.TEST_CODE_SLACK_WEBHOOK_URL }}
         run: |
-          TEST_RESULT=$(grep -E "Tests run: [0-9]+, Failures: [0-9]+, Errors: [0-9]+, Skipped: [0-9]+"**/build/test-results/test/test-*.xml)
+          TEST_RESULT=$(grep -E "Tests run: [0-9]+, Failures: [0-9]+, Errors: [0-9]+, Skipped: [0-9]+" **/build/test-results/test/test-*.xml)
           
           if echo "$TEST_RESULT" | grep -q "Failures: 0, Errors: 0"; then
             curl -X POST -H 'Content-type: application/json' --data '{"text": "✅ *테스트 성공* - 모든 테스트가 통과되었습니다.\n'"$TEST_RESULT"'"}' $SLACK_WEBHOOK_URL
