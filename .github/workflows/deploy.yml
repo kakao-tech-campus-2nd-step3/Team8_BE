@@ -10,16 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up SSH
+      - name: 🔐 Set Up SSH Authentication
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Run deployment script on server
+      - name: 🚀 Run Deployment Script on Server
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }} bash /home/ubuntu/deploy.sh"
+        # 서버의 deploy.sh 스크립트를 통해 무중단 배포를 진행합니다.
+        # 무중단 배포 성공 시 Slack 알림을 전송하도록 설정되어 있습니다.
+
+      - name: 📢 Notify Deployment Status on Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ $? -eq 0 ]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text": "🎉 *최종 배포 성공* - 배포가 성공적으로 완료되었습니다!"}' $SLACK_WEBHOOK_URL
+          else
+            curl -X POST -H 'Content-type: application/json' --data '{"text": "⚠️ *배포 실패* - 배포 과정에서 문제가 발생했습니다."}' $SLACK_WEBHOOK_URL
+          fi
+        # 배포 스크립트가 성공적으로 실행되었는지 여부를 Slack으로 알립니다.
