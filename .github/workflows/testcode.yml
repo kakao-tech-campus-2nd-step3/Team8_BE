@@ -45,24 +45,20 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: 🧪 Run Unit Tests and Generate Report
+      - name: 🧪 Run Tests
         env:
           SPRING_DATASOURCE_URL: ${{ secrets.MYSQL_URL }}
           SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USERNAME }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        run: ./gradlew test --info --tests '*'
+          SLACK_NOTICE_WEBHOOK_URL: ${{ secrets.SLACK_NOTICE_WEBHOOK_URL }}
+          SLACK_CHARGE_REQUEST_URL: ${{ secrets.SLACK_CHARGE_REQUEST_URL }}
+          SLACK_WITHDRAW_REQUEST_URL: ${{ secrets.SLACK_WITHDRAW_REQUEST_URL }}
+        run: ./gradlew test --quiet
 
-      - name: 📄 Upload Test Results as Artifact
+      - name: 📤 Upload Test Results
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: build/test-results/test
-
-      - name: 📊 Annotate Test Report
-        uses: dorny/test-reporter@v1
-        with:
-          name: JUnit Tests
           path: build/test-results/test/*.xml
-          reporter: java-junit
