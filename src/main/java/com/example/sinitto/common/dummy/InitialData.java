@@ -151,76 +151,40 @@ public class InitialData implements CommandLineRunner {
 
         //포인트와 포인트로그
         pointRepository.save(new Point(50000, memberSinitto1));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto1, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto1, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto1, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto1, 50000, PointLog.Status.CHARGE_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto1, 50000, PointLog.Status.EARN));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto1, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, memberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, memberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, memberSinitto1, 50000, PointLog.Status.SPEND_CANCEL));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_WAITING));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_COMPLETE));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, memberSinitto2));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto2, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto2, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto2, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto2, 50000, PointLog.Status.CHARGE_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto2, 50000, PointLog.Status.EARN));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto2, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, memberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, memberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, memberSinitto2, 50000, PointLog.Status.SPEND_CANCEL));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_WAITING));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_COMPLETE));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, memberSinitto3));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto3, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto3, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto3, 50000, PointLog.Status.CHARGE_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto3, 50000, PointLog.Status.EARN));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto3, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, memberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, memberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, memberSinitto3, 50000, PointLog.Status.SPEND_CANCEL));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_WAITING));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_COMPLETE));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
 
         pointRepository.save(new Point(50000, memberSinitto4));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto4, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto4, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto4, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto4, 50000, PointLog.Status.CHARGE_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto4, 50000, PointLog.Status.EARN));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto4, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, memberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, memberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, memberSinitto4, 50000, PointLog.Status.SPEND_CANCEL));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_WAITING));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_COMPLETE));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, memberSinitto5));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto5, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto5, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto5, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, memberSinitto5, 50000, PointLog.Status.CHARGE_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto5, 50000, PointLog.Status.EARN));
         pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto5, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, memberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, memberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, memberSinitto5, 50000, PointLog.Status.SPEND_CANCEL));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto5, 50000, PointLog.Status.WITHDRAW_REQUEST));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto5, 50000, PointLog.Status.WITHDRAW_WAITING));
         pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto5, 50000, PointLog.Status.WITHDRAW_COMPLETE));
