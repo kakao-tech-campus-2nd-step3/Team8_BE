@@ -35,7 +35,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Component
-@Profile("prod")
+@Profile("none") //서버에서의 더미데이터 초기화를 방지하지 위해 none으로 설정, 추후 더미데이터로 초기화가 필요할 시 prod로 설정 예정입니다.
 public class InitialData implements CommandLineRunner {
 
     private final MemberRepository memberRepository;
