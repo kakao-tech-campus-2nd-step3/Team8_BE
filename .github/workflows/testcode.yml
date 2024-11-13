@@ -4,9 +4,7 @@ on:
   pull_request:
     branches:
       - Weekly
-
-permissions:
-  checks: write
+permissions: write-all
 
 jobs:
   test:
