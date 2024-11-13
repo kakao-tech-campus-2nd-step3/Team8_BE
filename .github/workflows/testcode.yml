@@ -55,7 +55,7 @@ jobs:
           SLACK_NOTICE_WEBHOOK_URL: ${{ secrets.SLACK_NOTICE_WEBHOOK_URL }}
           SLACK_CHARGE_REQUEST_URL: ${{ secrets.SLACK_CHARGE_REQUEST_URL }}
           SLACK_WITHDRAW_REQUEST_URL: ${{ secrets.SLACK_WITHDRAW_REQUEST_URL }}
-        run: ./gradlew test --summary
+        run: ./gradlew test
 
       - name: 📢 Notify Test Results on Slack
         if: always()
