@@ -62,10 +62,10 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.TEST_CODE_SLACK_WEBHOOK_URL }}
         run: |
-          TEST_RESULT=$(./gradlew test --info | grep -E "Tests run: [0-9]+, Failures: [0-9]+, Errors: [0-9]+, Skipped: [0-9]+")
+          TEST_RESULT=$(grep -E "Tests run: [0-9]+, Failures: [0-9]+, Errors: [0-9]+, Skipped: [0-9]+" build/test-results/test/test-*.xml)
           if echo "$TEST_RESULT" | grep -q "Failures: 0, Errors: 0"; then
-            curl -X POST -H 'Content-type: application/json' --data '{"text": "✅ *테스트 성공* - 모든 테스트가 통과되었습니다.\n'"$TEST_RESULT"'"}' $TEST_CODE_SLACK_WEBHOOK_URL
+            curl -X POST -H 'Content-type: application/json' --data '{"text": "✅ *테스트 성공* - 모든 테스트가 통과되었습니다.\n'"$TEST_RESULT"'"}' $SLACK_WEBHOOK_URL
           else
-            FAILED_TESTS=$(grep -E "FAILED.*" build/test-results/test/TEST-*.xml)
-            curl -X POST -H 'Content-type: application/json' --data '{"text": "❌ *테스트 실패* - 실패한 테스트가 있습니다.\n'"$TEST_RESULT"'\n*실패 테스트 목록:*\n'"$FAILED_TESTS"'"}' $TEST_CODE_SLACK_WEBHOOK_URL
-          fi        
+            FAILED_TESTS=$(grep -E "failure|error" build/test-results/test/test-*.xml | sed 's/.*<failure message="\([^"]*\)".*/\1/;s/\s+/ /g')
+            curl -X POST -H 'Content-type: application/json' --data '{"text": "❌ *테스트 실패* - 실패한 테스트가 있습니다.\n'"$TEST_RESULT"'\n*실패 테스트 목록:*\n'"$FAILED_TESTS"'"}' $SLACK_WEBHOOK_URL
+          fi
