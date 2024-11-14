@@ -81,6 +81,115 @@ https://sinitto.site/admin/login
 ![image](https://github.com/user-attachments/assets/03da2737-f945-4803-b325-3ca831720b56)
 ![image](https://github.com/user-attachments/assets/bc12fbc3-4111-4072-a62d-682360e5a186)
 
+## **프로젝트 실행 가이드**
+
+아래의 단계를 따라 프로젝트를 실행할 수 있습니다.
+> 우분투 기준으로 작성되었습니다.
+
+### **필수 소프트웨어**
+
+- **Java 21**
+- **Gradle**
+- **Redis**
+- **Git**
+
+### **1. 프로젝트 클론**
+
+GitHub에서 프로젝트를 클론합니다
+
+```
+git clone https://github.com/kakao-tech-campus-2nd-step3/Team8_BE.git
+cd Team8_BE
+```
+
+### **2. 환경 설정**
+
+**`application-dev.properties`** 파일에 아래와 같은 설정을 추가해야 합니다:
+
+- **Kakao API 설정**: Kakao 로그인 및 결제 URL 관련 정보
+- **Redis 설정**: Redis 서버 연결 정보
+- **MySQL 설정**: 데이터베이스 연결 정보
+- **JWT 설정**: 비밀 키 등 인증 관련 정보
+- **SSL 설정**: 서버 SSL 인증서 경로 및 설정
+- **Slack 설정**: 알림 관련 설정
+- **Admin 설정**: 어드민 계정 설정
+
+**`application-dev.properties`** 예시:
+
+```
+# Kakao API 설정
+kakao.clientId=YOUR_KAKAO_CLIENT_ID
+kakao.devRedirectUri=YOUR_LOCAL_REDIRECT_URI
+kakao.redirectUri=YOUR_PROD_REDIRECT_URI
+kakao.frontUri=YOUR_FRONT_URI
+kakao.Pay-url=YOUR_KAKAO_PAY_URL
+
+# JWT 설정
+jwt.secret=YOUR_JWT_SECRET_KEY
+
+# Redis 설정
+spring.data.redis.host=YOUR_REDIS_HOST
+spring.data.redis.port=YOUR_REDIS_PORT
+spring.data.redis.password=YOUR_REDIS_PASSWORD
+
+# MySQL 설정
+spring.datasource.url=YOUR_MYSQL_URL
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
+spring.jpa.hibernate.ddl-auto=update
+
+# SSL 설정
+server.ssl.key-store=YOUR_SSL_KEYSTORE_PATH
+server.ssl.key-store-password=YOUR_KEYSTORE_PASSWORD
+server.ssl.key-store-type=PKCS12
+
+# Slack 설정
+slack.notice.webhook.url=YOUR_SLACK_WEBHOOK_URL
+slack.charge.request.url=YOUR_SLACK_CHARGE_REQUEST_URL
+slack.withdraw.request.url=YOUR_SLACK_WITHDRAW_REQUEST_URL
+
+# Admin 설정
+admin.adminEmail=YOUR_ADMIN_EMAIL
+admin.adminPassword=YOUR_ADMIN_PASSWORD
+
+# 기타 설정
+kakao.bank-name=YOUR_BANK_NAME
+kakao.account-number=YOUR_ACCOUNT_NUMBER
+kakao.name=YOUR_KAKAO_NAME
+kakao.front-uri-without-https=YOUR_FRONT_URI_WITHOUT_HTTPS
+```
+
+### **3. 의존성 설치**
+
+프로젝트 의존성을 설치합니다.
+
+```
+./gradlew build
+```
+
+### **4. Redis 서버 실행**
+
+Redis 서버를 실행합니다.
+
+```
+redis-server
+```
+
+### **5. 애플리케이션 실행**
+
+애플리케이션을 실행하는 방법에는 두 가지가 있습니다.
+
+1. **Gradle로 애플리케이션 실행**
+    ```
+    ./gradlew bootRun
+    ```
+
+2. **JAR 파일을 실행**
+
+    ```
+    ./gradlew bootJar
+    java -jar build/libs/Team8_BE-0.0.1-SNAPSHOT.jar
+    ```
 
 
 ## 🤔 시니또가 무엇인가요?
