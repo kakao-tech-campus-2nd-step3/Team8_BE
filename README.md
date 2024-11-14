@@ -320,510 +320,122 @@ https://sinitto.site/admin/login
 
 ```c
 Team8_BE
-├── build
-│   ├── classes
-│   │   └── java
-│   │       └── main
-│   │           └── com
-│   │               └── example
-│   │                   └── sinitto
-│   │                       ├── SinittoApplication.class
-│   │                       ├── auth
-│   │                       │   ├── controller
-│   │                       │   │   └── AuthController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── KakaoTokenResponse.class
-│   │                       │   │   ├── KakaoUserResponse$KakaoAccount$Profile.class
-│   │                       │   │   ├── KakaoUserResponse$KakaoAccount.class
-│   │                       │   │   ├── KakaoUserResponse.class
-│   │                       │   │   ├── LoginResponse.class
-│   │                       │   │   ├── TokenRefreshRequest.class
-│   │                       │   │   └── TokenResponse.class
-│   │                       │   ├── entity
-│   │                       │   │   └── KakaoToken.class
-│   │                       │   ├── repository
-│   │                       │   │   └── KakaoTokenRepository.class
-│   │                       │   └── service
-│   │                       │       ├── KakaoApiService.class
-│   │                       │       ├── KakaoTokenService.class
-│   │                       │       └── TokenService.class
-│   │                       ├── callback
-│   │                       │   ├── controller
-│   │                       │   │   └── CallbackController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── CallbackForSinittoResponse.class
-│   │                       │   │   ├── CallbackResponse.class
-│   │                       │   │   └── CallbackUsageHistoryResponse.class
-│   │                       │   ├── entity
-│   │                       │   │   ├── Callback$Status.class
-│   │                       │   │   └── Callback.class
-│   │                       │   ├── repository
-│   │                       │   │   └── CallbackRepository.class
-│   │                       │   ├── service
-│   │                       │   │   └── CallbackService.class
-│   │                       │   └── util
-│   │                       │       └── TwilioHelper.class
-│   │                       ├── common
-│   │                       │   ├── config
-│   │                       │   │   ├── RedisConfig.class
-│   │                       │   │   ├── RestTemplateResponseErrorHandler.class
-│   │                       │   │   ├── SwaggerConfig.class
-│   │                       │   │   └── WebConfig.class
-│   │                       │   ├── dummy
-│   │                       │   │   └── InitialData.class
-│   │                       │   ├── exception
-│   │                       │   │   ├── AccessTokenExpiredException.class
-│   │                       │   │   ├── BadRequestException.class
-│   │                       │   │   ├── ConflictException.class
-│   │                       │   │   ├── ForbiddenException.class
-│   │                       │   │   ├── GlobalExceptionHandler.class
-│   │                       │   │   ├── InvalidJwtException.class
-│   │                       │   │   ├── NotFoundException.class
-│   │                       │   │   ├── RefreshTokenStolenException.class
-│   │                       │   │   └── UnauthorizedException.class
-│   │                       │   ├── interceptor
-│   │                       │   │   └── JwtInterceptor.class
-│   │                       │   ├── properties
-│   │                       │   │   ├── AdminProperties.class
-│   │                       │   │   ├── DummyProperties.class
-│   │                       │   │   └── KakaoProperties.class
-│   │                       │   └── service
-│   │                       │       ├── KakaoMessageService.class
-│   │                       │       └── SlackMessageService.class
-│   │                       ├── guard
-│   │                       │   ├── controller
-│   │                       │   │   └── GuardController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── GuardRequest.class
-│   │                       │   │   ├── GuardResponse.class
-│   │                       │   │   ├── SeniorRequest.class
-│   │                       │   │   └── SeniorResponse.class
-│   │                       │   ├── repository
-│   │                       │   │   └── SeniorRepository.class
-│   │                       │   └── service
-│   │                       │       └── GuardService.class
-│   │                       ├── guardGuideline
-│   │                       │   ├── controller
-│   │                       │   │   └── GuardGuidelineController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── GuardGuidelineRequest.class
-│   │                       │   │   └── GuardGuidelineResponse.class
-│   │                       │   ├── entity
-│   │                       │   │   ├── GuardGuideline$Type.class
-│   │                       │   │   └── GuardGuideline.class
-│   │                       │   ├── repository
-│   │                       │   │   └── GuardGuidelineRepository.class
-│   │                       │   └── service
-│   │                       │       └── GuardGuidelineService.class
-│   │                       ├── helloCall
-│   │                       │   ├── controller
-│   │                       │   │   └── HelloCallController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── HelloCallDetailResponse$TimeSlot.class
-│   │                       │   │   ├── HelloCallDetailResponse.class
-│   │                       │   │   ├── HelloCallDetailUpdateRequest$TimeSlot.class
-│   │                       │   │   ├── HelloCallDetailUpdateRequest.class
-│   │                       │   │   ├── HelloCallPriceRequest$TimeSlot.class
-│   │                       │   │   ├── HelloCallPriceRequest.class
-│   │                       │   │   ├── HelloCallPriceResponse.class
-│   │                       │   │   ├── HelloCallReportRequest.class
-│   │                       │   │   ├── HelloCallReportResponse.class
-│   │                       │   │   ├── HelloCallRequest$TimeSlot.class
-│   │                       │   │   ├── HelloCallRequest.class
-│   │                       │   │   ├── HelloCallResponse.class
-│   │                       │   │   ├── HelloCallTimeLogResponse.class
-│   │                       │   │   └── StringMessageResponse.class
-│   │                       │   ├── entity
-│   │                       │   │   ├── HelloCall$Status.class
-│   │                       │   │   ├── HelloCall.class
-│   │                       │   │   ├── HelloCallTimeLog.class
-│   │                       │   │   └── TimeSlot.class
-│   │                       │   ├── repository
-│   │                       │   │   ├── HelloCallRepository.class
-│   │                       │   │   ├── HelloCallTimeLogRepository.class
-│   │                       │   │   └── TimeSlotRepository.class
-│   │                       │   └── service
-│   │                       │       ├── HelloCallPriceService.class
-│   │                       │       └── HelloCallService.class
-│   │                       ├── member
-│   │                       │   ├── controller
-│   │                       │   │   ├── MemberAdminController.class
-│   │                       │   │   └── MemberController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── RegisterResponse.class
-│   │                       │   │   └── SignupRequest.class
-│   │                       │   ├── entity
-│   │                       │   │   ├── Member.class
-│   │                       │   │   └── Senior.class
-│   │                       │   ├── repository
-│   │                       │   │   └── MemberRepository.class
-│   │                       │   └── service
-│   │                       │       ├── MemberService.class
-│   │                       │       └── MemberTokenService.class
-│   │                       ├── point
-│   │                       │   ├── controller
-│   │                       │   │   ├── PointAdminController.class
-│   │                       │   │   └── PointController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── PointChargeResponse.class
-│   │                       │   │   ├── PointLogResponse.class
-│   │                       │   │   ├── PointLogWithBankInfo.class
-│   │                       │   │   ├── PointLogWithDepositMessage.class
-│   │                       │   │   ├── PointRequest.class
-│   │                       │   │   └── PointResponse.class
-│   │                       │   ├── entity
-│   │                       │   │   ├── Point.class
-│   │                       │   │   ├── PointLog$Content.class
-│   │                       │   │   ├── PointLog$Status.class
-│   │                       │   │   └── PointLog.class
-│   │                       │   ├── repository
-│   │                       │   │   ├── PointLogRepository.class
-│   │                       │   │   └── PointRepository.class
-│   │                       │   └── service
-│   │                       │       ├── PointAdminService.class
-│   │                       │       └── PointService.class
-│   │                       ├── review
-│   │                       │   ├── controller
-│   │                       │   │   └── ReviewController.class
-│   │                       │   ├── dto
-│   │                       │   │   ├── ReviewRequest.class
-│   │                       │   │   └── ReviewResponse.class
-│   │                       │   ├── entity
-│   │                       │   │   └── Review.class
-│   │                       │   ├── repository
-│   │                       │   │   └── ReviewRepository.class
-│   │                       │   └── service
-│   │                       │       └── ReviewService.class
-│   │                       └── sinitto
-│   │                           ├── controller
-│   │                           │   └── SinittoController.class
-│   │                           ├── dto
-│   │                           │   ├── SinittoBankRequest.class
-│   │                           │   ├── SinittoBankResponse.class
-│   │                           │   ├── SinittoRequest.class
-│   │                           │   └── SinittoResponse.class
-│   │                           ├── entity
-│   │                           │   └── SinittoBankInfo.class
-│   │                           ├── repository
-│   │                           │   └── SinittoBankInfoRepository.class
-│   │                           └── service
-│   │                               └── SinittoService.class
-│   ├── generated
-│   │   └── sources
-│   │       ├── annotationProcessor
-│   │       │   └── java
-│   │       │       └── main
-│   │       └── headers
-│   │           └── java
-│   │               └── main
-│   ├── libs
-│   │   ├── Team8_BE-0.0.1-SNAPSHOT-plain.jar
-│   │   └── Team8_BE-0.0.1-SNAPSHOT.jar
-│   ├── resolvedMainClassName
-│   ├── resources
-│   │   └── main
-│   │       ├── application-dev.properties
-│   │       ├── application.properties
-│   │       ├── keystore.p12
-│   │       ├── static
-│   │       │   └── css
-│   │       │       ├── dummy.css
-│   │       │       ├── header.css
-│   │       │       ├── login.css
-│   │       │       └── point.css
-│   │       └── templates
-│   │           ├── dummy
-│   │           │   └── login.html
-│   │           └── point
-│   │               ├── charge.html
-│   │               ├── header.html
-│   │               ├── login.html
-│   │               └── withdraw.html
-│   └── tmp
-│       ├── bootJar
-│       │   └── MANIFEST.MF
-│       ├── compileJava
-│       │   └── previous-compilation-data.bin
-│       └── jar
-│           └── MANIFEST.MF
-├── build.gradle
-├── gradle
-│   └── wrapper
-│       ├── gradle-wrapper.jar
-│       └── gradle-wrapper.properties
-├── gradlew
-├── gradlew.bat
-├── settings.gradle
 └── src
     ├── main
     │   ├── java
     │   │   └── com
     │   │       └── example
     │   │           └── sinitto
-    │   │               ├── SinittoApplication.java
     │   │               ├── auth
     │   │               │   ├── controller
-    │   │               │   │   └── AuthController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── KakaoTokenResponse.java
-    │   │               │   │   ├── KakaoUserResponse.java
-    │   │               │   │   ├── LoginResponse.java
-    │   │               │   │   ├── TokenRefreshRequest.java
-    │   │               │   │   └── TokenResponse.java
     │   │               │   ├── entity
-    │   │               │   │   └── KakaoToken.java
     │   │               │   ├── repository
-    │   │               │   │   └── KakaoTokenRepository.java
     │   │               │   └── service
-    │   │               │       ├── KakaoApiService.java
-    │   │               │       ├── KakaoTokenService.java
-    │   │               │       └── TokenService.java
     │   │               ├── callback
     │   │               │   ├── controller
-    │   │               │   │   └── CallbackController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── CallbackForSinittoResponse.java
-    │   │               │   │   ├── CallbackResponse.java
-    │   │               │   │   └── CallbackUsageHistoryResponse.java
     │   │               │   ├── entity
-    │   │               │   │   └── Callback.java
     │   │               │   ├── repository
-    │   │               │   │   └── CallbackRepository.java
     │   │               │   ├── service
-    │   │               │   │   └── CallbackService.java
     │   │               │   └── util
-    │   │               │       └── TwilioHelper.java
     │   │               ├── common
     │   │               │   ├── config
-    │   │               │   │   ├── RedisConfig.java
-    │   │               │   │   ├── RestTemplateResponseErrorHandler.java
-    │   │               │   │   ├── SwaggerConfig.java
-    │   │               │   │   └── WebConfig.java
     │   │               │   ├── dummy
-    │   │               │   │   └── InitialData.java
     │   │               │   ├── exception
-    │   │               │   │   ├── AccessTokenExpiredException.java
-    │   │               │   │   ├── BadRequestException.java
-    │   │               │   │   ├── ConflictException.java
-    │   │               │   │   ├── ForbiddenException.java
-    │   │               │   │   ├── GlobalExceptionHandler.java
-    │   │               │   │   ├── InvalidJwtException.java
-    │   │               │   │   ├── NotFoundException.java
-    │   │               │   │   ├── RefreshTokenStolenException.java
-    │   │               │   │   └── UnauthorizedException.java
     │   │               │   ├── interceptor
-    │   │               │   │   └── JwtInterceptor.java
     │   │               │   ├── properties
-    │   │               │   │   ├── AdminProperties.java
-    │   │               │   │   ├── DummyProperties.java
-    │   │               │   │   └── KakaoProperties.java
     │   │               │   └── service
-    │   │               │       ├── KakaoMessageService.java
-    │   │               │       └── SlackMessageService.java
     │   │               ├── guard
     │   │               │   ├── controller
-    │   │               │   │   └── GuardController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── GuardRequest.java
-    │   │               │   │   ├── GuardResponse.java
-    │   │               │   │   ├── SeniorRequest.java
-    │   │               │   │   └── SeniorResponse.java
     │   │               │   ├── repository
-    │   │               │   │   └── SeniorRepository.java
     │   │               │   └── service
-    │   │               │       └── GuardService.java
     │   │               ├── guardGuideline
     │   │               │   ├── controller
-    │   │               │   │   └── GuardGuidelineController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── GuardGuidelineRequest.java
-    │   │               │   │   └── GuardGuidelineResponse.java
     │   │               │   ├── entity
-    │   │               │   │   └── GuardGuideline.java
     │   │               │   ├── repository
-    │   │               │   │   └── GuardGuidelineRepository.java
     │   │               │   └── service
-    │   │               │       └── GuardGuidelineService.java
     │   │               ├── helloCall
     │   │               │   ├── controller
-    │   │               │   │   └── HelloCallController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── HelloCallDetailResponse.java
-    │   │               │   │   ├── HelloCallDetailUpdateRequest.java
-    │   │               │   │   ├── HelloCallPriceRequest.java
-    │   │               │   │   ├── HelloCallPriceResponse.java
-    │   │               │   │   ├── HelloCallReportRequest.java
-    │   │               │   │   ├── HelloCallReportResponse.java
-    │   │               │   │   ├── HelloCallRequest.java
-    │   │               │   │   ├── HelloCallResponse.java
-    │   │               │   │   ├── HelloCallTimeLogResponse.java
-    │   │               │   │   └── StringMessageResponse.java
     │   │               │   ├── entity
-    │   │               │   │   ├── HelloCall.java
-    │   │               │   │   ├── HelloCallTimeLog.java
-    │   │               │   │   └── TimeSlot.java
     │   │               │   ├── repository
-    │   │               │   │   ├── HelloCallRepository.java
-    │   │               │   │   ├── HelloCallTimeLogRepository.java
-    │   │               │   │   └── TimeSlotRepository.java
     │   │               │   └── service
-    │   │               │       ├── HelloCallPriceService.java
-    │   │               │       └── HelloCallService.java
     │   │               ├── member
     │   │               │   ├── controller
-    │   │               │   │   ├── MemberAdminController.java
-    │   │               │   │   └── MemberController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── RegisterResponse.java
-    │   │               │   │   └── SignupRequest.java
     │   │               │   ├── entity
-    │   │               │   │   ├── Member.java
-    │   │               │   │   └── Senior.java
     │   │               │   ├── repository
-    │   │               │   │   └── MemberRepository.java
     │   │               │   └── service
-    │   │               │       ├── MemberService.java
-    │   │               │       └── MemberTokenService.java
     │   │               ├── point
     │   │               │   ├── controller
-    │   │               │   │   ├── PointAdminController.java
-    │   │               │   │   └── PointController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── PointChargeResponse.java
-    │   │               │   │   ├── PointLogResponse.java
-    │   │               │   │   ├── PointLogWithBankInfo.java
-    │   │               │   │   ├── PointLogWithDepositMessage.java
-    │   │               │   │   ├── PointRequest.java
-    │   │               │   │   └── PointResponse.java
     │   │               │   ├── entity
-    │   │               │   │   ├── Point.java
-    │   │               │   │   └── PointLog.java
     │   │               │   ├── repository
-    │   │               │   │   ├── PointLogRepository.java
-    │   │               │   │   └── PointRepository.java
     │   │               │   └── service
-    │   │               │       ├── PointAdminService.java
-    │   │               │       └── PointService.java
     │   │               ├── review
     │   │               │   ├── controller
-    │   │               │   │   └── ReviewController.java
     │   │               │   ├── dto
-    │   │               │   │   ├── ReviewRequest.java
-    │   │               │   │   └── ReviewResponse.java
     │   │               │   ├── entity
-    │   │               │   │   └── Review.java
     │   │               │   ├── repository
-    │   │               │   │   └── ReviewRepository.java
     │   │               │   └── service
-    │   │               │       └── ReviewService.java
     │   │               └── sinitto
     │   │                   ├── controller
-    │   │                   │   └── SinittoController.java
     │   │                   ├── dto
-    │   │                   │   ├── SinittoBankRequest.java
-    │   │                   │   ├── SinittoBankResponse.java
-    │   │                   │   ├── SinittoRequest.java
-    │   │                   │   └── SinittoResponse.java
     │   │                   ├── entity
-    │   │                   │   └── SinittoBankInfo.java
     │   │                   ├── repository
-    │   │                   │   └── SinittoBankInfoRepository.java
     │   │                   └── service
-    │   │                       └── SinittoService.java
     │   └── resources
     │       ├── application-dev.properties
     │       ├── application.properties
     │       ├── keystore.p12
     │       ├── static
     │       │   └── css
-    │       │       ├── dummy.css
-    │       │       ├── header.css
-    │       │       ├── login.css
-    │       │       └── point.css
     │       └── templates
     │           ├── dummy
-    │           │   └── login.html
     │           └── point
-    │               ├── charge.html
-    │               ├── header.html
-    │               ├── login.html
-    │               └── withdraw.html
     └── test
         └── java
             └── com
                 └── example
                     └── sinitto
-                        ├── SinittoApplicationTests.java
                         ├── auth
                         │   ├── entity
-                        │   │   └── KakaoTokenTest.java
                         │   ├── repository
-                        │   │   └── KakaoTokenRepositoryTest.java
                         │   └── service
-                        │       ├── KakaoApiServiceTest.java
-                        │       ├── KakaoTokenServiceTest.java
-                        │       └── TokenServiceTest.java
                         ├── callback
                         │   ├── entity
-                        │   │   └── CallbackTest.java
                         │   ├── repository
-                        │   │   └── CallbackRepositoryTest.java
                         │   ├── service
-                        │   │   └── CallbackServiceTest.java
                         │   └── util
-                        │       └── TwilioHelperTest.java
                         ├── guard
                         │   ├── entity
-                        │   │   └── SeniorTest.java
                         │   ├── repository
-                        │   │   └── SeniorRepositoryTest.java
                         │   └── service
-                        │       └── GuardServiceTest.java
                         ├── guardGuideline
                         │   ├── entity
-                        │   │   └── GuardGuidelineTest.java
                         │   ├── repository
-                        │   │   └── GuardGuidelineRepositoryTest.java
                         │   └── service
-                        │       └── GuardGuildelineServiceTest.java
                         ├── hellocall
                         │   ├── entity
-                        │   │   ├── HelloCallTest.java
-                        │   │   ├── HelloCallTimeLogTest.java
-                        │   │   └── TimeSlotTest.java
                         │   ├── repository
-                        │   │   ├── HelloCallRepositoryTest.java
-                        │   │   ├── HelloCallTimeLogRepositoryTest.java
-                        │   │   └── TimeSlotRepositoryTest.java
                         │   └── service
-                        │       └── HelloCallServiceTest.java
                         ├── member
                         │   ├── entity
-                        │   │   └── MemberTest.java
                         │   ├── repository
-                        │   │   └── MemberRepositoryTest.java
                         │   └── service
-                        │       ├── MemberServiceTest.java
-                        │       └── MemberTokenServiceTest.java
                         ├── point
                         │   ├── entity
-                        │   │   ├── PointLogTest.java
-                        │   │   └── PointTest.java
                         │   └── service
-                        │       ├── PointAdminServiceTest.java
-                        │       └── PointServiceTest.java
                         ├── review
                         │   ├── entity
-                        │   │   └── ReviewTest.java
                         │   └── service
-                        │       └── ReviewServiceTest.java
                         └── sinitto
                             ├── entity
-                            │   └── SinittoBankInfoTest.java
                             ├── repository
-                            │   └── SinittoBankInfoRepositoryTest.java
                             └── service
-                                └── SinittoServiceTest.java
 
 ```
 
