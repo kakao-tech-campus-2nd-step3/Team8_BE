@@ -44,44 +44,6 @@ https://sinitto.site/admin/login
 
 **비밀번호** `admin123`
 
-
-## 👥 팀원
-
-|Frontend|Frontend|Frontend|
-|:------:|:------:|:------:|
-|[<img src="https://github.com/Dobbymin.png" width="100px">](https://github.com/Dobbymin)|[<img src="https://github.com/Diwoni.png" width="100px">](https://github.com/Diwoni)|[<img src="https://github.com/JYN523.png" width="100px">](https://github.com/JYN523)|
-|[김강민](https://github.com/Dobbymin)|[정지원](https://github.com/Diwoni)|[제유나](https://github.com/JYN523)|
-
-|Backend|Backend|Backend|Backend|
-|:------:|:------:|:------:|:------:|
-|[<img src="https://github.com/zzoe2346.png" width="100px">](https://github.com/zzoe2346)|[<img src="https://github.com/GitJIHO.png" width="100px">](https://github.com/GitJIHO)|[<img src="https://github.com/2iedo.png" width="100px">](https://github.com/2iedo)|[<img src="https://github.com/eunsoni.png" width="100px">](https://github.com/eunsoni)|
-|[정성훈](https://github.com/zzoe2346)|[이지호](https://github.com/GitJIHO)|[이도훈](https://github.com/2iedo)|[김은선](https://github.com/eunsoni)|
-
-## ⚒️ 기술 스텍
-
-### Frontend
-<img width="697" alt="image" src="https://github.com/user-attachments/assets/6387235c-1ddf-4ebf-8eca-d3e838559d4a">
-
-
-### Backend
-<img width="705" alt="image" src="https://github.com/user-attachments/assets/c1f11983-4563-4322-9a29-e512e14927d5">
-
-> [!NOTE]  
-> 백엔드 내부 쉘스크립트 모음 https://curse-plastic-d90.notion.site/3ce05a49e06046469bde14c12b8b9c00
-
-## 서비스 아키텍처
-
-![Service Architecture](https://github.com/user-attachments/assets/a9ad53f3-9b63-433d-b4a7-1afbbfd21e90)
-
-## ERD
-![image](https://github.com/user-attachments/assets/d638bf78-4adc-4a43-96f2-e30cd04ea7b3)
-
-## Use Case Diagram
-![image](https://github.com/user-attachments/assets/0259f679-b13f-496a-8261-6e6df0abed50)
-![image](https://github.com/user-attachments/assets/71999d87-3d83-4019-b46b-1c2abc54ccc3)
-![image](https://github.com/user-attachments/assets/03da2737-f945-4803-b325-3ca831720b56)
-![image](https://github.com/user-attachments/assets/bc12fbc3-4111-4072-a62d-682360e5a186)
-
 ## **프로젝트 실행 가이드**
 
 아래의 단계를 따라 프로젝트를 실행할 수 있습니다.
@@ -191,6 +153,46 @@ redis-server
     ./gradlew bootJar
     java -jar build/libs/Team8_BE-0.0.1-SNAPSHOT.jar
     ```
+
+
+
+
+## 👥 팀원
+
+|Frontend|Frontend|Frontend|
+|:------:|:------:|:------:|
+|[<img src="https://github.com/Dobbymin.png" width="100px">](https://github.com/Dobbymin)|[<img src="https://github.com/Diwoni.png" width="100px">](https://github.com/Diwoni)|[<img src="https://github.com/JYN523.png" width="100px">](https://github.com/JYN523)|
+|[김강민](https://github.com/Dobbymin)|[정지원](https://github.com/Diwoni)|[제유나](https://github.com/JYN523)|
+
+|Backend|Backend|Backend|Backend|
+|:------:|:------:|:------:|:------:|
+|[<img src="https://github.com/zzoe2346.png" width="100px">](https://github.com/zzoe2346)|[<img src="https://github.com/GitJIHO.png" width="100px">](https://github.com/GitJIHO)|[<img src="https://github.com/2iedo.png" width="100px">](https://github.com/2iedo)|[<img src="https://github.com/eunsoni.png" width="100px">](https://github.com/eunsoni)|
+|[정성훈](https://github.com/zzoe2346)|[이지호](https://github.com/GitJIHO)|[이도훈](https://github.com/2iedo)|[김은선](https://github.com/eunsoni)|
+
+## ⚒️ 기술 스텍
+
+### Frontend
+<img width="697" alt="image" src="https://github.com/user-attachments/assets/6387235c-1ddf-4ebf-8eca-d3e838559d4a">
+
+
+### Backend
+<img width="705" alt="image" src="https://github.com/user-attachments/assets/c1f11983-4563-4322-9a29-e512e14927d5">
+
+> [!NOTE]  
+> 백엔드 내부 쉘스크립트 모음 https://curse-plastic-d90.notion.site/3ce05a49e06046469bde14c12b8b9c00
+
+## 서비스 아키텍처
+
+![Service Architecture](https://github.com/user-attachments/assets/a9ad53f3-9b63-433d-b4a7-1afbbfd21e90)
+
+## ERD
+![image](https://github.com/user-attachments/assets/d638bf78-4adc-4a43-96f2-e30cd04ea7b3)
+
+## Use Case Diagram
+![image](https://github.com/user-attachments/assets/0259f679-b13f-496a-8261-6e6df0abed50)
+![image](https://github.com/user-attachments/assets/71999d87-3d83-4019-b46b-1c2abc54ccc3)
+![image](https://github.com/user-attachments/assets/03da2737-f945-4803-b325-3ca831720b56)
+![image](https://github.com/user-attachments/assets/bc12fbc3-4111-4072-a62d-682360e5a186)
 
 
 ## 🤔 시니또가 무엇인가요?
