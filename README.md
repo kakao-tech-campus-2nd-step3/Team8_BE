@@ -67,7 +67,7 @@ https://sinitto.site/admin/login
 <img width="705" alt="image" src="https://github.com/user-attachments/assets/c1f11983-4563-4322-9a29-e512e14927d5">
 
 > [!NOTE]  
-> 백엔드 내부 쉘스크립트 모음 https://www.notion.so/3ce05a49e06046469bde14c12b8b9c00
+> 백엔드 내부 쉘스크립트 모음 https://curse-plastic-d90.notion.site/3ce05a49e06046469bde14c12b8b9c00
 
 ## 서비스 아키텍처
 
