@@ -20,7 +20,8 @@
   - [2. 포인트](#2-포인트)
   - [3. 콜백 서비스](#3-콜백-서비스)
   - [4. 안부 전화 서비스](#4-안부-전화-서비스)
-
+- [📂 디렉토리 구조](#디렉토리-구조)
+- [👩‍👩‍👧‍👧 협업 과정](#협업-과정)
 ## 🚀 배포 주소
 ### ✔️ Client
 [https://sinitto.life/](https://sinitto.life/)
@@ -423,3 +424,164 @@ redis-server
 
 ’보호자‘는 ’서비스 이용내역‘ 페이지에서 완료 대기 상태인 안부전화 서비스를
 완료상태로 변경할 수 있습니다.
+
+## 디렉토리 구조
+
+```c
+Team8_BE
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── example
+    │   │           └── sinitto
+    │   │               ├── auth
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── entity
+    │   │               │   ├── repository
+    │   │               │   └── service
+    │   │               ├── callback
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── entity
+    │   │               │   ├── repository
+    │   │               │   ├── service
+    │   │               │   └── util
+    │   │               ├── common
+    │   │               │   ├── config
+    │   │               │   ├── dummy
+    │   │               │   ├── exception
+    │   │               │   ├── interceptor
+    │   │               │   ├── properties
+    │   │               │   └── service
+    │   │               ├── guard
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── repository
+    │   │               │   └── service
+    │   │               ├── guardGuideline
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── entity
+    │   │               │   ├── repository
+    │   │               │   └── service
+    │   │               ├── helloCall
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── entity
+    │   │               │   ├── repository
+    │   │               │   └── service
+    │   │               ├── member
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── entity
+    │   │               │   ├── repository
+    │   │               │   └── service
+    │   │               ├── point
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── entity
+    │   │               │   ├── repository
+    │   │               │   └── service
+    │   │               ├── review
+    │   │               │   ├── controller
+    │   │               │   ├── dto
+    │   │               │   ├── entity
+    │   │               │   ├── repository
+    │   │               │   └── service
+    │   │               └── sinitto
+    │   │                   ├── controller
+    │   │                   ├── dto
+    │   │                   ├── entity
+    │   │                   ├── repository
+    │   │                   └── service
+    │   └── resources
+    │       ├── application-dev.properties
+    │       ├── application.properties
+    │       ├── keystore.p12
+    │       ├── static
+    │       │   └── css
+    │       └── templates
+    │           ├── dummy
+    │           └── point
+    └── test
+        └── java
+            └── com
+                └── example
+                    └── sinitto
+                        ├── auth
+                        │   ├── entity
+                        │   ├── repository
+                        │   └── service
+                        ├── callback
+                        │   ├── entity
+                        │   ├── repository
+                        │   ├── service
+                        │   └── util
+                        ├── guard
+                        │   ├── entity
+                        │   ├── repository
+                        │   └── service
+                        ├── guardGuideline
+                        │   ├── entity
+                        │   ├── repository
+                        │   └── service
+                        ├── hellocall
+                        │   ├── entity
+                        │   ├── repository
+                        │   └── service
+                        ├── member
+                        │   ├── entity
+                        │   ├── repository
+                        │   └── service
+                        ├── point
+                        │   ├── entity
+                        │   └── service
+                        ├── review
+                        │   ├── entity
+                        │   └── service
+                        └── sinitto
+                            ├── entity
+                            ├── repository
+                            └── service
+
+```
+
+## 협업 과정
+
+프론트엔드-백엔드 간 협업 과정 중 제공된 api를 연결하는 과정에서 소통에 어려움이 있었습니다.
+
+학업과 병행할 수 있는 카카오테크캠퍼스의 특성 상 조원들마다 개발을 진행하는 시간이 달라 실시간으로
+문제를 해결하기 어려운 문제점이 있었습니다. 또한 프론트엔드에서 백엔드 서버로 api를 통해 요청을 보냈을 때, 
+에러가 발생했을 경우 자세한 오류 메시지가 응답을 통해 나타나지 않았으며, 실제 오류 내용은
+백엔드 서버에 기록되는 문제가 있었습니다.
+
+또한 백엔드 담당 조원에게 질문을 하더라도 답변을 받기 전까지는 그동안 하던 작업을
+진행하지 못하는 문제가 생겨, 전체적인 개발 속도가 느려지는 문제가 있었습니다.
+
+이러한 방법을 어떻게 해결할 수 있을까 고민해보던 중, 가장 먼저 떠오른 방법은 '에러 코드가 생기면
+Slack의 채널에 전송을 하는 것' 이었습니다.
+
+백엔드 서버에서 자바 파일을 실행할 경우 nohup 명렬어를 통해 실행하는데, 이 때 자바 파일을 실행한 기록이
+out 확장자 파일에 남게 됩니다. 이 중에서 에러가 발생한 경우 'ERROR' 라는 단어가 포함이 되는데,
+이러한 패턴을 확인하여 'ERROR'이 포함된 단어가 out 확장자 파일에 기록되면 Slack의 '서버-로그' 채널에
+전송되도록 하였습니다. 이를 통해 프론트엔드 개발자분들이 어떠한 오류인지 확인할 수 있게 하였습니다.
+
+그러나 한 가지 문제가 더 있었습니다. 개발 언어가 다르기 때문에 프론트엔드의 경우 자바에서 발생하는
+에러코드를 읽는데 어려움이 있다는 것이었습니다. 실제로 프론트엔드 개발자분들께 해당 에러코드에 대해
+이해가 되는지 물어봤을 때, 이해하기가 어려워 ChatGPT와 같은 LLM 모델에 에러코드를 복사하여 질문을
+한다는 답변을 받았습니다.
+
+이러한 불편함을 해결하기 위해, 현재 무료로 이용할 수 있는 LLM 모델인 Upstage의 'Solar-pro' 모델과 
+연결을 하여 이를 해결하였습니다. 기존의 에러코드를 Slack에 바로 전송하는 대신, 해당 메시지를
+rest 요청을 통해 LLM 모델에 답변을 받고, 해당 답변을 포함하여 에러코드와 같이 보내도록 변경하였습니다.
+
+이러한 과정을 통하여 개발 과정에서의 소통의 어려움을 해결할 수 있었습니다.
+
+아래는 실제 개발 과정에서 사용된 내역입니다. 해당 내용과 관련된 쉘 스크립트는 백엔드 내부 쉘스크립트 모음
+(https://www.notion.so/3ce05a49e06046469bde14c12b8b9c00) 중 '서버에러 자동 공지 관련코드' 에서
+확인할 수 있습니다.
+![image](https://github.com/user-attachments/assets/0f7ee6d3-f468-4f48-9e5f-91beaaeefb8a)
+
+
