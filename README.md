@@ -43,6 +43,9 @@ https://sinitto.site/admin/login
 **이메일** `admin@kakao.com`
 
 **비밀번호** `admin123`
+### ✔️ Slack
+[https://join.slack.com/t/sinitto/shared_invite](https://join.slack.com/t/sinitto/shared_invite/zt-2uqws45gg-bsPq8cuH2iQV6Jk1Y3Zglw)
+
 
 ## ✨ **프로젝트 실행 가이드**
 
@@ -549,8 +552,32 @@ Team8_BE
                             └── service
 
 ```
+## 관리자 및 개발자 편의기능
 
-## 협업 과정
+### 1. 서버 업데이트(무중단 배포)시 Slack 채널을 통한 알림기능
+> Github Action을 통해 서버 업데이트 트리거가 발생하면, 서버 무중단배포 쉘스크립트가 작동하며
+슬랙 페이지 서버-로그 채널에서 백엔드 서버 재부팅 로그 (하단 50줄), 무중단 배포 관련 결과를 제공합니다.
+> #### 슬랙 초대링크 : [https://join.slack.com/t/sinitto/shared_invite](https://join.slack.com/t/sinitto/shared_invite/zt-2uqws45gg-bsPq8cuH2iQV6Jk1Y3Zglw)
+
+![image](https://github.com/user-attachments/assets/c5202037-a313-443a-b0fa-700e372344b6)
+
+### 2. 사용자의 포인트 충전 및 출금 요청시, Slack 채널을 통한 알림기능
+> 보호자의 충전, 시니또의 출금 요청이 들어오면 관리자의 원활한 확인을 위해 슬랙에 메시지를 전송하고, 버튼을 통해 어드민페이지로 접속할 수 있습니다.
+> #### 슬랙 초대링크 : [https://join.slack.com/t/sinitto/shared_invite](https://join.slack.com/t/sinitto/shared_invite/zt-2uqws45gg-bsPq8cuH2iQV6Jk1Y3Zglw)
+
+![image](https://github.com/user-attachments/assets/b5927b13-08a8-4345-b31a-cb0e42896075)
+
+### 3. 더미데이터 로그인기능
+> 개발 과정에서의 개발자들의 실제 더미데이터 기반 웹 사용 및 테스트를 위해, Server Side Rendering 방식의 더미데이터 로그인 페이지를 구현하였습니다.
+서버에 저장된 더미데이터로만 로그인이 가능하며, 개발환경(로컬환경에서 프론트 서버가 열려있을 시) 및 배포서버로 로그인이 가능하고,
+로그인시 해당 더미데이터 유저의 JWT(AccessToken 및 RefreshToken)을 발급하여 함께 전송합니다
+> #### 더미데이터 로그인 페이지 : https://sinitto.site/dummy [비밀번호 : 1234]
+
+![image](https://github.com/user-attachments/assets/2784c5df-d42b-4aae-8067-ff84148e35f7)
+![image](https://github.com/user-attachments/assets/c0cac5df-2214-4004-b7dd-043971fe4274)
+
+
+## 협업 효율
 
 프론트엔드-백엔드 간 협업 과정 중 제공된 api를 연결하는 과정에서 소통에 어려움이 있었습니다.
 
