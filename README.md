@@ -41,8 +41,7 @@ https://sinitto.site/admin/login
 
 **비밀번호** `admin123`
 
-> [!NOTE]  
-> 백엔드 내부 쉘스크립트 모음 https://www.notion.so/3ce05a49e06046469bde14c12b8b9c00
+
 ## 👥 팀원
 
 |Frontend|Frontend|Frontend|
@@ -64,7 +63,8 @@ https://sinitto.site/admin/login
 ### Backend
 <img width="705" alt="image" src="https://github.com/user-attachments/assets/c1f11983-4563-4322-9a29-e512e14927d5">
 
-
+> [!NOTE]  
+> 백엔드 내부 쉘스크립트 모음 https://www.notion.so/3ce05a49e06046469bde14c12b8b9c00
 
 ## 서비스 아키텍처
 
