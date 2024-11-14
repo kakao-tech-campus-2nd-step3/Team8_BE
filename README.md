@@ -68,7 +68,7 @@ https://sinitto.site/admin/login
 
 ## 서비스 아키텍처
 
-![Service Architecture](https://github.com/user-attachments/assets/d54fa701-2065-4492-8c47-2511f5137c14)
+![Service Architecture](https://github.com/user-attachments/assets/a9ad53f3-9b63-433d-b4a7-1afbbfd21e90)
 
 ## ERD
 ![image](https://github.com/user-attachments/assets/d638bf78-4adc-4a43-96f2-e30cd04ea7b3)
@@ -77,7 +77,7 @@ https://sinitto.site/admin/login
 ![image](https://github.com/user-attachments/assets/0259f679-b13f-496a-8261-6e6df0abed50)
 ![image](https://github.com/user-attachments/assets/71999d87-3d83-4019-b46b-1c2abc54ccc3)
 ![image](https://github.com/user-attachments/assets/03da2737-f945-4803-b325-3ca831720b56)
-![image](https://github.com/user-attachments/assets/d1ed5366-3bdb-4c85-8b6b-2747b2d8f210)
+![image](https://github.com/user-attachments/assets/bc12fbc3-4111-4072-a62d-682360e5a186)
 
 
 
