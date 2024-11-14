@@ -54,6 +54,13 @@
 ## ERD
 ![image](https://github.com/user-attachments/assets/d638bf78-4adc-4a43-96f2-e30cd04ea7b3)
 
+## Use Case Diagram
+![image](https://github.com/user-attachments/assets/0259f679-b13f-496a-8261-6e6df0abed50)
+![image](https://github.com/user-attachments/assets/71999d87-3d83-4019-b46b-1c2abc54ccc3)
+![image](https://github.com/user-attachments/assets/03da2737-f945-4803-b325-3ca831720b56)
+![image](https://github.com/user-attachments/assets/d1ed5366-3bdb-4c85-8b6b-2747b2d8f210)
+
+
 
 ## 🤔 시니또가 무엇인가요?
 
