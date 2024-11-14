@@ -1,6 +1,13 @@
 # 나만의 작은 시니또
+<div align='center'>
+  
+  <img src='https://github.com/user-attachments/assets/555957c8-b2aa-4797-8660-8e404962da01'>
 
-![Sinitto main banner](https://github.com/user-attachments/assets/555957c8-b2aa-4797-8660-8e404962da01)
+  ### "디지털시대?! 나도 이제 두렵지 않아!"
+  👦🏻 세대와 👨🏻‍🦳세대를 이어주는 따뜻한 전화 📞
+
+  <b>나만의 작은 시니또</b>
+</div>
 
 ## 목차
 - [🤔 시니또가 무엇인가요?](#시니또가-무엇인가요)
@@ -15,25 +22,27 @@
   - [4. 안부 전화 서비스](#4-안부-전화-서비스)
 
 ## 🚀 배포 주소
-### Client
+### ✔️ Client
 [https://sinitto.life/](https://sinitto.life/)
 
-### Dummy Data Login
+### ✔️ Dummy Data Login
 [https://sinitto.site/dummy](https://sinitto.site/dummy)
 
 **비밀번호** `1234`
 
-### Server
+### ✔️ Server
 [https://sinitto.site/](https://sinitto.site/)
-### Swagger
+### ✔️ Swagger
 https://sinitto.site/swagger-ui/index.html
-### Admin Page
+### ✔️ Admin Page
 https://sinitto.site/admin/login
 
 **이메일** `admin@kakao.com`
 
 **비밀번호** `admin123`
 
+> [!NOTE]  
+> 백엔드 내부 쉘스크립트 모음 https://www.notion.so/3ce05a49e06046469bde14c12b8b9c00
 ## 👥 팀원
 
 |Frontend|Frontend|Frontend|
@@ -54,6 +63,8 @@ https://sinitto.site/admin/login
 
 ### Backend
 <img width="705" alt="image" src="https://github.com/user-attachments/assets/c1f11983-4563-4322-9a29-e512e14927d5">
+
+
 
 ## 서비스 아키텍처
 
