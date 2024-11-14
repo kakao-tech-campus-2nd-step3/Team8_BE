@@ -25,6 +25,14 @@
 
 ### Server
 [https://sinitto.site/](https://sinitto.site/)
+### Swagger
+https://sinitto.site/swagger-ui/index.html
+### Admin Page
+https://sinitto.site/admin/login
+
+**이메일** `admin@kakao.com`
+
+**비밀번호** `admin123`
 
 ## 👥 팀원
 
