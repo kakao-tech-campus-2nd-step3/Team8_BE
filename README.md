@@ -314,3 +314,552 @@ https://sinitto.site/admin/login
 
 ’보호자‘는 ’서비스 이용내역‘ 페이지에서 완료 대기 상태인 안부전화 서비스를
 완료상태로 변경할 수 있습니다.
+
+## 디렉토리 구조
+
+```c
+Team8_BE
+├── build
+│   ├── classes
+│   │   └── java
+│   │       └── main
+│   │           └── com
+│   │               └── example
+│   │                   └── sinitto
+│   │                       ├── SinittoApplication.class
+│   │                       ├── auth
+│   │                       │   ├── controller
+│   │                       │   │   └── AuthController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── KakaoTokenResponse.class
+│   │                       │   │   ├── KakaoUserResponse$KakaoAccount$Profile.class
+│   │                       │   │   ├── KakaoUserResponse$KakaoAccount.class
+│   │                       │   │   ├── KakaoUserResponse.class
+│   │                       │   │   ├── LoginResponse.class
+│   │                       │   │   ├── TokenRefreshRequest.class
+│   │                       │   │   └── TokenResponse.class
+│   │                       │   ├── entity
+│   │                       │   │   └── KakaoToken.class
+│   │                       │   ├── repository
+│   │                       │   │   └── KakaoTokenRepository.class
+│   │                       │   └── service
+│   │                       │       ├── KakaoApiService.class
+│   │                       │       ├── KakaoTokenService.class
+│   │                       │       └── TokenService.class
+│   │                       ├── callback
+│   │                       │   ├── controller
+│   │                       │   │   └── CallbackController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── CallbackForSinittoResponse.class
+│   │                       │   │   ├── CallbackResponse.class
+│   │                       │   │   └── CallbackUsageHistoryResponse.class
+│   │                       │   ├── entity
+│   │                       │   │   ├── Callback$Status.class
+│   │                       │   │   └── Callback.class
+│   │                       │   ├── repository
+│   │                       │   │   └── CallbackRepository.class
+│   │                       │   ├── service
+│   │                       │   │   └── CallbackService.class
+│   │                       │   └── util
+│   │                       │       └── TwilioHelper.class
+│   │                       ├── common
+│   │                       │   ├── config
+│   │                       │   │   ├── RedisConfig.class
+│   │                       │   │   ├── RestTemplateResponseErrorHandler.class
+│   │                       │   │   ├── SwaggerConfig.class
+│   │                       │   │   └── WebConfig.class
+│   │                       │   ├── dummy
+│   │                       │   │   └── InitialData.class
+│   │                       │   ├── exception
+│   │                       │   │   ├── AccessTokenExpiredException.class
+│   │                       │   │   ├── BadRequestException.class
+│   │                       │   │   ├── ConflictException.class
+│   │                       │   │   ├── ForbiddenException.class
+│   │                       │   │   ├── GlobalExceptionHandler.class
+│   │                       │   │   ├── InvalidJwtException.class
+│   │                       │   │   ├── NotFoundException.class
+│   │                       │   │   ├── RefreshTokenStolenException.class
+│   │                       │   │   └── UnauthorizedException.class
+│   │                       │   ├── interceptor
+│   │                       │   │   └── JwtInterceptor.class
+│   │                       │   ├── properties
+│   │                       │   │   ├── AdminProperties.class
+│   │                       │   │   ├── DummyProperties.class
+│   │                       │   │   └── KakaoProperties.class
+│   │                       │   └── service
+│   │                       │       ├── KakaoMessageService.class
+│   │                       │       └── SlackMessageService.class
+│   │                       ├── guard
+│   │                       │   ├── controller
+│   │                       │   │   └── GuardController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── GuardRequest.class
+│   │                       │   │   ├── GuardResponse.class
+│   │                       │   │   ├── SeniorRequest.class
+│   │                       │   │   └── SeniorResponse.class
+│   │                       │   ├── repository
+│   │                       │   │   └── SeniorRepository.class
+│   │                       │   └── service
+│   │                       │       └── GuardService.class
+│   │                       ├── guardGuideline
+│   │                       │   ├── controller
+│   │                       │   │   └── GuardGuidelineController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── GuardGuidelineRequest.class
+│   │                       │   │   └── GuardGuidelineResponse.class
+│   │                       │   ├── entity
+│   │                       │   │   ├── GuardGuideline$Type.class
+│   │                       │   │   └── GuardGuideline.class
+│   │                       │   ├── repository
+│   │                       │   │   └── GuardGuidelineRepository.class
+│   │                       │   └── service
+│   │                       │       └── GuardGuidelineService.class
+│   │                       ├── helloCall
+│   │                       │   ├── controller
+│   │                       │   │   └── HelloCallController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── HelloCallDetailResponse$TimeSlot.class
+│   │                       │   │   ├── HelloCallDetailResponse.class
+│   │                       │   │   ├── HelloCallDetailUpdateRequest$TimeSlot.class
+│   │                       │   │   ├── HelloCallDetailUpdateRequest.class
+│   │                       │   │   ├── HelloCallPriceRequest$TimeSlot.class
+│   │                       │   │   ├── HelloCallPriceRequest.class
+│   │                       │   │   ├── HelloCallPriceResponse.class
+│   │                       │   │   ├── HelloCallReportRequest.class
+│   │                       │   │   ├── HelloCallReportResponse.class
+│   │                       │   │   ├── HelloCallRequest$TimeSlot.class
+│   │                       │   │   ├── HelloCallRequest.class
+│   │                       │   │   ├── HelloCallResponse.class
+│   │                       │   │   ├── HelloCallTimeLogResponse.class
+│   │                       │   │   └── StringMessageResponse.class
+│   │                       │   ├── entity
+│   │                       │   │   ├── HelloCall$Status.class
+│   │                       │   │   ├── HelloCall.class
+│   │                       │   │   ├── HelloCallTimeLog.class
+│   │                       │   │   └── TimeSlot.class
+│   │                       │   ├── repository
+│   │                       │   │   ├── HelloCallRepository.class
+│   │                       │   │   ├── HelloCallTimeLogRepository.class
+│   │                       │   │   └── TimeSlotRepository.class
+│   │                       │   └── service
+│   │                       │       ├── HelloCallPriceService.class
+│   │                       │       └── HelloCallService.class
+│   │                       ├── member
+│   │                       │   ├── controller
+│   │                       │   │   ├── MemberAdminController.class
+│   │                       │   │   └── MemberController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── RegisterResponse.class
+│   │                       │   │   └── SignupRequest.class
+│   │                       │   ├── entity
+│   │                       │   │   ├── Member.class
+│   │                       │   │   └── Senior.class
+│   │                       │   ├── repository
+│   │                       │   │   └── MemberRepository.class
+│   │                       │   └── service
+│   │                       │       ├── MemberService.class
+│   │                       │       └── MemberTokenService.class
+│   │                       ├── point
+│   │                       │   ├── controller
+│   │                       │   │   ├── PointAdminController.class
+│   │                       │   │   └── PointController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── PointChargeResponse.class
+│   │                       │   │   ├── PointLogResponse.class
+│   │                       │   │   ├── PointLogWithBankInfo.class
+│   │                       │   │   ├── PointLogWithDepositMessage.class
+│   │                       │   │   ├── PointRequest.class
+│   │                       │   │   └── PointResponse.class
+│   │                       │   ├── entity
+│   │                       │   │   ├── Point.class
+│   │                       │   │   ├── PointLog$Content.class
+│   │                       │   │   ├── PointLog$Status.class
+│   │                       │   │   └── PointLog.class
+│   │                       │   ├── repository
+│   │                       │   │   ├── PointLogRepository.class
+│   │                       │   │   └── PointRepository.class
+│   │                       │   └── service
+│   │                       │       ├── PointAdminService.class
+│   │                       │       └── PointService.class
+│   │                       ├── review
+│   │                       │   ├── controller
+│   │                       │   │   └── ReviewController.class
+│   │                       │   ├── dto
+│   │                       │   │   ├── ReviewRequest.class
+│   │                       │   │   └── ReviewResponse.class
+│   │                       │   ├── entity
+│   │                       │   │   └── Review.class
+│   │                       │   ├── repository
+│   │                       │   │   └── ReviewRepository.class
+│   │                       │   └── service
+│   │                       │       └── ReviewService.class
+│   │                       └── sinitto
+│   │                           ├── controller
+│   │                           │   └── SinittoController.class
+│   │                           ├── dto
+│   │                           │   ├── SinittoBankRequest.class
+│   │                           │   ├── SinittoBankResponse.class
+│   │                           │   ├── SinittoRequest.class
+│   │                           │   └── SinittoResponse.class
+│   │                           ├── entity
+│   │                           │   └── SinittoBankInfo.class
+│   │                           ├── repository
+│   │                           │   └── SinittoBankInfoRepository.class
+│   │                           └── service
+│   │                               └── SinittoService.class
+│   ├── generated
+│   │   └── sources
+│   │       ├── annotationProcessor
+│   │       │   └── java
+│   │       │       └── main
+│   │       └── headers
+│   │           └── java
+│   │               └── main
+│   ├── libs
+│   │   ├── Team8_BE-0.0.1-SNAPSHOT-plain.jar
+│   │   └── Team8_BE-0.0.1-SNAPSHOT.jar
+│   ├── resolvedMainClassName
+│   ├── resources
+│   │   └── main
+│   │       ├── application-dev.properties
+│   │       ├── application.properties
+│   │       ├── keystore.p12
+│   │       ├── static
+│   │       │   └── css
+│   │       │       ├── dummy.css
+│   │       │       ├── header.css
+│   │       │       ├── login.css
+│   │       │       └── point.css
+│   │       └── templates
+│   │           ├── dummy
+│   │           │   └── login.html
+│   │           └── point
+│   │               ├── charge.html
+│   │               ├── header.html
+│   │               ├── login.html
+│   │               └── withdraw.html
+│   └── tmp
+│       ├── bootJar
+│       │   └── MANIFEST.MF
+│       ├── compileJava
+│       │   └── previous-compilation-data.bin
+│       └── jar
+│           └── MANIFEST.MF
+├── build.gradle
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+├── settings.gradle
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── example
+    │   │           └── sinitto
+    │   │               ├── SinittoApplication.java
+    │   │               ├── auth
+    │   │               │   ├── controller
+    │   │               │   │   └── AuthController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── KakaoTokenResponse.java
+    │   │               │   │   ├── KakaoUserResponse.java
+    │   │               │   │   ├── LoginResponse.java
+    │   │               │   │   ├── TokenRefreshRequest.java
+    │   │               │   │   └── TokenResponse.java
+    │   │               │   ├── entity
+    │   │               │   │   └── KakaoToken.java
+    │   │               │   ├── repository
+    │   │               │   │   └── KakaoTokenRepository.java
+    │   │               │   └── service
+    │   │               │       ├── KakaoApiService.java
+    │   │               │       ├── KakaoTokenService.java
+    │   │               │       └── TokenService.java
+    │   │               ├── callback
+    │   │               │   ├── controller
+    │   │               │   │   └── CallbackController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── CallbackForSinittoResponse.java
+    │   │               │   │   ├── CallbackResponse.java
+    │   │               │   │   └── CallbackUsageHistoryResponse.java
+    │   │               │   ├── entity
+    │   │               │   │   └── Callback.java
+    │   │               │   ├── repository
+    │   │               │   │   └── CallbackRepository.java
+    │   │               │   ├── service
+    │   │               │   │   └── CallbackService.java
+    │   │               │   └── util
+    │   │               │       └── TwilioHelper.java
+    │   │               ├── common
+    │   │               │   ├── config
+    │   │               │   │   ├── RedisConfig.java
+    │   │               │   │   ├── RestTemplateResponseErrorHandler.java
+    │   │               │   │   ├── SwaggerConfig.java
+    │   │               │   │   └── WebConfig.java
+    │   │               │   ├── dummy
+    │   │               │   │   └── InitialData.java
+    │   │               │   ├── exception
+    │   │               │   │   ├── AccessTokenExpiredException.java
+    │   │               │   │   ├── BadRequestException.java
+    │   │               │   │   ├── ConflictException.java
+    │   │               │   │   ├── ForbiddenException.java
+    │   │               │   │   ├── GlobalExceptionHandler.java
+    │   │               │   │   ├── InvalidJwtException.java
+    │   │               │   │   ├── NotFoundException.java
+    │   │               │   │   ├── RefreshTokenStolenException.java
+    │   │               │   │   └── UnauthorizedException.java
+    │   │               │   ├── interceptor
+    │   │               │   │   └── JwtInterceptor.java
+    │   │               │   ├── properties
+    │   │               │   │   ├── AdminProperties.java
+    │   │               │   │   ├── DummyProperties.java
+    │   │               │   │   └── KakaoProperties.java
+    │   │               │   └── service
+    │   │               │       ├── KakaoMessageService.java
+    │   │               │       └── SlackMessageService.java
+    │   │               ├── guard
+    │   │               │   ├── controller
+    │   │               │   │   └── GuardController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── GuardRequest.java
+    │   │               │   │   ├── GuardResponse.java
+    │   │               │   │   ├── SeniorRequest.java
+    │   │               │   │   └── SeniorResponse.java
+    │   │               │   ├── repository
+    │   │               │   │   └── SeniorRepository.java
+    │   │               │   └── service
+    │   │               │       └── GuardService.java
+    │   │               ├── guardGuideline
+    │   │               │   ├── controller
+    │   │               │   │   └── GuardGuidelineController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── GuardGuidelineRequest.java
+    │   │               │   │   └── GuardGuidelineResponse.java
+    │   │               │   ├── entity
+    │   │               │   │   └── GuardGuideline.java
+    │   │               │   ├── repository
+    │   │               │   │   └── GuardGuidelineRepository.java
+    │   │               │   └── service
+    │   │               │       └── GuardGuidelineService.java
+    │   │               ├── helloCall
+    │   │               │   ├── controller
+    │   │               │   │   └── HelloCallController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── HelloCallDetailResponse.java
+    │   │               │   │   ├── HelloCallDetailUpdateRequest.java
+    │   │               │   │   ├── HelloCallPriceRequest.java
+    │   │               │   │   ├── HelloCallPriceResponse.java
+    │   │               │   │   ├── HelloCallReportRequest.java
+    │   │               │   │   ├── HelloCallReportResponse.java
+    │   │               │   │   ├── HelloCallRequest.java
+    │   │               │   │   ├── HelloCallResponse.java
+    │   │               │   │   ├── HelloCallTimeLogResponse.java
+    │   │               │   │   └── StringMessageResponse.java
+    │   │               │   ├── entity
+    │   │               │   │   ├── HelloCall.java
+    │   │               │   │   ├── HelloCallTimeLog.java
+    │   │               │   │   └── TimeSlot.java
+    │   │               │   ├── repository
+    │   │               │   │   ├── HelloCallRepository.java
+    │   │               │   │   ├── HelloCallTimeLogRepository.java
+    │   │               │   │   └── TimeSlotRepository.java
+    │   │               │   └── service
+    │   │               │       ├── HelloCallPriceService.java
+    │   │               │       └── HelloCallService.java
+    │   │               ├── member
+    │   │               │   ├── controller
+    │   │               │   │   ├── MemberAdminController.java
+    │   │               │   │   └── MemberController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── RegisterResponse.java
+    │   │               │   │   └── SignupRequest.java
+    │   │               │   ├── entity
+    │   │               │   │   ├── Member.java
+    │   │               │   │   └── Senior.java
+    │   │               │   ├── repository
+    │   │               │   │   └── MemberRepository.java
+    │   │               │   └── service
+    │   │               │       ├── MemberService.java
+    │   │               │       └── MemberTokenService.java
+    │   │               ├── point
+    │   │               │   ├── controller
+    │   │               │   │   ├── PointAdminController.java
+    │   │               │   │   └── PointController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── PointChargeResponse.java
+    │   │               │   │   ├── PointLogResponse.java
+    │   │               │   │   ├── PointLogWithBankInfo.java
+    │   │               │   │   ├── PointLogWithDepositMessage.java
+    │   │               │   │   ├── PointRequest.java
+    │   │               │   │   └── PointResponse.java
+    │   │               │   ├── entity
+    │   │               │   │   ├── Point.java
+    │   │               │   │   └── PointLog.java
+    │   │               │   ├── repository
+    │   │               │   │   ├── PointLogRepository.java
+    │   │               │   │   └── PointRepository.java
+    │   │               │   └── service
+    │   │               │       ├── PointAdminService.java
+    │   │               │       └── PointService.java
+    │   │               ├── review
+    │   │               │   ├── controller
+    │   │               │   │   └── ReviewController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── ReviewRequest.java
+    │   │               │   │   └── ReviewResponse.java
+    │   │               │   ├── entity
+    │   │               │   │   └── Review.java
+    │   │               │   ├── repository
+    │   │               │   │   └── ReviewRepository.java
+    │   │               │   └── service
+    │   │               │       └── ReviewService.java
+    │   │               └── sinitto
+    │   │                   ├── controller
+    │   │                   │   └── SinittoController.java
+    │   │                   ├── dto
+    │   │                   │   ├── SinittoBankRequest.java
+    │   │                   │   ├── SinittoBankResponse.java
+    │   │                   │   ├── SinittoRequest.java
+    │   │                   │   └── SinittoResponse.java
+    │   │                   ├── entity
+    │   │                   │   └── SinittoBankInfo.java
+    │   │                   ├── repository
+    │   │                   │   └── SinittoBankInfoRepository.java
+    │   │                   └── service
+    │   │                       └── SinittoService.java
+    │   └── resources
+    │       ├── application-dev.properties
+    │       ├── application.properties
+    │       ├── keystore.p12
+    │       ├── static
+    │       │   └── css
+    │       │       ├── dummy.css
+    │       │       ├── header.css
+    │       │       ├── login.css
+    │       │       └── point.css
+    │       └── templates
+    │           ├── dummy
+    │           │   └── login.html
+    │           └── point
+    │               ├── charge.html
+    │               ├── header.html
+    │               ├── login.html
+    │               └── withdraw.html
+    └── test
+        └── java
+            └── com
+                └── example
+                    └── sinitto
+                        ├── SinittoApplicationTests.java
+                        ├── auth
+                        │   ├── entity
+                        │   │   └── KakaoTokenTest.java
+                        │   ├── repository
+                        │   │   └── KakaoTokenRepositoryTest.java
+                        │   └── service
+                        │       ├── KakaoApiServiceTest.java
+                        │       ├── KakaoTokenServiceTest.java
+                        │       └── TokenServiceTest.java
+                        ├── callback
+                        │   ├── entity
+                        │   │   └── CallbackTest.java
+                        │   ├── repository
+                        │   │   └── CallbackRepositoryTest.java
+                        │   ├── service
+                        │   │   └── CallbackServiceTest.java
+                        │   └── util
+                        │       └── TwilioHelperTest.java
+                        ├── guard
+                        │   ├── entity
+                        │   │   └── SeniorTest.java
+                        │   ├── repository
+                        │   │   └── SeniorRepositoryTest.java
+                        │   └── service
+                        │       └── GuardServiceTest.java
+                        ├── guardGuideline
+                        │   ├── entity
+                        │   │   └── GuardGuidelineTest.java
+                        │   ├── repository
+                        │   │   └── GuardGuidelineRepositoryTest.java
+                        │   └── service
+                        │       └── GuardGuildelineServiceTest.java
+                        ├── hellocall
+                        │   ├── entity
+                        │   │   ├── HelloCallTest.java
+                        │   │   ├── HelloCallTimeLogTest.java
+                        │   │   └── TimeSlotTest.java
+                        │   ├── repository
+                        │   │   ├── HelloCallRepositoryTest.java
+                        │   │   ├── HelloCallTimeLogRepositoryTest.java
+                        │   │   └── TimeSlotRepositoryTest.java
+                        │   └── service
+                        │       └── HelloCallServiceTest.java
+                        ├── member
+                        │   ├── entity
+                        │   │   └── MemberTest.java
+                        │   ├── repository
+                        │   │   └── MemberRepositoryTest.java
+                        │   └── service
+                        │       ├── MemberServiceTest.java
+                        │       └── MemberTokenServiceTest.java
+                        ├── point
+                        │   ├── entity
+                        │   │   ├── PointLogTest.java
+                        │   │   └── PointTest.java
+                        │   └── service
+                        │       ├── PointAdminServiceTest.java
+                        │       └── PointServiceTest.java
+                        ├── review
+                        │   ├── entity
+                        │   │   └── ReviewTest.java
+                        │   └── service
+                        │       └── ReviewServiceTest.java
+                        └── sinitto
+                            ├── entity
+                            │   └── SinittoBankInfoTest.java
+                            ├── repository
+                            │   └── SinittoBankInfoRepositoryTest.java
+                            └── service
+                                └── SinittoServiceTest.java
+
+```
+
+## 협업 과정
+
+프론트엔드-백엔드 간 협업 과정 중 제공된 api를 연결하는 과정에서 소통에 어려움이 있었습니다.
+
+학업과 병행할 수 있는 카카오테크캠퍼스의 특성 상 조원들마다 개발을 진행하는 시간이 달라 실시간으로
+문제를 해결하기 어려운 문제점이 있었습니다. 또한 프론트엔드에서 백엔드 서버로 api를 통해 요청을 보냈을 때, 
+에러가 발생했을 경우 자세한 오류 메시지가 응답을 통해 나타나지 않았으며, 실제 오류 내용은
+백엔드 서버에 기록되는 문제가 있었습니다.
+
+또한 백엔드 담당 조원에게 질문을 하더라도 답변을 받기 전까지는 그동안 하던 작업을
+진행하지 못하는 문제가 생겨, 전체적인 개발 속도가 느려지는 문제가 있었습니다.
+
+이러한 방법을 어떻게 해결할 수 있을까 고민해보던 중, 가장 먼저 떠오른 방법은 '에러 코드가 생기면
+Slack의 채널에 전송을 하는 것' 이었습니다.
+
+백엔드 서버에서 자바 파일을 실행할 경우 nohup 명렬어를 통해 실행하는데, 이 때 자바 파일을 실행한 기록이
+out 확장자 파일에 남게 됩니다. 이 중에서 에러가 발생한 경우 'ERROR' 라는 단어가 포함이 되는데,
+이러한 패턴을 확인하여 'ERROR'이 포함된 단어가 out 확장자 파일에 기록되면 Slack의 '서버-로그' 채널에
+전송되도록 하였습니다. 이를 통해 프론트엔드 개발자분들이 어떠한 오류인지 확인할 수 있게 하였습니다.
+
+그러나 한 가지 문제가 더 있었습니다. 개발 언어가 다르기 때문에 프론트엔드의 경우 자바에서 발생하는
+에러코드를 읽는데 어려움이 있다는 것이었습니다. 실제로 프론트엔드 개발자분들께 해당 에러코드에 대해
+이해가 되는지 물어봤을 때, 이해하기가 어려워 ChatGPT와 같은 LLM 모델에 에러코드를 복사하여 질문을
+한다는 답변을 받았습니다.
+
+이러한 불편함을 해결하기 위해, 현재 무료로 이용할 수 있는 LLM 모델인 Upstage의 'Solar-pro' 모델과 
+연결을 하여 이를 해결하였습니다. 기존의 에러코드를 Slack에 바로 전송하는 대신, 해당 메시지를
+rest 요청을 통해 LLM 모델에 답변을 받고, 해당 답변을 포함하여 에러코드와 같이 보내도록 변경하였습니다.
+
+이러한 과정을 통하여 개발 과정에서의 소통의 어려움을 해결할 수 있었습니다.
+
+아래는 실제 개발 과정에서 사용된 내역입니다. 해당 내용과 관련된 쉘 스크립트는 백엔드 내부 쉘스크립트 모음
+(https://www.notion.so/3ce05a49e06046469bde14c12b8b9c00) 중 '서버에러 자동 공지 관련코드' 에서
+확인할 수 있습니다.
+![image](https://github.com/user-attachments/assets/0f7ee6d3-f468-4f48-9e5f-91beaaeefb8a)
+
+
