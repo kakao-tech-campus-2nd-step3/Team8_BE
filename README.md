@@ -572,9 +572,9 @@ Team8_BE
 서버에 저장된 더미데이터로만 로그인이 가능하며, 개발환경(로컬환경에서 프론트 서버가 열려있을 시) 및 배포서버로 로그인이 가능하고,
 로그인시 해당 더미데이터 유저의 JWT(AccessToken 및 RefreshToken)을 발급하여 함께 전송합니다
 > #### 더미데이터 로그인 페이지 : https://sinitto.site/dummy [비밀번호 : 1234]
-
-![image](https://github.com/user-attachments/assets/2784c5df-d42b-4aae-8067-ff84148e35f7)
-![image](https://github.com/user-attachments/assets/c0cac5df-2214-4004-b7dd-043971fe4274)
+> 
+<img width="480" alt="image-3" src="https://github.com/user-attachments/assets/45fa7e58-9451-4d3b-857b-93c78f3b0794">
+<img width="500" alt="image-3" src="https://github.com/user-attachments/assets/c0cac5df-2214-4004-b7dd-043971fe4274">
 
 
 ## 협업 효율
