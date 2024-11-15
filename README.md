@@ -48,7 +48,8 @@ https://sinitto.site/admin/login
 ### ✔️ Slack
 [https://join.slack.com/t/sinitto/shared_invite](https://join.slack.com/t/sinitto/shared_invite/zt-2uqws45gg-bsPq8cuH2iQV6Jk1Y3Zglw)
 
-
+### ✔️ 프론트엔드 Evaluation 브랜치
+https://github.com/kakao-tech-campus-2nd-step3/Team8_FE/tree/Evaluation
 ## ✨ **프로젝트 실행 가이드**
 
 아래의 단계를 따라 프로젝트를 실행할 수 있습니다.
