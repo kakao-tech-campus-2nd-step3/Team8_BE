@@ -11,6 +11,7 @@ public record KakaoProperties(
         String bankName,
         String accountNumber,
         String name,
-        String frontUriWithoutHttps
+        String frontUriWithoutHttps,
+        String PayUrl
 ) {
 }

@@ -15,13 +15,14 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class PointLog {
 
-    public static final double WITHDRAWAL_FEE_RATE = 0.8;
+    private static final double WITHDRAWAL_FEE_RATE = 0.8;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private String content;
+    @Enumerated(EnumType.STRING)
+    private PointLog.Content content;
     @NotNull
     private int price;
     @CreatedDate
@@ -36,7 +37,7 @@ public class PointLog {
     private Member member;
 
 
-    public PointLog(String content, Member member, int price, Status status) {
+    public PointLog(Content content, Member member, int price, Status status) {
         this.content = content;
         this.member = member;
         this.price = price;
@@ -120,7 +121,7 @@ public class PointLog {
         return status;
     }
 
-    public String getContent() {
+    public Content getContent() {
         return content;
     }
 
@@ -145,7 +146,8 @@ public class PointLog {
         SPEND_COMPLETE_HELLO_CALL("안부전화 신청"),
         SPEND_CANCEL_HELLO_CALL("안부전화 신청 취소"),
         CHARGE_REQUEST("포인트 충전"),
-        WITHDRAW_REQUEST("포인트 출금");
+        WITHDRAW_REQUEST("포인트 출금"),
+        WELCOME_POINT("환영 포인트");
 
         private final String message;
 

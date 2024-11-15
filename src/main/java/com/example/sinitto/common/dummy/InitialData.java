@@ -35,7 +35,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Component
-@Profile("prod")
+@Profile("none") //서버에서의 더미데이터 초기화를 방지하지 위해 none으로 설정, 추후 더미데이터로 초기화가 필요할 시 prod로 설정 예정입니다.
 public class InitialData implements CommandLineRunner {
 
     private final MemberRepository memberRepository;
@@ -151,155 +151,89 @@ public class InitialData implements CommandLineRunner {
 
         //포인트와 포인트로그
         pointRepository.save(new Point(50000, memberSinitto1));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto1, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto1, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto1, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto1, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto1, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto1, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto1, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, memberSinitto2));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto2, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto2, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto2, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto2, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto2, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto2, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto2, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, memberSinitto3));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto3, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto3, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto3, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto3, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto3, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto3, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto3, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, memberSinitto4));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto4, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto4, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto4, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto4, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto4, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto4, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto4, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, memberSinitto5));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), memberSinitto5, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), memberSinitto5, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), memberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), memberSinitto5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), memberSinitto5, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), memberSinitto5, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN, memberSinitto5, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN, memberSinitto5, 50000, PointLog.Status.EARN));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto5, 50000, PointLog.Status.WITHDRAW_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto5, 50000, PointLog.Status.WITHDRAW_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto5, 50000, PointLog.Status.WITHDRAW_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST, memberSinitto5, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
 
         pointRepository.save(new Point(50000, guard1));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard1, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard1, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard1, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard1, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), guard1, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), guard1, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), guard1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), guard1, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), guard1, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard1, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard1, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard1, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard1, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard1, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard1, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard1, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard1, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, guard1, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, guard1, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, guard1, 50000, PointLog.Status.SPEND_CANCEL));
 
         pointRepository.save(new Point(50000, guard2));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard2, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard2, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard2, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard2, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), guard2, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), guard2, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), guard2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), guard2, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), guard2, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard2, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard2, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard2, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard2, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard2, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard2, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard2, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard2, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, guard2, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, guard2, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, guard2, 50000, PointLog.Status.SPEND_CANCEL));
 
         pointRepository.save(new Point(50000, guard3));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard3, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard3, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard3, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard3, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), guard3, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), guard3, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), guard3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), guard3, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), guard3, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard3, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard3, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard3, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard3, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard3, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard3, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard3, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard3, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, guard3, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, guard3, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, guard3, 50000, PointLog.Status.SPEND_CANCEL));
 
         pointRepository.save(new Point(50000, guard4));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard4, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard4, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard4, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard4, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), guard4, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), guard4, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), guard4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), guard4, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), guard4, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard4, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard4, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard4, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard4, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard4, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard4, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard4, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard4, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, guard4, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, guard4, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, guard4, 50000, PointLog.Status.SPEND_CANCEL));
 
         pointRepository.save(new Point(50000, guard5));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard5, 50000, PointLog.Status.CHARGE_FAIL));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard5, 50000, PointLog.Status.CHARGE_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard5, 50000, PointLog.Status.CHARGE_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST.getMessage(), guard5, 50000, PointLog.Status.CHARGE_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_CALLBACK_AND_EARN.getMessage(), guard5, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.COMPLETE_HELLO_CALL_AND_EARN.getMessage(), guard5, 50000, PointLog.Status.EARN));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL.getMessage(), guard5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK.getMessage(), guard5, 50000, PointLog.Status.SPEND_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL.getMessage(), guard5, 50000, PointLog.Status.SPEND_CANCEL));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard5, 50000, PointLog.Status.WITHDRAW_REQUEST));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard5, 50000, PointLog.Status.WITHDRAW_WAITING));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard5, 50000, PointLog.Status.WITHDRAW_COMPLETE));
-        pointLogRepository.save(new PointLog(PointLog.Content.WITHDRAW_REQUEST.getMessage(), guard5, 50000, PointLog.Status.WITHDRAW_FAIL_AND_RESTORE_POINT));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard5, 50000, PointLog.Status.CHARGE_FAIL));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard5, 50000, PointLog.Status.CHARGE_WAITING));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard5, 50000, PointLog.Status.CHARGE_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.CHARGE_REQUEST, guard5, 50000, PointLog.Status.CHARGE_REQUEST));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_HELLO_CALL, guard5, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_COMPLETE_CALLBACK, guard5, 50000, PointLog.Status.SPEND_COMPLETE));
+        pointLogRepository.save(new PointLog(PointLog.Content.SPEND_CANCEL_HELLO_CALL, guard5, 50000, PointLog.Status.SPEND_CANCEL));
 
         //콜백
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior1));
@@ -355,6 +289,26 @@ public class InitialData implements CommandLineRunner {
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior11));
         callbackRepository.save(new Callback(Callback.Status.COMPLETE, senior11));
         callbackRepository.save(new Callback(Callback.Status.WAITING, senior11));
+
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior12));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior13));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior14));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior15));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior16));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior17));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior18));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior19));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior20));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior21));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior22));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior23));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior24));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior25));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior26));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior27));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior28));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior29));
+        callbackRepository.save(new Callback(Callback.Status.WAITING, senior30));
 
         //리뷰
         reviewRepository.save(new Review(5, 4, 5, "테스트용 리뷰 1", guard1));
@@ -513,6 +467,218 @@ public class InitialData implements CommandLineRunner {
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.TAXI, "청주 시립도서관까지 택시 이용 가이드라인", "출발지: 충청북도 청주시 흥덕구 복대동 12-34, 목적지: 충청북도 청주시 서원구 수곡로 108 (청주 시립도서관). 주로 설정한 출발지에서 출발하시지만 따로 요청하시면 변경부탁드릴게요.", senior30));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "떡볶이 주문", "가게명: 청주신당떡볶이, 메뉴명: 매운 떡볶이 (중), 가격: 9000원, 매운 떡볶이를 자주 드시지만, 간혹 덜 맵게 요청하시는 경우가 있으니 주문 시 주의해주세요.", senior30));
         guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.DELIVERY, "비빔밥 주문", "가게명: 청주미소한식당, 메뉴명: 돌솥비빔밥, 가격: 11000원, 돌솥비빔밥을 즐겨 드시며 나물은 조금 더 넣어달라고 요청하시면 좋습니다.", senior30));
+
+        //HOSPITAL, CULTURE_LIFE
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 미술관 예약", "서울 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior1));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 공연 예약", "서울에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior1));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 도서관 예약", "서울 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior1));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 종합병원 예약", "서울 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior1));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 이비인후과 예약", "서울에 위치한 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior1));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 치과 예약", "서울 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior1));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 미술관 예약", "부산 미술관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior2));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 공연 예약", "부산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior2));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 도서관 예약", "부산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior2));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 종합병원 예약", "부산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior2));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 이비인후과 예약", "부산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior2));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 치과 예약", "부산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior2));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 미술관 예약", "울산 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior3));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 공연 예약", "울산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior3));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 도서관 예약", "울산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior3));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 종합병원 예약", "울산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior3));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 이비인후과 예약", "울산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior3));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 치과 예약", "울산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior3));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대구 미술관 예약", "대구 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior4));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대구 공연 예약", "대구에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior4));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대구 도서관 예약", "대구 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior4));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대구 종합병원 예약", "대구 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior4));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대구 이비인후과 예약", "대구 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior4));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대구 치과 예약", "대구 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior4));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 미술관 예약", "대전 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior5));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 공연 예약", "대전에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior5));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 도서관 예약", "대전 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior5));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 종합병원 예약", "대전 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior5));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 이비인후과 예약", "대전 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior5));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 치과 예약", "대전 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior5));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 미술관 예약", "인천 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 공연 예약", "인천에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 도서관 예약", "인천 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 종합병원 예약", "인천 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 이비인후과 예약", "인천 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior6));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 치과 예약", "인천 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior6));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 미술관 예약", "광주 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 공연 예약", "광주에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 도서관 예약", "광주 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 종합병원 예약", "광주 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 이비인후과 예약", "광주 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior7));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 치과 예약", "광주 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior7));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 숲 예약", "서울 숲의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 공원 예약", "서울에서 운영하는 공원의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 미술관 예약", "서울 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 종합병원 예약", "서울 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 이비인후과 예약", "서울 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior8));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 치과 예약", "서울 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior8));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 미술관 예약", "부산 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 공연 예약", "부산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 도서관 예약", "부산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 종합병원 예약", "부산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 이비인후과 예약", "부산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior9));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 치과 예약", "부산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior9));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 미술관 예약", "울산 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 공연 예약", "울산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 도서관 예약", "울산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 종합병원 예약", "울산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 이비인후과 예약", "울산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior10));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 치과 예약", "울산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior10));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기 미술관 예약", "경기 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기 공연 예약", "경기에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기 도서관 예약", "경기 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기 종합병원 예약", "경기 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기 이비인후과 예약", "경기 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior11));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기 치과 예약", "경기 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior11));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "강원 미술관 예약", "강원 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "강원 공연 예약", "강원에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "강원 도서관 예약", "강원 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "강원 종합병원 예약", "강원 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "강원 이비인후과 예약", "강원 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior12));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "강원 치과 예약", "강원 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior12));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 미술관 예약", "대전 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 공연 예약", "대전에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 도서관 예약", "대전 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 종합병원 예약", "대전 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 이비인후과 예약", "대전 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior13));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 치과 예약", "대전 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior13));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 미술관 예약", "광주 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 공연 예약", "광주에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 도서관 예약", "광주 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 종합병원 예약", "광주 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 이비인후과 예약", "광주 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior14));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 치과 예약", "광주 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior14));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대구 미술관 예약", "대구 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대구 공연 예약", "대구에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대구 도서관 예약", "대구 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대구 종합병원 예약", "대구 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대구 이비인후과 예약", "대구 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior15));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대구 치과 예약", "대구 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior15));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 미술관 예약", "서울 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 공연 예약", "서울에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 도서관 예약", "서울 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 종합병원 예약", "서울 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 이비인후과 예약", "서울 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior16));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 치과 예약", "서울 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior16));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 미술관 예약", "부산 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 공연 예약", "부산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 도서관 예약", "부산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 종합병원 예약", "부산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 이비인후과 예약", "부산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior17));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 치과 예약", "부산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior17));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 미술관 예약", "인천 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 공연 예약", "인천에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 도서관 예약", "인천 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 종합병원 예약", "인천 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 이비인후과 예약", "인천 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior18));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 치과 예약", "인천 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior18));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 미술관 예약", "울산 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 공연 예약", "울산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 도서관 예약", "울산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 종합병원 예약", "울산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 이비인후과 예약", "울산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior19));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 치과 예약", "울산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior19));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기도 미술관 예약", "경기도 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기도 공연 예약", "경기도에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기도 도서관 예약", "경기도 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기도 종합병원 예약", "경기도 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기도 이비인후과 예약", "경기도 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior20));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기도 치과 예약", "경기도 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior20));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 미술관 예약", "서울 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 공연 예약", "서울에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "서울 도서관 예약", "서울 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 종합병원 예약", "서울 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 이비인후과 예약", "서울 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior21));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "서울 치과 예약", "서울 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior21));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 미술관 예약", "대전 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 공연 예약", "대전에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "대전 도서관 예약", "대전 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 종합병원 예약", "대전 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 이비인후과 예약", "대전 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior22));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "대전 치과 예약", "대전 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior22));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 미술관 예약", "광주 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 공연 예약", "광주에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "광주 도서관 예약", "광주 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 종합병원 예약", "광주 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 이비인후과 예약", "광주 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior23));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "광주 치과 예약", "광주 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior23));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경상북도 미술관 예약", "경상북도 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경상북도 공연 예약", "경상북도에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경상북도 도서관 예약", "경상북도 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경상북도 종합병원 예약", "경상북도 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경상북도 이비인후과 예약", "경상북도 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior24));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경상북도 치과 예약", "경상북도 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior24));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "강원도 미술관 예약", "강원도 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "강원도 공연 예약", "강원도에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "강원도 도서관 예약", "강원도 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "강원도 종합병원 예약", "강원도 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "강원도 이비인후과 예약", "강원도 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior25));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "강원도 치과 예약", "강원도 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior25));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 미술관 예약", "울산 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 공연 예약", "울산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "울산 도서관 예약", "울산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 종합병원 예약", "울산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 이비인후과 예약", "울산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior26));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "울산 치과 예약", "울산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior26));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 미술관 예약", "부산 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 공연 예약", "부산에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "부산 도서관 예약", "부산 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 종합병원 예약", "부산 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 이비인후과 예약", "부산 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior27));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "부산 치과 예약", "부산 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior27));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 미술관 예약", "인천 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 공연 예약", "인천에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "인천 도서관 예약", "인천 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 종합병원 예약", "인천 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 이비인후과 예약", "인천 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior28));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "인천 치과 예약", "인천 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior28));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기도 미술관 예약", "경기도 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기도 공연 예약", "경기도에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "경기도 도서관 예약", "경기도 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기도 종합병원 예약", "경기도 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기도 이비인후과 예약", "경기도 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior29));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "경기도 치과 예약", "경기도 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior29));
+
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "전라북도 미술관 예약", "전라북도 미술관의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "전라북도 공연 예약", "전라북도에서 진행하는 공연의 온라인 예약 시스템을 통해 2인석으로 예약해 주세요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.CULTURE_LIFE, "전라북도 도서관 예약", "전라북도 도서관의 온라인 예약 시스템을 통해 예약을 완료해 주세요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "전라북도 종합병원 예약", "전라북도 종합병원의 온라인 예약 시스템을 통해 진료 예약을 진행해 주세요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "전라북도 이비인후과 예약", "전라북도 이비인후과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior30));
+        guardGuidelineRepository.save(new GuardGuideline(GuardGuideline.Type.HOSPITAL, "전라북도 치과 예약", "전라북도 치과의 온라인 예약 시스템을 통해 예약을 진행해 주세요.", senior30));
+
 
         //안부전화
         HelloCall helloCall1 = helloCallRepository.save(new HelloCall(LocalDate.of(2024, 8, 5), LocalDate.of(2024, 10, 1), 13000, 10, "어머님께서 매일 아침 등산을 하시는 걸 좋아하세요. 요즘 날씨가 추워졌는데, 건강하게 등산을 잘 다니시는지 여쭤봐 주세요. 등산 이야기를 하면 기분이 좋아지실 거예요.", senior1));

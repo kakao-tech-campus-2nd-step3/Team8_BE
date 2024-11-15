@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - Weekly
+permissions: write-all
 
 jobs:
   test:
@@ -33,18 +34,17 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: ☕ Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Run Tests
+      - name: 🧪 Run Tests and Generate Results
         env:
           SPRING_DATASOURCE_URL: ${{ secrets.MYSQL_URL }}
           SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USERNAME }}
@@ -54,4 +54,17 @@ jobs:
           SLACK_NOTICE_WEBHOOK_URL: ${{ secrets.SLACK_NOTICE_WEBHOOK_URL }}
           SLACK_CHARGE_REQUEST_URL: ${{ secrets.SLACK_CHARGE_REQUEST_URL }}
           SLACK_WITHDRAW_REQUEST_URL: ${{ secrets.SLACK_WITHDRAW_REQUEST_URL }}
-        run: ./gradlew test
+        run: ./gradlew clean build -Dspring.profiles.active=test
+
+      - name: 📑 Publish Test Results as PR Comment
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: '**/build/test-results/test/TEST-*.xml'
+
+      - name: ✅ Add Check Comments for Failed Code Lines
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          token: ${{ github.token }}
