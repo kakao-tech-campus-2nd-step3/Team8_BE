@@ -9,7 +9,7 @@
   <b>나만의 작은 시니또</b>
 </div>
 
-## 목차
+## 바로가기
 - [🤔 시니또가 무엇인가요?](#시니또가-무엇인가요)
 - [🧑🏻‍💻 어떤 서비스인가요?](#어떤-서비스인가요)
 - [💬 핵심 기능 간략한 설명](#핵심-기능-간략한-설명)
@@ -456,6 +456,37 @@ redis-server
 > 
 <img width="480" alt="image-3" src="https://github.com/user-attachments/assets/45fa7e58-9451-4d3b-857b-93c78f3b0794">
 <img width="500" alt="image-3" src="https://github.com/user-attachments/assets/c0cac5df-2214-4004-b7dd-043971fe4274">
+
+### 4. Docker와 CI/CD를 활용한 테스트 환경 일관성 및 자동화된 코드 품질 관리
+> **1. Docker를 통한 테스트 환경 일관성**
+
+**일관된 환경**: Docker로 Redis와 MySQL을 컨테이너로 관리해, 모든 개발자와 CI/CD 환경에서 동일한 테스트 환경을 보장했습니다.
+
+**빠른 초기화**: Docker 이미지를 통해 데이터베이스와 캐시 서버를 빠르게 설정하여, CI/CD에서 시간을 절약하도록 조치했습니다.
+
+> **2. 자동화된 테스트 및 코드 품질 관리**
+
+**PR 자동 테스트**: PR 생성 시 자동으로 모든 테스트가 실행되며, 코드 변경 사항에 대한 즉각적인 검증이 가능합니다.
+
+**결과 자동 코멘트**: 테스트 결과가 PR에 자동으로 코멘트로 남겨져, 리뷰어가 쉽게 확인할 수 있습니다.
+
+> **3. 실패한 코드 라인 피드백**
+
+**즉각적 피드백**: 실패한 테스트에 대한 코드 라인이 PR에 표시되어, 빠르게 문제를 해결할 수 있습니다.
+
+> **4. 높은 테스트 커버리지**
+
+**클래스 커버리지 80%**: 주요 모듈(callback, guard, review 등)에서 100% 커버리지를 달성하여, 높은 안정성을 확보했습니다.
+
+<p align="center">
+  <img width="939" alt="image" src="https://github.com/user-attachments/assets/5deef25f-0c3b-455c-8797-8eca49450a0f">
+</p>
+<p align="center"><strong>[ PR 자동 테스트 코멘트 ]</strong></p>
+<br>
+<p align="center">
+  <img width="600" alt="image" src="https://github.com/user-attachments/assets/53e26e22-16f4-4086-ad84-633ebdde4ea4">
+</p>
+<p align="center"><strong>[ 테스트 Coverage ]</strong></p>
 
 
 ## 👩‍👩‍👧‍👧 협업 효율
