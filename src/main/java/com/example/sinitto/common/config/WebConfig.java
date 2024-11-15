@@ -1,6 +1,7 @@
 package com.example.sinitto.common.config;
 
 import com.example.sinitto.common.interceptor.JwtInterceptor;
+import com.example.sinitto.common.properties.KakaoProperties;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -9,6 +10,7 @@ import org.apache.hc.core5.util.Timeout;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,10 +27,14 @@ public class WebConfig implements WebMvcConfigurer {
     private static final int TIME_OUT_DURATION = 5;
     private static final int MAX_OPEN_CONNECTIONS = 100;
     private static final int CONNECTIONS_PER_IP_PORT_PAIR = 5;
-    private final JwtInterceptor jwtInterceptor;
+    private static final String DEV_SERVER_URL = "https://localhost:5173";
 
-    public WebConfig(JwtInterceptor jwtInterceptor) {
+    private final JwtInterceptor jwtInterceptor;
+    private final KakaoProperties kakaoProperties;
+
+    public WebConfig(JwtInterceptor jwtInterceptor, KakaoProperties kakaoProperties) {
         this.jwtInterceptor = jwtInterceptor;
+        this.kakaoProperties = kakaoProperties;
     }
 
     @Bean
@@ -61,10 +67,19 @@ public class WebConfig implements WebMvcConfigurer {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("https://www.sinitto.life");
+
+        config.addAllowedOriginPattern(kakaoProperties.frontUri());
+        config.addAllowedOriginPattern(DEV_SERVER_URL);
+
+        config.addAllowedMethod(HttpMethod.POST);
+        config.addAllowedMethod(HttpMethod.GET);
+        config.addAllowedMethod(HttpMethod.PUT);
+        config.addAllowedMethod(HttpMethod.DELETE);
+        config.addAllowedMethod(HttpMethod.OPTIONS);
+
         config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
         config.addExposedHeader("Authorization");
+
         config.setMaxAge(3600L);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
