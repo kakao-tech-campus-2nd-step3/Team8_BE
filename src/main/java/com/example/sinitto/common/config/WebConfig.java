@@ -71,7 +71,12 @@ public class WebConfig implements WebMvcConfigurer {
         config.addAllowedOriginPattern(kakaoProperties.frontUri());
         config.addAllowedOriginPattern(DEV_SERVER_URL);
 
-        config.addAllowedMethod("*");
+        config.addAllowedMethod(HttpMethod.POST);
+        config.addAllowedMethod(HttpMethod.GET);
+        config.addAllowedMethod(HttpMethod.PUT);
+        config.addAllowedMethod(HttpMethod.DELETE);
+        config.addAllowedMethod(HttpMethod.OPTIONS);
+
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
 
