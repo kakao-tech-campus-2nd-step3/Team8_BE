@@ -28,29 +28,29 @@
 - [👩‍👩‍👧‍👧 협업 효율](#-협업-효율)
 - [📂 디렉토리 구조](#-디렉토리-구조)
 
-## 🚀 배포 주소
+## 🚀 배포 주소 [서버 종료]
 ### ✔️ Client
-[https://sinitto.life/](https://sinitto.life/)
+[https://sinitto.life/](https://sinitto.life/) [서버 종료]
 
 ### ✔️ Dummy Data Login
-[https://sinitto.site/dummy](https://sinitto.site/dummy)
+[https://sinitto.site/dummy](https://sinitto.site/dummy) [서버 종료]
 
 [주의: 더미데이터 유저는 카카오메시지가 오지 않습니다]
 
 **비밀번호** `1234`
 
 ### ✔️ Server
-[https://sinitto.site/](https://sinitto.site/)
+[https://sinitto.site/](https://sinitto.site/) [서버 종료]
 ### ✔️ Swagger
-https://sinitto.site/swagger-ui/index.html
+https://sinitto.site/swagger-ui/index.html [서버 종료]
 ### ✔️ Admin Page
-https://sinitto.site/admin/login
+https://sinitto.site/admin/login [서버 종료]
 
 **이메일** `admin@kakao.com`
 
 **비밀번호** `admin123`
 ### ✔️ Slack
-[https://join.slack.com/t/sinitto/shared_invite](https://join.slack.com/t/sinitto/shared_invite/zt-2uqws45gg-bsPq8cuH2iQV6Jk1Y3Zglw)
+[https://join.slack.com/t/sinitto/shared_invite](https://join.slack.com/t/sinitto/shared_invite/zt-2uqws45gg-bsPq8cuH2iQV6Jk1Y3Zglw) [서버 종료]
 
 ### ✔️ 프론트엔드 Evaluation 브랜치
 https://github.com/kakao-tech-campus-2nd-step3/Team8_FE/tree/Evaluation
